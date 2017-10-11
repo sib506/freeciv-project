@@ -1,0 +1,34 @@
+This file contains strings that should be translated, but
+are for some reason not available to be collected from any source
+files. They are collected from this file instead.
+
+------------------------------------------------------------------
+
+Version tags
+
+These are sent by metaserver
+
+/* TRANS: Version tag name received from metaserver */
+_("?vertag:stable")
+_("?vertag:win32")
+_("?vertag:S2_4")
+_("?vertag:S2_5")
+_("?vertag:crosser")
+
+Generated version header
+
+/* TRANS: part of revision based version number string
+          "(modified r25000)" */
+_("modified ")
+
+
+Typical Modpack subtypes
+
+/* TRANS: Modpack subtype, "isometric" */
+_("iso")
+/* TRANS: Modpack subtype */
+_("hex")
+/* TRANS: Modpack subtype, isometric hex */
+_("hex & iso")
+/* TRANS: Modpack subtype, overhead tileset */
+_("overhead")
