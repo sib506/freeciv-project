@@ -37,6 +37,8 @@
 /* server/advisors */
 #include "advgoto.h"
 
+#include "rand.h"
+
 #include "autoexplorer.h"
 
 
@@ -275,7 +277,7 @@ enum unit_move_result manage_auto_explorer(struct unit *punit)
   /* Loop prevention */
   const struct tile *init_tile = unit_tile(punit);
 
-  /* The log of the want of the most desirable tile, 
+  /* The log of the want of the most desirable tile,
    * given nearby water, cities, etc. */
   double log_most_desirable = -FC_INFINITY;
 
@@ -285,7 +287,7 @@ enum unit_move_result manage_auto_explorer(struct unit *punit)
    * order to be better than the current most_desirable tile. */
   int max_dist = FC_INFINITY;
 
-  /* Coordinates of most desirable tile. Initialized to make 
+  /* Coordinates of most desirable tile. Initialized to make
    * compiler happy. Also MC to the best tile. */
   struct tile *best_tile = NULL;
   int best_MC = FC_INFINITY;
@@ -331,7 +333,7 @@ enum unit_move_result manage_auto_explorer(struct unit *punit)
     /* take the natural log */
     log_desirable = log(desirable);
 
-    /* Ok, the way we calculate goodness is taking the base tile 
+    /* Ok, the way we calculate goodness is taking the base tile
      * desirability amortized by the time it takes to get there:
      *
      *     goodness = desirability * DIST_FACTOR^total_MC
@@ -375,7 +377,7 @@ enum unit_move_result manage_auto_explorer(struct unit *punit)
 
   /* Go to the best tile found. */
   if (best_tile != NULL) {
-    /* TODO: read the path off the map we made.  Then we can make a path 
+    /* TODO: read the path off the map we made.  Then we can make a path
      * which goes beside the unknown, with a good EC callback... */
     if (!explorer_goto(punit, best_tile)) {
       /* Died?  Strange... */
@@ -385,12 +387,83 @@ enum unit_move_result manage_auto_explorer(struct unit *punit)
     if (punit->moves_left > 0) {
       /* We can still move on... */
       if (!same_pos(init_tile, unit_tile(punit))) {
-        /* At least we moved (and maybe even got to where we wanted).  
+        /* At least we moved (and maybe even got to where we wanted).
          * Let's do more exploring. 
          * (Checking only whether our position changed is unsafe: can allow
          * yoyoing on a RR) */
 	UNIT_LOG(LOG_DEBUG, punit, "recursively exploring...");
 	return manage_auto_explorer(punit);          
+      } else {
+	UNIT_LOG(LOG_DEBUG, punit, "done exploring (all finished)...");
+	return MR_PAUSE;
+      }
+    }
+    UNIT_LOG(LOG_DEBUG, punit, "done exploring (but more go go)...");
+    return MR_OK;
+  } else {
+    /* Didn't find anything. */
+    UNIT_LOG(LOG_DEBUG, punit, "failed to explore more");
+    return MR_BAD_MAP_POSITION;
+  }
+#undef DIST_FACTOR
+}
+
+enum unit_move_result manage_random_auto_explorer(struct unit *punit)
+{
+  struct player *pplayer = unit_owner(punit);
+  /* Loop prevention */
+  const struct tile *init_tile = unit_tile(punit);
+
+  struct tile *best_tile = NULL;
+
+
+  UNIT_LOG(LOG_DEBUG, punit, "auto-exploring.");
+
+  if (pplayer->ai_controlled && unit_has_type_flag(punit, UTYF_GAMELOSS)) {
+    UNIT_LOG(LOG_DEBUG, punit, "exploration too dangerous!");
+    return MR_BAD_ACTIVITY; /* too dangerous */
+  }
+
+  TIMING_LOG(AIT_EXPLORER, TIMER_START);
+
+  struct tile* adj_tiles[8];
+  int tiles = 0;
+
+  adjc_iterate(init_tile, ptile){
+	  // Iterate through the adjacent tiles here.
+	  // Add to a list - can only have 8 adjacent tiles?
+
+	  /* Our callback should insure this. */
+	  fc_assert_action(map_is_known(ptile, pplayer), continue);
+
+	  if(adv_could_unit_move_to_tile(punit, ptile) != 0){
+		  adj_tiles[tiles] = ptile;
+		  tiles++;
+	  }
+
+  } adjc_iterate_end;
+
+  // randomly choose which tile to move to
+  best_tile = adj_tiles[fc_rand(tiles)];
+
+  TIMING_LOG(AIT_EXPLORER, TIMER_STOP);
+
+  /* Go to the best tile found. */
+  if (best_tile != NULL) {
+    if (!explorer_goto(punit, best_tile)) {
+      /* Died?  Strange... */
+      return MR_DEATH;
+    }
+    UNIT_LOG(LOG_DEBUG, punit, "exploration GOTO succeeded");
+    if (punit->moves_left > 0) {
+      /* We can still move on... */
+      if (!same_pos(init_tile, unit_tile(punit))) {
+        /* At least we moved (and maybe even got to where we wanted).
+         * Let's do more exploring.
+         * (Checking only whether our position changed is unsafe: can allow
+         * yoyoing on a RR) */
+	UNIT_LOG(LOG_DEBUG, punit, "recursively exploring...");
+	return manage_random_auto_explorer(punit);
       } else {
 	UNIT_LOG(LOG_DEBUG, punit, "done exploring (all finished)...");
 	return MR_PAUSE;

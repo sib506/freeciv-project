@@ -1,0 +1,8 @@
+aiRandom.lo: aiRandom.c /usr/include/stdc-predef.h ../../fc_config.h \
+ aiRandom.h
+
+/usr/include/stdc-predef.h:
+
+../../fc_config.h:
+
+aiRandom.h:

@@ -2548,7 +2548,9 @@ void dai_manage_unit(struct ai_type *ait, struct player *pplayer,
     return;
   } else {
     /* what else could this be? -- Syela */
-    switch (manage_auto_explorer(punit)) {
+	//TODO: Put this back - currently experimenting with random moves
+	//switch (manage_auto_explorer(punit)) {
+    switch (manage_random_auto_explorer(punit)) {
     case MR_DEATH:
       /* don't use punit! */
       break;

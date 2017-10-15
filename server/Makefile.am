@@ -124,6 +124,8 @@ if AI_MOD_STATIC_THREADED
 da_libs += $(top_builddir)/ai/threaded/libthreadedai.la
 endif
 
+da_libs += $(top_builddir)/ai/random/librandomai.la
+
 # These files are not generated to builddir, but to srcdir */
 MAINTAINERCLEANFILES = \
 	$(srcdir)/hand_gen.c \
