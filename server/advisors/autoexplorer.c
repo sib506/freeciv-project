@@ -426,25 +426,33 @@ enum unit_move_result manage_random_auto_explorer(struct unit *punit)
 
   TIMING_LOG(AIT_EXPLORER, TIMER_START);
 
-  struct tile* adj_tiles[8];
+  struct genlist* actionList = genlist_new();
+
+//  struct tile* adj_tiles[8];
   int tiles = 0;
 
   adjc_iterate(init_tile, ptile){
 	  // Iterate through the adjacent tiles here.
-	  // Add to a list - can only have 8 adjacent tiles?
 
 	  /* Our callback should insure this. */
 	  fc_assert_action(map_is_known(ptile, pplayer), continue);
 
 	  if(adv_could_unit_move_to_tile(punit, ptile) != 0){
-		  adj_tiles[tiles] = ptile;
+//		  adj_tiles[tiles] = ptile;
+		  genlist_append(actionList, ptile);
 		  tiles++;
 	  }
 
   } adjc_iterate_end;
 
+  printf("%d\n", tiles);
+  printf("GenList size: %d\n", genlist_size(actionList));
+
   // randomly choose which tile to move to
-  best_tile = adj_tiles[fc_rand(tiles)];
+  //  best_tile = adj_tiles[fc_rand(tiles)];
+  best_tile = genlist_get(actionList, fc_rand(tiles));
+
+  genlist_destroy(actionList);
 
   TIMING_LOG(AIT_EXPLORER, TIMER_STOP);
 

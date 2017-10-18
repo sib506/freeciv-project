@@ -99,7 +99,8 @@ aisettler.lo: aisettler.c /usr/include/stdc-predef.h ../../fc_config.h \
  ../../server/advisors/advtools.h ../../server/advisors/autosettlers.h \
  ../../server/advisors/infracache.h aidata.h aicity.h \
  ../../common/effects.h aiferry.h aiplayer.h aitools.h aiunit.h \
- ../../common/combat.h ../../common/aicore/citymap.h aisettler.h
+ ../../common/combat.h ../../common/aicore/citymap.h aisettler.h \
+ ../../utility/rand.h
 
 /usr/include/stdc-predef.h:
 
@@ -474,3 +475,5 @@ aiunit.h:
 ../../common/aicore/citymap.h:
 
 aisettler.h:
+
+../../utility/rand.h:

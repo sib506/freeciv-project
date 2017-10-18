@@ -61,6 +61,9 @@
 
 #include "aisettler.h"
 
+#include "rand.h"
+#include "player.h"
+
 
 /* COMMENTS */
 /* 
@@ -1166,6 +1169,202 @@ CLEANUP:
     pf_path_destroy(path);
   }
 }
+
+// TODO: SB Code from here
+
+
+struct potentialImprovement{
+	enum unit_activity activity;
+	struct act_tgt target;
+	struct tile *target_tile;
+	struct pf_path *path;
+};
+
+struct potentialCity{
+
+};
+
+/*typedef struct{
+	void **head;
+	size_t used_size;
+	size_t free_size;
+	size_t current_size;
+	size_t size_increment;
+} Array;
+
+Array initArray(int initial_size, int size_increment) {
+    Array arr;
+    arr.head = malloc(initial_size * sizeof(void *));
+    arr.used_size = 0;
+    arr.free_size = initial_size;
+    arr.current_size = initial_size;
+    arr.size_increment = size_increment;
+
+    return arr;
+}
+
+Array appendArray(Array arr, void *new_element) {
+	void *new_head_array;
+
+	if(arr.free_size == 0){
+		new_head_array = realloc(arr.head, (arr.current_size * arr.size_increment) * sizeof(void*));
+		if(new_head_array == NULL){
+			printf("Reallocation failure.\n");
+		}
+
+		arr.free_size = (arr.current_size * arr.size_increment) - arr.current_size;
+		arr.current_size = (arr.current_size * arr.size_increment);
+		arr.head = new_head_array;
+	}
+
+	arr.head[arr.used_size++] = new_element;
+	arr.free_size--;
+
+	return arr;
+}
+
+void freeArrayElements(Array arr) {
+	for
+}
+
+void freeArray(Array arr){
+
+}*/
+
+
+
+/**************************************************************************
+  Auto RANDOM settler that can also build cities.
+**************************************************************************/
+void dai_random_settler_run(struct ai_type *ait, struct player *pplayer,
+	struct unit *punit, struct settlermap *state) {
+
+	CHECK_UNIT(punit);
+
+	// NEED TO CHECK IF ALREADY HAVE A TASK
+	// Random selection between whether continue or start a new task
+
+	//TODO: Find all possible moves that available. Store moves in array.
+	// then randomly pick a move
+
+	  /*** If we are on a city mission: Go where we should ***/
+
+BUILD_CITY:
+
+	if (def_ai_unit_data(punit, ait)->task == AIUNIT_BUILD_CITY) {
+		struct tile *ptile = punit->goto_tile;
+	    int sanity = punit->id;
+
+	    /* Check that the mission is still possible.  If the tile has become
+	     * unavailable, call it off. */
+	    if (!city_can_be_built_here(ptile, punit)) {
+	      dai_unit_new_task(ait, punit, AIUNIT_NONE, NULL);
+	      set_unit_activity(punit, ACTIVITY_IDLE);
+	      send_unit_info(NULL, punit);
+	      return; /* avoid recursion at all cost */
+	    } else {
+	     /* Go there */
+	      if ((!dai_gothere(ait, pplayer, punit, ptile)
+	           && NULL == game_unit_by_number(sanity))
+	          || punit->moves_left <= 0) {
+	        return;
+	      }
+	      if (same_pos(unit_tile(punit), ptile)) {
+	        if (!dai_do_build_city(ait, pplayer, punit)) {
+	          UNIT_LOG(LOG_DEBUG, punit, "could not make city on %s",
+	                   tile_get_info_text(unit_tile(punit), TRUE, 0));
+	          dai_unit_new_task(ait, punit, AIUNIT_NONE, NULL);
+	          /* Only known way to end in here is that hut turned in to a city
+	           * when settler entered tile. So this is not going to lead in any
+	           * serious recursion. */
+	          dai_random_settler_run(ait, pplayer, punit, state);
+
+	          return;
+	       } else {
+	          return; /* We came, we saw, we built... */
+	        }
+	      } else {
+	        UNIT_LOG(LOG_DEBUG, punit, "could not go to target");
+	        /* ai_unit_new_role(punit, AIUNIT_NONE, NULL); */
+	        return;
+	      }
+	    }
+	  }
+
+	/*** Try find some work ***/
+
+	struct genlist* actionList = genlist_new();
+
+	int abstractActions, chosenAbstractAction;
+
+	if(unit_has_type_flag(punit, UTYF_SETTLERS)){
+		abstractActions = 3;
+	} else {
+		abstractActions = 2;
+	}
+
+	chosenAbstractAction = fc_rand(abstractActions);
+
+	if(chosenAbstractAction == 0){
+		// Evaluate City Requests and randomly pick one to do
+		const struct player *pplayer = unit_owner(punit);
+		struct pf_parameter parameter;
+		struct pf_map *pfm;
+		struct pf_position pos;
+		int best_value = -1;
+		struct worker_task *best = NULL;
+		int dist = FC_INFINITY;
+
+		city_list_iterate(pplayer->cities, pcity) {
+			struct worker_task *ptask = &pcity->server.task_req;
+
+		    if (ptask->ptile != NULL) {
+		      bool consider = TRUE;
+
+		      /* Do not go to tiles that already have workers there. */
+		      unit_list_iterate(ptask->ptile->units, aunit) {
+		        if (unit_owner(aunit) == pplayer
+		            && aunit->id != punit->id
+		            && unit_has_type_flag(aunit, UTYF_SETTLERS)) {
+		          consider = FALSE;
+		        }
+		      } unit_list_iterate_end;
+
+		      if (consider
+		          && can_unit_do_activity_targeted_at(punit, ptask->act, &ptask->tgt,
+		                                              ptask->ptile)) {
+		        /* closest worker, if any, headed towards target tile
+		        struct unit *enroute = NULL;
+
+		        if (state) {
+		          enroute = player_unit_by_number(pplayer, state[tile_index(ptask->ptile)].enroute);
+		        }*/
+
+		        if (pf_map_position(pfm, ptask->ptile, &pos)) {
+		        	struct potentialImprovement *pI = (struct potentialImprovement *)malloc(sizeof(struct potentialImprovement));
+		        	genlist_append(actionList, pI);
+		        }
+
+		        printf("%d\n", genlist_size(actionList));
+		      }
+		    }
+		} city_list_iterate_end;
+
+	} else if (chosenAbstractAction == 1){
+		// Evaluate improvements and randomly pick one to do
+
+	} else if (chosenAbstractAction == 2){
+		// Find possible locations for a city and randomly
+		// pick one
+		// find_best_city_placement(ait, punit, TRUE, FALSE);
+
+	}
+
+
+}
+
+// TODO: SB Code Stop
+
 
 /**************************************************************************
   Auto settler continuing its work.
