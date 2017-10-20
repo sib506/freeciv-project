@@ -1237,74 +1237,92 @@ void freeArray(Array arr){
   Auto RANDOM settler that can also build cities.
 **************************************************************************/
 void dai_random_settler_run(struct ai_type *ait, struct player *pplayer,
-	struct unit *punit, struct settlermap *state) {
+		struct unit *punit, struct settlermap *state) {
 
 	CHECK_UNIT(punit);
 
+	int totalOptions = 1;
+
 	const struct tile *init_tile = unit_tile(punit);
 	struct tile *best_tile = NULL;
-	struct pf_path *path = NULL;
 
-	struct genlist* actionList = genlist_new();
+	// If this type of settler, can build a city
+	if (unit_has_type_flag(punit, UTYF_CITIES)) {
+		// Check if can build a city
+		if (city_can_be_built_here(init_tile, punit)) {
+			totalOptions++;
+		}
+	}
 
-	int tiles = 0;
-
-	adjc_iterate(init_tile, ptile)
+	switch(fc_rand(totalOptions)){
+	case 0:
 	{
-		// Iterate through the adjacent tiles here.
+		struct genlist* actionList = genlist_new();
 
-		/* Our callback should insure this. */
-		fc_assert_action(map_is_known(ptile, pplayer), continue);
+		int tiles = 0;
 
-		if (adv_could_unit_move_to_tile(punit, ptile) != 0) {
-			//		  adj_tiles[tiles] = ptile;
-			genlist_append(actionList, ptile);
-			tiles++;
-		}
+		adjc_iterate(init_tile, ptile)
+		{
+			// Iterate through the adjacent tiles here.
+			/* Our callback should insure this. */
+			fc_assert_action(map_is_known(ptile, pplayer), continue);
 
-	}adjc_iterate_end;
+			if (adv_could_unit_move_to_tile(punit, ptile) != 0) {
+				genlist_append(actionList, ptile);
+				tiles++;
+			}
+		}adjc_iterate_end;
 
 
-	best_tile = genlist_get(actionList, fc_rand(tiles));
-	genlist_destroy(actionList);
+		best_tile = genlist_get(actionList, fc_rand(tiles));
+		genlist_destroy(actionList);
 
-	struct pf_parameter parameter;
-	bool alive = TRUE;
-	struct pf_map *pfm;
+		if (best_tile != NULL) {
 
-	if (best_tile != NULL) {
-
-		if (!path) {
-				pft_fill_unit_parameter(&parameter, punit);
-				//parameter.can_invade_tile = (NULL == owner || pplayers_allied(owner, pplayer));
-				pfm = pf_map_new(&parameter);
-				path = pf_map_path(pfm, best_tile);
-		}
-
-		if (path != NULL) {
-			alive = adv_follow_path(punit, path, best_tile);
-			printf("%d: Should have moved\n", alive);
-			pf_path_destroy(path);
-		}
-
-		pf_map_destroy(pfm);
-
-		if (alive && punit->moves_left > 0) {
-			/* We can still move on... */
-			if (!same_pos(init_tile, unit_tile(punit))) {
-				/* At least we moved (and maybe even got to where we wanted).
-				 * Let's do more exploring.
-				 * (Checking only whether our position changed is unsafe: can allow
-				 * yoyoing on a RR) */
-				return dai_random_settler_run(ait, pplayer, punit, state);
+			if(!dai_gothere(ait, pplayer, punit, best_tile)){
+				printf("failed to move");
+				return;
 			} else {
-				return; //done exploring
+				if (punit->moves_left > 0) {
+					/* We can still move on... */
+					if (!same_pos(init_tile, unit_tile(punit))) {
+						/* At least we moved (and maybe even got to where we wanted).
+						 * Let's do more exploring.*/
+						return dai_random_settler_run(ait, pplayer, punit, state);
+					} else {
+						return; //done exploring
+					}
+				}
+				return; // done exploring but more to go
+			}
+		} else {
+			/* Didn't find anything. */
+			return; // Failed to move
+		}
+		break;
+	}
+	case 1:
+	{
+		// Building a city functionality
+		adv_unit_new_task(punit, AUT_BUILD_CITY, init_tile);
+		if (def_ai_unit_data(punit, ait)->task == AIUNIT_BUILD_CITY) {
+			if (!dai_do_build_city(ait, pplayer, punit)) {
+				UNIT_LOG(LOG_DEBUG, punit, "could not make city on %s",
+						tile_get_info_text(unit_tile(punit), TRUE, 0));
+				dai_unit_new_task(ait, punit, AIUNIT_NONE, NULL);
+				/* Only known way to end in here is that hut turned in to a city
+				 * when settler entered tile. So this is not going to lead in any
+				 * serious recursion. */
+				dai_auto_settler_run(ait, pplayer, punit, state);
+
+				return;
+			} else {
+				return; /* We came, we saw, we built... */
 			}
 		}
-		return; // done exploring but more to go
-	} else {
-		/* Didn't find anything. */
-		return; // Failed to move
+		break;
+	}
+
 	}
 }
 
