@@ -1241,126 +1241,71 @@ void dai_random_settler_run(struct ai_type *ait, struct player *pplayer,
 
 	CHECK_UNIT(punit);
 
-	// NEED TO CHECK IF ALREADY HAVE A TASK
-	// Random selection between whether continue or start a new task
-
-	//TODO: Find all possible moves that available. Store moves in array.
-	// then randomly pick a move
-
-	  /*** If we are on a city mission: Go where we should ***/
-
-BUILD_CITY:
-
-	if (def_ai_unit_data(punit, ait)->task == AIUNIT_BUILD_CITY) {
-		struct tile *ptile = punit->goto_tile;
-	    int sanity = punit->id;
-
-	    /* Check that the mission is still possible.  If the tile has become
-	     * unavailable, call it off. */
-	    if (!city_can_be_built_here(ptile, punit)) {
-	      dai_unit_new_task(ait, punit, AIUNIT_NONE, NULL);
-	      set_unit_activity(punit, ACTIVITY_IDLE);
-	      send_unit_info(NULL, punit);
-	      return; /* avoid recursion at all cost */
-	    } else {
-	     /* Go there */
-	      if ((!dai_gothere(ait, pplayer, punit, ptile)
-	           && NULL == game_unit_by_number(sanity))
-	          || punit->moves_left <= 0) {
-	        return;
-	      }
-	      if (same_pos(unit_tile(punit), ptile)) {
-	        if (!dai_do_build_city(ait, pplayer, punit)) {
-	          UNIT_LOG(LOG_DEBUG, punit, "could not make city on %s",
-	                   tile_get_info_text(unit_tile(punit), TRUE, 0));
-	          dai_unit_new_task(ait, punit, AIUNIT_NONE, NULL);
-	          /* Only known way to end in here is that hut turned in to a city
-	           * when settler entered tile. So this is not going to lead in any
-	           * serious recursion. */
-	          dai_random_settler_run(ait, pplayer, punit, state);
-
-	          return;
-	       } else {
-	          return; /* We came, we saw, we built... */
-	        }
-	      } else {
-	        UNIT_LOG(LOG_DEBUG, punit, "could not go to target");
-	        /* ai_unit_new_role(punit, AIUNIT_NONE, NULL); */
-	        return;
-	      }
-	    }
-	  }
-
-	/*** Try find some work ***/
+	const struct tile *init_tile = unit_tile(punit);
+	struct tile *best_tile = NULL;
+	struct pf_path *path = NULL;
 
 	struct genlist* actionList = genlist_new();
 
-	int abstractActions, chosenAbstractAction;
+	int tiles = 0;
 
-	if(unit_has_type_flag(punit, UTYF_SETTLERS)){
-		abstractActions = 3;
+	adjc_iterate(init_tile, ptile)
+	{
+		// Iterate through the adjacent tiles here.
+
+		/* Our callback should insure this. */
+		fc_assert_action(map_is_known(ptile, pplayer), continue);
+
+		if (adv_could_unit_move_to_tile(punit, ptile) != 0) {
+			//		  adj_tiles[tiles] = ptile;
+			genlist_append(actionList, ptile);
+			tiles++;
+		}
+
+	}adjc_iterate_end;
+
+
+	best_tile = genlist_get(actionList, fc_rand(tiles));
+	genlist_destroy(actionList);
+
+	struct pf_parameter parameter;
+	bool alive = TRUE;
+	struct pf_map *pfm;
+
+	if (best_tile != NULL) {
+
+		if (!path) {
+				pft_fill_unit_parameter(&parameter, punit);
+				//parameter.can_invade_tile = (NULL == owner || pplayers_allied(owner, pplayer));
+				pfm = pf_map_new(&parameter);
+				path = pf_map_path(pfm, best_tile);
+		}
+
+		if (path != NULL) {
+			alive = adv_follow_path(punit, path, best_tile);
+			printf("%d: Should have moved\n", alive);
+			pf_path_destroy(path);
+		}
+
+		pf_map_destroy(pfm);
+
+		if (alive && punit->moves_left > 0) {
+			/* We can still move on... */
+			if (!same_pos(init_tile, unit_tile(punit))) {
+				/* At least we moved (and maybe even got to where we wanted).
+				 * Let's do more exploring.
+				 * (Checking only whether our position changed is unsafe: can allow
+				 * yoyoing on a RR) */
+				return dai_random_settler_run(ait, pplayer, punit, state);
+			} else {
+				return; //done exploring
+			}
+		}
+		return; // done exploring but more to go
 	} else {
-		abstractActions = 2;
+		/* Didn't find anything. */
+		return; // Failed to move
 	}
-
-	chosenAbstractAction = fc_rand(abstractActions);
-
-	if(chosenAbstractAction == 0){
-		// Evaluate City Requests and randomly pick one to do
-		const struct player *pplayer = unit_owner(punit);
-		struct pf_parameter parameter;
-		struct pf_map *pfm;
-		struct pf_position pos;
-		int best_value = -1;
-		struct worker_task *best = NULL;
-		int dist = FC_INFINITY;
-
-		city_list_iterate(pplayer->cities, pcity) {
-			struct worker_task *ptask = &pcity->server.task_req;
-
-		    if (ptask->ptile != NULL) {
-		      bool consider = TRUE;
-
-		      /* Do not go to tiles that already have workers there. */
-		      unit_list_iterate(ptask->ptile->units, aunit) {
-		        if (unit_owner(aunit) == pplayer
-		            && aunit->id != punit->id
-		            && unit_has_type_flag(aunit, UTYF_SETTLERS)) {
-		          consider = FALSE;
-		        }
-		      } unit_list_iterate_end;
-
-		      if (consider
-		          && can_unit_do_activity_targeted_at(punit, ptask->act, &ptask->tgt,
-		                                              ptask->ptile)) {
-		        /* closest worker, if any, headed towards target tile
-		        struct unit *enroute = NULL;
-
-		        if (state) {
-		          enroute = player_unit_by_number(pplayer, state[tile_index(ptask->ptile)].enroute);
-		        }*/
-
-		        if (pf_map_position(pfm, ptask->ptile, &pos)) {
-		        	struct potentialImprovement *pI = (struct potentialImprovement *)malloc(sizeof(struct potentialImprovement));
-		        	genlist_append(actionList, pI);
-		        }
-
-		        printf("%d\n", genlist_size(actionList));
-		      }
-		    }
-		} city_list_iterate_end;
-
-	} else if (chosenAbstractAction == 1){
-		// Evaluate improvements and randomly pick one to do
-
-	} else if (chosenAbstractAction == 2){
-		// Find possible locations for a city and randomly
-		// pick one
-		// find_best_city_placement(ait, punit, TRUE, FALSE);
-
-	}
-
-
 }
 
 // TODO: SB Code Stop

@@ -365,7 +365,8 @@ static void cai_auto_settler_run(struct player *pplayer, struct unit *punit,
 {
   struct ai_type *deftype = classic_ai_get_self();
 
-  dai_auto_settler_run(deftype, pplayer, punit, state);
+  //dai_auto_settler_run(deftype, pplayer, punit, state);
+  dai_random_settler_run(deftype, pplayer, punit, state);
 }
 
 /**************************************************************************

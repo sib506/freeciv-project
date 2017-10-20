@@ -445,8 +445,8 @@ enum unit_move_result manage_random_auto_explorer(struct unit *punit)
 
   } adjc_iterate_end;
 
-  printf("%d\n", tiles);
-  printf("GenList size: %d\n", genlist_size(actionList));
+//  printf("%d\n", tiles);
+//  printf("GenList size: %d\n", genlist_size(actionList));
 
   // randomly choose which tile to move to
   //  best_tile = adj_tiles[fc_rand(tiles)];
