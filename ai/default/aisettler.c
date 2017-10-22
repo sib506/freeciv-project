@@ -1170,68 +1170,12 @@ CLEANUP:
   }
 }
 
-// TODO: SB Code from here
-
+// TODO: SB - Code from here
 
 struct potentialImprovement{
 	enum unit_activity activity;
 	struct act_tgt target;
-	struct tile *target_tile;
-	struct pf_path *path;
 };
-
-struct potentialCity{
-
-};
-
-/*typedef struct{
-	void **head;
-	size_t used_size;
-	size_t free_size;
-	size_t current_size;
-	size_t size_increment;
-} Array;
-
-Array initArray(int initial_size, int size_increment) {
-    Array arr;
-    arr.head = malloc(initial_size * sizeof(void *));
-    arr.used_size = 0;
-    arr.free_size = initial_size;
-    arr.current_size = initial_size;
-    arr.size_increment = size_increment;
-
-    return arr;
-}
-
-Array appendArray(Array arr, void *new_element) {
-	void *new_head_array;
-
-	if(arr.free_size == 0){
-		new_head_array = realloc(arr.head, (arr.current_size * arr.size_increment) * sizeof(void*));
-		if(new_head_array == NULL){
-			printf("Reallocation failure.\n");
-		}
-
-		arr.free_size = (arr.current_size * arr.size_increment) - arr.current_size;
-		arr.current_size = (arr.current_size * arr.size_increment);
-		arr.head = new_head_array;
-	}
-
-	arr.head[arr.used_size++] = new_element;
-	arr.free_size--;
-
-	return arr;
-}
-
-void freeArrayElements(Array arr) {
-	for
-}
-
-void freeArray(Array arr){
-
-}*/
-
-
 
 /**************************************************************************
   Auto RANDOM settler that can also build cities.
@@ -1241,7 +1185,10 @@ void dai_random_settler_run(struct ai_type *ait, struct player *pplayer,
 
 	CHECK_UNIT(punit);
 
-	int totalOptions = 1;
+	//TODO: Need to check if unit is currently acting
+	// + give a chance to continue
+
+	int totalOptions = 2; // By default, all settlers have 3 possible moves
 
 	const struct tile *init_tile = unit_tile(punit);
 	struct tile *best_tile = NULL;
@@ -1303,6 +1250,128 @@ void dai_random_settler_run(struct ai_type *ait, struct player *pplayer,
 	}
 	case 1:
 	{
+		bool consider = TRUE;
+		struct genlist* actionList = genlist_new();
+
+		// Improving the tile currently standing on
+		// Collect what improvements we can make + then randomly pick
+		if (!adv_settler_safe_tile(pplayer, punit, init_tile)) {
+			/* Too dangerous place */
+			consider = FALSE;
+		}
+
+		/* Do not work on tiles that already have workers there. */
+		unit_list_iterate(init_tile->units, aunit) {
+			if (unit_owner(aunit) == pplayer
+					&& aunit->id != punit->id
+					&& unit_has_type_flag(aunit, UTYF_SETTLERS)) {
+				consider = FALSE;
+			}
+		} unit_list_iterate_end;
+
+		if (!consider) {
+			return dai_random_settler_run(ait, pplayer, punit, state);
+		}
+
+		activity_type_iterate(act) {
+			struct act_tgt target = { .type = ATT_SPECIAL, .obj.spe = S_LAST };
+
+			if (act != ACTIVITY_BASE
+					&& act != ACTIVITY_GEN_ROAD
+					&& can_unit_do_activity_targeted_at(punit, act, &target,
+                            init_tile)){
+				if(act != ACTIVITY_EXPLORE){
+					//Add the action to a list to choose from
+					struct potentialImprovement *action=malloc(sizeof(struct potentialImprovement));
+					action->activity = act;
+					action->target = target;
+					genlist_append(actionList, action);
+				}
+			}
+		} activity_type_iterate_end;
+
+		road_type_iterate(proad) {
+			struct act_tgt target = { .type = ATT_ROAD, .obj.road = road_number(proad) };
+			if (can_unit_do_activity_targeted_at(punit, ACTIVITY_GEN_ROAD, &target, init_tile)) {
+				//Add the action to a list to choose from
+				struct potentialImprovement *action=malloc(sizeof(struct potentialImprovement));
+				action->activity = ACTIVITY_GEN_ROAD;
+				action->target = target;
+				genlist_append(actionList, action);
+			}
+			else {
+				road_deps_iterate(&(proad->reqs), pdep) {
+					struct act_tgt dep_tgt = { .type = ATT_ROAD, .obj.road = road_number(pdep) };
+					if (can_unit_do_activity_targeted_at(punit, ACTIVITY_GEN_ROAD,
+					                                                       &dep_tgt, init_tile)) {
+						//Add the action to a list to choose from
+						struct potentialImprovement *action=malloc(sizeof(struct potentialImprovement));
+						action->activity = ACTIVITY_GEN_ROAD;
+						action->target = target;
+						genlist_append(actionList, action);
+					}
+				} road_deps_iterate_end;
+			}
+		} road_type_iterate_end;
+
+
+		base_type_iterate(pbase) {
+			struct act_tgt target = { .type = ATT_BASE, .obj.base = base_number(pbase) };
+			if (can_unit_do_activity_targeted_at(punit, ACTIVITY_BASE, &target,
+			                                                   init_tile)) {
+				//Add the action to a list to choose from
+				struct potentialImprovement *action=malloc(sizeof(struct potentialImprovement));
+				action->activity = ACTIVITY_BASE;
+				action->target = target;
+				genlist_append(actionList, action);
+			} else {
+				base_deps_iterate(&(pbase->reqs), pdep) {
+					struct act_tgt dep_tgt = { .type = ATT_BASE, .obj.base = base_number(pdep) };
+					if (can_unit_do_activity_targeted_at(punit, ACTIVITY_BASE,
+					                                                       &dep_tgt, init_tile)) {
+						//Add the action to a list to choose from
+						struct potentialImprovement *action=malloc(sizeof(struct potentialImprovement));
+						action->activity = ACTIVITY_BASE;
+						action->target = target;
+						genlist_append(actionList, action);
+					}
+				} base_deps_iterate_end;
+			}
+		} base_type_iterate_end;
+
+		int possibleOptions = genlist_size(actionList);
+
+		struct potentialImprovement *chosenAction = genlist_get(actionList, fc_rand(possibleOptions));
+
+		// Now actually make the move
+		if (punit->server.adv->task == AUT_AUTO_SETTLER) {
+			/* Mark the square as taken. */
+			/*struct unit *displaced = player_unit_by_number(pplayer,
+			                                      state[tile_index(init_tile)].enroute);
+			 */
+			if(punit->moves_left > 0){
+				if (activity_requires_target(chosenAction->activity)) {
+					unit_activity_handling_targeted(punit, chosenAction->activity, &chosenAction->target);
+				} else {
+					unit_activity_handling(punit, chosenAction->activity);
+				}
+				send_unit_info(NULL, punit); /* FIXME: probably duplicate */
+			}
+		}
+
+		// Destroy the list and elements within
+		for(int i = 0; i < possibleOptions; i++ ){
+			void *toRemove = genlist_back(actionList);
+			genlist_pop_back(actionList);
+			free(toRemove);
+		}
+
+		genlist_destroy(actionList);
+
+		break;
+	}
+	case 2:
+	{
 		// Building a city functionality
 		adv_unit_new_task(punit, AUT_BUILD_CITY, init_tile);
 		if (def_ai_unit_data(punit, ait)->task == AIUNIT_BUILD_CITY) {
@@ -1322,8 +1391,14 @@ void dai_random_settler_run(struct ai_type *ait, struct player *pplayer,
 		}
 		break;
 	}
-
+	case 3:
+	{
+		// TODO: SB - Respond to city requests
+		break;
 	}
+	}
+
+	return;
 }
 
 // TODO: SB Code Stop
