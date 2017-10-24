@@ -102,7 +102,6 @@ canvas.lo: canvas.c /usr/include/stdc-predef.h ../../fc_config.h canvas.h \
  /usr/include/x86_64-linux-gnu/bits/byteswap-16.h \
  /usr/include/x86_64-linux-gnu/sys/select.h \
  /usr/include/x86_64-linux-gnu/bits/select.h \
- /usr/include/x86_64-linux-gnu/bits/select2.h \
  /usr/include/x86_64-linux-gnu/sys/sysmacros.h /usr/include/pthread.h \
  /usr/include/sched.h /usr/include/x86_64-linux-gnu/bits/sched.h \
  /usr/include/x86_64-linux-gnu/bits/setjmp.h \
@@ -151,7 +150,6 @@ canvas.lo: canvas.c /usr/include/stdc-predef.h ../../fc_config.h canvas.h \
  /usr/include/x86_64-linux-gnu/bits/posix_opt.h \
  /usr/include/x86_64-linux-gnu/bits/environments.h \
  /usr/include/x86_64-linux-gnu/bits/confname.h /usr/include/getopt.h \
- /usr/include/x86_64-linux-gnu/bits/unistd.h \
  /usr/include/glib-2.0/gio/gdatagrambased.h \
  /usr/include/glib-2.0/gio/gdatainputstream.h \
  /usr/include/glib-2.0/gio/gdataoutputstream.h \
@@ -299,8 +297,6 @@ canvas.lo: canvas.c /usr/include/stdc-predef.h ../../fc_config.h canvas.h \
  /usr/include/pango-1.0/pango/pango-utils.h /usr/include/stdio.h \
  /usr/include/libio.h /usr/include/_G_config.h /usr/include/wchar.h \
  /usr/include/x86_64-linux-gnu/bits/sys_errlist.h \
- /usr/include/x86_64-linux-gnu/bits/stdio.h \
- /usr/include/x86_64-linux-gnu/bits/stdio2.h \
  /usr/lib/x86_64-linux-gnu/gtk-2.0/include/gdkconfig.h \
  /usr/include/gtk-2.0/gdk/gdkdisplay.h \
  /usr/include/gtk-2.0/gdk/gdkevents.h /usr/include/gtk-2.0/gdk/gdkcolor.h \
@@ -560,9 +556,7 @@ canvas.lo: canvas.c /usr/include/stdc-predef.h ../../fc_config.h canvas.h \
  ../../utility/support.h /usr/include/stdlib.h \
  /usr/include/x86_64-linux-gnu/bits/waitflags.h \
  /usr/include/x86_64-linux-gnu/bits/waitstatus.h /usr/include/alloca.h \
- /usr/include/x86_64-linux-gnu/bits/stdlib-bsearch.h \
  /usr/include/x86_64-linux-gnu/bits/stdlib-float.h \
- /usr/include/x86_64-linux-gnu/bits/stdlib.h \
  /usr/include/x86_64-linux-gnu/sys/stat.h \
  /usr/include/x86_64-linux-gnu/bits/stat.h \
  /usr/lib/gcc/x86_64-linux-gnu/5/include/stdbool.h \
@@ -572,26 +566,24 @@ canvas.lo: canvas.c /usr/include/stdc-predef.h ../../fc_config.h canvas.h \
  ../include/gui_proto_constructor.h gtkpixcomm.h sprite.h \
  ../include/sprite_g.h colors.h ../include/colors_g.h ../colors_common.h \
  ../../utility/registry.h ../../utility/shared.h /usr/include/string.h \
- /usr/include/x86_64-linux-gnu/bits/string.h \
- /usr/include/x86_64-linux-gnu/bits/string2.h \
- /usr/include/x86_64-linux-gnu/bits/string3.h ../../utility/log.h \
- ../../utility/support.h ../../utility/speclist.h ../../utility/genlist.h \
- ../../utility/fcthread.h ../../utility/registry_ini.h \
- ../../utility/ioz.h ../../common/fc_types.h ../../utility/bitvector.h \
- ../../utility/shared.h ../../utility/specenum_gen.h \
- ../../utility/fcintl.h /usr/include/locale.h \
- /usr/include/x86_64-linux-gnu/bits/locale.h /usr/include/libintl.h \
- gui_main.h ../include/gui_main_g.h mapview.h ../citydlg_common.h \
- ../../common/city.h ../../utility/log.h ../../common/ai.h \
- ../../common/fc_types.h ../../common/name_translation.h \
- ../../utility/fcintl.h ../../common/improvement.h \
- ../../common/requirements.h ../../utility/speclist.h \
- ../../utility/specvec.h ../../utility/mem.h ../../common/unitlist.h \
- ../../common/unit.h ../../common/base.h ../../common/unittype.h \
- ../../common/terrain.h ../../common/vision.h ../../common/workertask.h \
- ../../common/worklist.h ../include/mapview_g.h ../../common/unitlist.h \
- ../mapview_common.h ../../common/featured_text.h ../../common/map.h \
- /usr/include/math.h /usr/include/x86_64-linux-gnu/bits/math-vector.h \
+ ../../utility/log.h ../../utility/support.h ../../utility/speclist.h \
+ ../../utility/genlist.h ../../utility/fcthread.h \
+ ../../utility/registry_ini.h ../../utility/ioz.h ../../common/fc_types.h \
+ ../../utility/bitvector.h ../../utility/shared.h \
+ ../../utility/specenum_gen.h ../../utility/fcintl.h \
+ /usr/include/locale.h /usr/include/x86_64-linux-gnu/bits/locale.h \
+ /usr/include/libintl.h gui_main.h ../include/gui_main_g.h mapview.h \
+ ../citydlg_common.h ../../common/city.h ../../utility/log.h \
+ ../../common/ai.h ../../common/fc_types.h \
+ ../../common/name_translation.h ../../utility/fcintl.h \
+ ../../common/improvement.h ../../common/requirements.h \
+ ../../utility/speclist.h ../../utility/specvec.h ../../utility/mem.h \
+ ../../common/unitlist.h ../../common/unit.h ../../common/base.h \
+ ../../common/unittype.h ../../common/terrain.h ../../common/vision.h \
+ ../../common/workertask.h ../../common/worklist.h ../include/mapview_g.h \
+ ../../common/unitlist.h ../mapview_common.h ../../common/featured_text.h \
+ ../../common/map.h /usr/include/math.h \
+ /usr/include/x86_64-linux-gnu/bits/math-vector.h \
  /usr/include/x86_64-linux-gnu/bits/libm-simd-decl-stubs.h \
  /usr/include/x86_64-linux-gnu/bits/huge_val.h \
  /usr/include/x86_64-linux-gnu/bits/huge_valf.h \
@@ -599,8 +591,7 @@ canvas.lo: canvas.c /usr/include/stdc-predef.h ../../fc_config.h canvas.h \
  /usr/include/x86_64-linux-gnu/bits/inf.h \
  /usr/include/x86_64-linux-gnu/bits/nan.h \
  /usr/include/x86_64-linux-gnu/bits/mathdef.h \
- /usr/include/x86_64-linux-gnu/bits/mathcalls.h \
- /usr/include/x86_64-linux-gnu/bits/mathinline.h ../../utility/iterator.h \
+ /usr/include/x86_64-linux-gnu/bits/mathcalls.h ../../utility/iterator.h \
  ../../common/tile.h ../../common/player.h ../../common/city.h \
  ../../common/connection.h /usr/include/x86_64-linux-gnu/sys/time.h \
  ../../utility/timing.h ../../common/nation.h ../../common/rgbcolor.h \
@@ -868,8 +859,6 @@ canvas.h:
 
 /usr/include/x86_64-linux-gnu/bits/select.h:
 
-/usr/include/x86_64-linux-gnu/bits/select2.h:
-
 /usr/include/x86_64-linux-gnu/sys/sysmacros.h:
 
 /usr/include/pthread.h:
@@ -973,8 +962,6 @@ canvas.h:
 /usr/include/x86_64-linux-gnu/bits/confname.h:
 
 /usr/include/getopt.h:
-
-/usr/include/x86_64-linux-gnu/bits/unistd.h:
 
 /usr/include/glib-2.0/gio/gdatagrambased.h:
 
@@ -1291,10 +1278,6 @@ canvas.h:
 /usr/include/wchar.h:
 
 /usr/include/x86_64-linux-gnu/bits/sys_errlist.h:
-
-/usr/include/x86_64-linux-gnu/bits/stdio.h:
-
-/usr/include/x86_64-linux-gnu/bits/stdio2.h:
 
 /usr/lib/x86_64-linux-gnu/gtk-2.0/include/gdkconfig.h:
 
@@ -1872,11 +1855,7 @@ canvas.h:
 
 /usr/include/alloca.h:
 
-/usr/include/x86_64-linux-gnu/bits/stdlib-bsearch.h:
-
 /usr/include/x86_64-linux-gnu/bits/stdlib-float.h:
-
-/usr/include/x86_64-linux-gnu/bits/stdlib.h:
 
 /usr/include/x86_64-linux-gnu/sys/stat.h:
 
@@ -1915,12 +1894,6 @@ colors.h:
 ../../utility/shared.h:
 
 /usr/include/string.h:
-
-/usr/include/x86_64-linux-gnu/bits/string.h:
-
-/usr/include/x86_64-linux-gnu/bits/string2.h:
-
-/usr/include/x86_64-linux-gnu/bits/string3.h:
 
 ../../utility/log.h:
 
@@ -2027,8 +2000,6 @@ mapview.h:
 /usr/include/x86_64-linux-gnu/bits/mathdef.h:
 
 /usr/include/x86_64-linux-gnu/bits/mathcalls.h:
-
-/usr/include/x86_64-linux-gnu/bits/mathinline.h:
 
 ../../utility/iterator.h:
 

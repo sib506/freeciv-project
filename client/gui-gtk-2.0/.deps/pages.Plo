@@ -10,9 +10,7 @@ pages.lo: pages.c /usr/include/stdc-predef.h ../../fc_config.h \
  /usr/include/_G_config.h /usr/include/wchar.h \
  /usr/lib/gcc/x86_64-linux-gnu/5/include/stdarg.h \
  /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
- /usr/include/x86_64-linux-gnu/bits/sys_errlist.h \
- /usr/include/x86_64-linux-gnu/bits/stdio.h \
- /usr/include/x86_64-linux-gnu/bits/stdio2.h /usr/include/time.h \
+ /usr/include/x86_64-linux-gnu/bits/sys_errlist.h /usr/include/time.h \
  /usr/include/x86_64-linux-gnu/bits/time.h \
  /usr/include/x86_64-linux-gnu/bits/timex.h /usr/include/xlocale.h \
  /usr/include/x86_64-linux-gnu/sys/stat.h \
@@ -108,7 +106,6 @@ pages.lo: pages.c /usr/include/stdc-predef.h ../../fc_config.h \
  /usr/include/x86_64-linux-gnu/bits/byteswap-16.h \
  /usr/include/x86_64-linux-gnu/sys/select.h \
  /usr/include/x86_64-linux-gnu/bits/select.h \
- /usr/include/x86_64-linux-gnu/bits/select2.h \
  /usr/include/x86_64-linux-gnu/sys/sysmacros.h /usr/include/pthread.h \
  /usr/include/sched.h /usr/include/x86_64-linux-gnu/bits/sched.h \
  /usr/include/x86_64-linux-gnu/bits/setjmp.h \
@@ -157,7 +154,6 @@ pages.lo: pages.c /usr/include/stdc-predef.h ../../fc_config.h \
  /usr/include/x86_64-linux-gnu/bits/posix_opt.h \
  /usr/include/x86_64-linux-gnu/bits/environments.h \
  /usr/include/x86_64-linux-gnu/bits/confname.h /usr/include/getopt.h \
- /usr/include/x86_64-linux-gnu/bits/unistd.h \
  /usr/include/glib-2.0/gio/gdatagrambased.h \
  /usr/include/glib-2.0/gio/gdatainputstream.h \
  /usr/include/glib-2.0/gio/gdataoutputstream.h \
@@ -563,13 +559,8 @@ pages.lo: pages.c /usr/include/stdc-predef.h ../../fc_config.h \
  ../../utility/shared.h /usr/include/stdlib.h \
  /usr/include/x86_64-linux-gnu/bits/waitflags.h \
  /usr/include/x86_64-linux-gnu/bits/waitstatus.h /usr/include/alloca.h \
- /usr/include/x86_64-linux-gnu/bits/stdlib-bsearch.h \
- /usr/include/x86_64-linux-gnu/bits/stdlib-float.h \
- /usr/include/x86_64-linux-gnu/bits/stdlib.h /usr/include/string.h \
- /usr/include/x86_64-linux-gnu/bits/string.h \
- /usr/include/x86_64-linux-gnu/bits/string2.h \
- /usr/include/x86_64-linux-gnu/bits/string3.h ../../utility/log.h \
- ../../utility/support.h \
+ /usr/include/x86_64-linux-gnu/bits/stdlib-float.h /usr/include/string.h \
+ ../../utility/log.h ../../utility/support.h \
  /usr/lib/gcc/x86_64-linux-gnu/5/include/stdbool.h \
  /usr/include/inttypes.h /usr/lib/gcc/x86_64-linux-gnu/5/include/stdint.h \
  /usr/include/stdint.h /usr/include/x86_64-linux-gnu/bits/wchar.h \
@@ -601,8 +592,7 @@ pages.lo: pages.c /usr/include/stdc-predef.h ../../fc_config.h \
  /usr/include/x86_64-linux-gnu/bits/inf.h \
  /usr/include/x86_64-linux-gnu/bits/nan.h \
  /usr/include/x86_64-linux-gnu/bits/mathdef.h \
- /usr/include/x86_64-linux-gnu/bits/mathcalls.h \
- /usr/include/x86_64-linux-gnu/bits/mathinline.h ../../common/tile.h \
+ /usr/include/x86_64-linux-gnu/bits/mathcalls.h ../../common/tile.h \
  ../../common/road.h ../../common/team.h ../../common/traderoutes.h \
  ../../common/packets_gen.h ../../common/disaster.h ../../common/mapimg.h \
  ../../common/version.h ../client_main.h ../../common/fc_types.h \
@@ -660,10 +650,6 @@ pages.lo: pages.c /usr/include/stdc-predef.h ../../fc_config.h \
 /usr/include/x86_64-linux-gnu/bits/stdio_lim.h:
 
 /usr/include/x86_64-linux-gnu/bits/sys_errlist.h:
-
-/usr/include/x86_64-linux-gnu/bits/stdio.h:
-
-/usr/include/x86_64-linux-gnu/bits/stdio2.h:
 
 /usr/include/time.h:
 
@@ -901,8 +887,6 @@ pages.lo: pages.c /usr/include/stdc-predef.h ../../fc_config.h \
 
 /usr/include/x86_64-linux-gnu/bits/select.h:
 
-/usr/include/x86_64-linux-gnu/bits/select2.h:
-
 /usr/include/x86_64-linux-gnu/sys/sysmacros.h:
 
 /usr/include/pthread.h:
@@ -1006,8 +990,6 @@ pages.lo: pages.c /usr/include/stdc-predef.h ../../fc_config.h \
 /usr/include/x86_64-linux-gnu/bits/confname.h:
 
 /usr/include/getopt.h:
-
-/usr/include/x86_64-linux-gnu/bits/unistd.h:
 
 /usr/include/glib-2.0/gio/gdatagrambased.h:
 
@@ -1895,19 +1877,9 @@ pages.lo: pages.c /usr/include/stdc-predef.h ../../fc_config.h \
 
 /usr/include/alloca.h:
 
-/usr/include/x86_64-linux-gnu/bits/stdlib-bsearch.h:
-
 /usr/include/x86_64-linux-gnu/bits/stdlib-float.h:
 
-/usr/include/x86_64-linux-gnu/bits/stdlib.h:
-
 /usr/include/string.h:
-
-/usr/include/x86_64-linux-gnu/bits/string.h:
-
-/usr/include/x86_64-linux-gnu/bits/string2.h:
-
-/usr/include/x86_64-linux-gnu/bits/string3.h:
 
 ../../utility/log.h:
 
@@ -2050,8 +2022,6 @@ pages.lo: pages.c /usr/include/stdc-predef.h ../../fc_config.h \
 /usr/include/x86_64-linux-gnu/bits/mathdef.h:
 
 /usr/include/x86_64-linux-gnu/bits/mathcalls.h:
-
-/usr/include/x86_64-linux-gnu/bits/mathinline.h:
 
 ../../common/tile.h:
 

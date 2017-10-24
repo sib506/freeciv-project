@@ -18,12 +18,9 @@ distribute.lo: distribute.c /usr/include/stdc-predef.h ../fc_config.h \
  /usr/include/x86_64-linux-gnu/bits/select.h \
  /usr/include/x86_64-linux-gnu/bits/sigset.h \
  /usr/include/x86_64-linux-gnu/bits/time.h \
- /usr/include/x86_64-linux-gnu/bits/select2.h \
  /usr/include/x86_64-linux-gnu/sys/sysmacros.h \
  /usr/include/x86_64-linux-gnu/bits/pthreadtypes.h /usr/include/alloca.h \
- /usr/include/x86_64-linux-gnu/bits/stdlib-bsearch.h \
- /usr/include/x86_64-linux-gnu/bits/stdlib-float.h \
- /usr/include/x86_64-linux-gnu/bits/stdlib.h support.h \
+ /usr/include/x86_64-linux-gnu/bits/stdlib-float.h support.h \
  /usr/include/dirent.h /usr/include/x86_64-linux-gnu/bits/dirent.h \
  /usr/include/x86_64-linux-gnu/bits/posix1_lim.h \
  /usr/include/x86_64-linux-gnu/bits/local_lim.h \
@@ -31,8 +28,6 @@ distribute.lo: distribute.c /usr/include/stdc-predef.h ../fc_config.h \
  /usr/include/_G_config.h /usr/include/wchar.h \
  /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
  /usr/include/x86_64-linux-gnu/bits/sys_errlist.h \
- /usr/include/x86_64-linux-gnu/bits/stdio.h \
- /usr/include/x86_64-linux-gnu/bits/stdio2.h \
  /usr/include/x86_64-linux-gnu/sys/stat.h \
  /usr/include/x86_64-linux-gnu/bits/stat.h \
  /usr/lib/gcc/x86_64-linux-gnu/5/include/stdbool.h \
@@ -46,7 +41,7 @@ distribute.lo: distribute.c /usr/include/stdc-predef.h ../fc_config.h \
  /usr/include/x86_64-linux-gnu/bits/posix_opt.h \
  /usr/include/x86_64-linux-gnu/bits/environments.h \
  /usr/include/x86_64-linux-gnu/bits/confname.h /usr/include/getopt.h \
- /usr/include/x86_64-linux-gnu/bits/unistd.h distribute.h
+ distribute.h
 
 /usr/include/stdc-predef.h:
 
@@ -100,19 +95,13 @@ log.h:
 
 /usr/include/x86_64-linux-gnu/bits/time.h:
 
-/usr/include/x86_64-linux-gnu/bits/select2.h:
-
 /usr/include/x86_64-linux-gnu/sys/sysmacros.h:
 
 /usr/include/x86_64-linux-gnu/bits/pthreadtypes.h:
 
 /usr/include/alloca.h:
 
-/usr/include/x86_64-linux-gnu/bits/stdlib-bsearch.h:
-
 /usr/include/x86_64-linux-gnu/bits/stdlib-float.h:
-
-/usr/include/x86_64-linux-gnu/bits/stdlib.h:
 
 support.h:
 
@@ -137,10 +126,6 @@ support.h:
 /usr/include/x86_64-linux-gnu/bits/stdio_lim.h:
 
 /usr/include/x86_64-linux-gnu/bits/sys_errlist.h:
-
-/usr/include/x86_64-linux-gnu/bits/stdio.h:
-
-/usr/include/x86_64-linux-gnu/bits/stdio2.h:
 
 /usr/include/x86_64-linux-gnu/sys/stat.h:
 
@@ -179,7 +164,5 @@ support.h:
 /usr/include/x86_64-linux-gnu/bits/confname.h:
 
 /usr/include/getopt.h:
-
-/usr/include/x86_64-linux-gnu/bits/unistd.h:
 
 distribute.h:

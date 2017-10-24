@@ -12,8 +12,7 @@ gtkpixcomm.lo: gtkpixcomm.c /usr/include/stdc-predef.h ../../fc_config.h \
  /usr/include/x86_64-linux-gnu/bits/inf.h \
  /usr/include/x86_64-linux-gnu/bits/nan.h \
  /usr/include/x86_64-linux-gnu/bits/mathdef.h \
- /usr/include/x86_64-linux-gnu/bits/mathcalls.h \
- /usr/include/x86_64-linux-gnu/bits/mathinline.h gui_main.h \
+ /usr/include/x86_64-linux-gnu/bits/mathcalls.h gui_main.h \
  /usr/include/gtk-2.0/gtk/gtk.h /usr/include/gtk-2.0/gdk/gdk.h \
  /usr/include/gtk-2.0/gdk/gdkapplaunchcontext.h \
  /usr/include/glib-2.0/gio/gio.h /usr/include/glib-2.0/gio/giotypes.h \
@@ -112,7 +111,6 @@ gtkpixcomm.lo: gtkpixcomm.c /usr/include/stdc-predef.h ../../fc_config.h \
  /usr/include/x86_64-linux-gnu/bits/byteswap-16.h \
  /usr/include/x86_64-linux-gnu/sys/select.h \
  /usr/include/x86_64-linux-gnu/bits/select.h \
- /usr/include/x86_64-linux-gnu/bits/select2.h \
  /usr/include/x86_64-linux-gnu/sys/sysmacros.h /usr/include/pthread.h \
  /usr/include/sched.h /usr/include/x86_64-linux-gnu/bits/sched.h \
  /usr/include/x86_64-linux-gnu/bits/setjmp.h \
@@ -161,7 +159,6 @@ gtkpixcomm.lo: gtkpixcomm.c /usr/include/stdc-predef.h ../../fc_config.h \
  /usr/include/x86_64-linux-gnu/bits/posix_opt.h \
  /usr/include/x86_64-linux-gnu/bits/environments.h \
  /usr/include/x86_64-linux-gnu/bits/confname.h /usr/include/getopt.h \
- /usr/include/x86_64-linux-gnu/bits/unistd.h \
  /usr/include/glib-2.0/gio/gdatagrambased.h \
  /usr/include/glib-2.0/gio/gdatainputstream.h \
  /usr/include/glib-2.0/gio/gdataoutputstream.h \
@@ -309,8 +306,6 @@ gtkpixcomm.lo: gtkpixcomm.c /usr/include/stdc-predef.h ../../fc_config.h \
  /usr/include/pango-1.0/pango/pango-utils.h /usr/include/stdio.h \
  /usr/include/libio.h /usr/include/_G_config.h /usr/include/wchar.h \
  /usr/include/x86_64-linux-gnu/bits/sys_errlist.h \
- /usr/include/x86_64-linux-gnu/bits/stdio.h \
- /usr/include/x86_64-linux-gnu/bits/stdio2.h \
  /usr/lib/x86_64-linux-gnu/gtk-2.0/include/gdkconfig.h \
  /usr/include/gtk-2.0/gdk/gdkdisplay.h \
  /usr/include/gtk-2.0/gdk/gdkevents.h /usr/include/gtk-2.0/gdk/gdkcolor.h \
@@ -571,19 +566,14 @@ gtkpixcomm.lo: gtkpixcomm.c /usr/include/stdc-predef.h ../../fc_config.h \
  ../include/gui_main_g.h ../../utility/support.h /usr/include/stdlib.h \
  /usr/include/x86_64-linux-gnu/bits/waitflags.h \
  /usr/include/x86_64-linux-gnu/bits/waitstatus.h /usr/include/alloca.h \
- /usr/include/x86_64-linux-gnu/bits/stdlib-bsearch.h \
  /usr/include/x86_64-linux-gnu/bits/stdlib-float.h \
- /usr/include/x86_64-linux-gnu/bits/stdlib.h \
  /usr/include/x86_64-linux-gnu/sys/stat.h \
  /usr/include/x86_64-linux-gnu/bits/stat.h \
  /usr/lib/gcc/x86_64-linux-gnu/5/include/stdbool.h \
  /usr/include/inttypes.h /usr/lib/gcc/x86_64-linux-gnu/5/include/stdint.h \
  /usr/include/stdint.h /usr/include/x86_64-linux-gnu/bits/wchar.h \
  /usr/include/zlib.h /usr/include/zconf.h ../../common/fc_types.h \
- ../../utility/bitvector.h /usr/include/string.h \
- /usr/include/x86_64-linux-gnu/bits/string.h \
- /usr/include/x86_64-linux-gnu/bits/string2.h \
- /usr/include/x86_64-linux-gnu/bits/string3.h ../../utility/log.h \
+ ../../utility/bitvector.h /usr/include/string.h ../../utility/log.h \
  ../../utility/support.h ../../utility/shared.h ../../utility/speclist.h \
  ../../utility/genlist.h ../../utility/fcthread.h \
  ../../utility/specenum_gen.h ../../utility/fcintl.h \
@@ -623,8 +613,6 @@ gtkpixcomm.lo: gtkpixcomm.c /usr/include/stdc-predef.h ../../fc_config.h \
 /usr/include/x86_64-linux-gnu/bits/mathdef.h:
 
 /usr/include/x86_64-linux-gnu/bits/mathcalls.h:
-
-/usr/include/x86_64-linux-gnu/bits/mathinline.h:
 
 gui_main.h:
 
@@ -870,8 +858,6 @@ gui_main.h:
 
 /usr/include/x86_64-linux-gnu/bits/select.h:
 
-/usr/include/x86_64-linux-gnu/bits/select2.h:
-
 /usr/include/x86_64-linux-gnu/sys/sysmacros.h:
 
 /usr/include/pthread.h:
@@ -975,8 +961,6 @@ gui_main.h:
 /usr/include/x86_64-linux-gnu/bits/confname.h:
 
 /usr/include/getopt.h:
-
-/usr/include/x86_64-linux-gnu/bits/unistd.h:
 
 /usr/include/glib-2.0/gio/gdatagrambased.h:
 
@@ -1293,10 +1277,6 @@ gui_main.h:
 /usr/include/wchar.h:
 
 /usr/include/x86_64-linux-gnu/bits/sys_errlist.h:
-
-/usr/include/x86_64-linux-gnu/bits/stdio.h:
-
-/usr/include/x86_64-linux-gnu/bits/stdio2.h:
 
 /usr/lib/x86_64-linux-gnu/gtk-2.0/include/gdkconfig.h:
 
@@ -1882,11 +1862,7 @@ sprite.h:
 
 /usr/include/alloca.h:
 
-/usr/include/x86_64-linux-gnu/bits/stdlib-bsearch.h:
-
 /usr/include/x86_64-linux-gnu/bits/stdlib-float.h:
-
-/usr/include/x86_64-linux-gnu/bits/stdlib.h:
 
 /usr/include/x86_64-linux-gnu/sys/stat.h:
 
@@ -1911,12 +1887,6 @@ sprite.h:
 ../../utility/bitvector.h:
 
 /usr/include/string.h:
-
-/usr/include/x86_64-linux-gnu/bits/string.h:
-
-/usr/include/x86_64-linux-gnu/bits/string2.h:
-
-/usr/include/x86_64-linux-gnu/bits/string3.h:
 
 ../../utility/log.h:
 

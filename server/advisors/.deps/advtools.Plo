@@ -12,8 +12,7 @@ advtools.lo: advtools.c /usr/include/stdc-predef.h ../../fc_config.h \
  /usr/include/x86_64-linux-gnu/bits/inf.h \
  /usr/include/x86_64-linux-gnu/bits/nan.h \
  /usr/include/x86_64-linux-gnu/bits/mathdef.h \
- /usr/include/x86_64-linux-gnu/bits/mathcalls.h \
- /usr/include/x86_64-linux-gnu/bits/mathinline.h advtools.h
+ /usr/include/x86_64-linux-gnu/bits/mathcalls.h advtools.h
 
 /usr/include/stdc-predef.h:
 
@@ -48,7 +47,5 @@ advtools.lo: advtools.c /usr/include/stdc-predef.h ../../fc_config.h \
 /usr/include/x86_64-linux-gnu/bits/mathdef.h:
 
 /usr/include/x86_64-linux-gnu/bits/mathcalls.h:
-
-/usr/include/x86_64-linux-gnu/bits/mathinline.h:
 
 advtools.h:

@@ -10,9 +10,7 @@ spaceshipdlg.lo: spaceshipdlg.c /usr/include/stdc-predef.h \
  /usr/include/_G_config.h /usr/include/wchar.h \
  /usr/lib/gcc/x86_64-linux-gnu/5/include/stdarg.h \
  /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
- /usr/include/x86_64-linux-gnu/bits/sys_errlist.h \
- /usr/include/x86_64-linux-gnu/bits/stdio.h \
- /usr/include/x86_64-linux-gnu/bits/stdio2.h /usr/include/stdlib.h \
+ /usr/include/x86_64-linux-gnu/bits/sys_errlist.h /usr/include/stdlib.h \
  /usr/include/x86_64-linux-gnu/bits/waitflags.h \
  /usr/include/x86_64-linux-gnu/bits/waitstatus.h /usr/include/endian.h \
  /usr/include/x86_64-linux-gnu/bits/endian.h \
@@ -23,12 +21,9 @@ spaceshipdlg.lo: spaceshipdlg.c /usr/include/stdc-predef.h \
  /usr/include/x86_64-linux-gnu/bits/select.h \
  /usr/include/x86_64-linux-gnu/bits/sigset.h \
  /usr/include/x86_64-linux-gnu/bits/time.h \
- /usr/include/x86_64-linux-gnu/bits/select2.h \
  /usr/include/x86_64-linux-gnu/sys/sysmacros.h \
  /usr/include/x86_64-linux-gnu/bits/pthreadtypes.h /usr/include/alloca.h \
- /usr/include/x86_64-linux-gnu/bits/stdlib-bsearch.h \
  /usr/include/x86_64-linux-gnu/bits/stdlib-float.h \
- /usr/include/x86_64-linux-gnu/bits/stdlib.h \
  /usr/include/gtk-2.0/gtk/gtk.h /usr/include/gtk-2.0/gdk/gdk.h \
  /usr/include/gtk-2.0/gdk/gdkapplaunchcontext.h \
  /usr/include/glib-2.0/gio/gio.h /usr/include/glib-2.0/gio/giotypes.h \
@@ -160,7 +155,6 @@ spaceshipdlg.lo: spaceshipdlg.c /usr/include/stdc-predef.h \
  /usr/include/x86_64-linux-gnu/bits/posix_opt.h \
  /usr/include/x86_64-linux-gnu/bits/environments.h \
  /usr/include/x86_64-linux-gnu/bits/confname.h /usr/include/getopt.h \
- /usr/include/x86_64-linux-gnu/bits/unistd.h \
  /usr/include/glib-2.0/gio/gdatagrambased.h \
  /usr/include/glib-2.0/gio/gdatainputstream.h \
  /usr/include/glib-2.0/gio/gdataoutputstream.h \
@@ -563,10 +557,7 @@ spaceshipdlg.lo: spaceshipdlg.c /usr/include/stdc-predef.h \
  /usr/include/gtk-2.0/gtk/gtkpreview.h \
  /usr/include/gtk-2.0/gtk/gtktipsquery.h ../../utility/fcintl.h \
  /usr/include/locale.h /usr/include/x86_64-linux-gnu/bits/locale.h \
- ../../utility/shared.h /usr/include/string.h \
- /usr/include/x86_64-linux-gnu/bits/string.h \
- /usr/include/x86_64-linux-gnu/bits/string2.h \
- /usr/include/x86_64-linux-gnu/bits/string3.h ../../utility/log.h \
+ ../../utility/shared.h /usr/include/string.h ../../utility/log.h \
  ../../utility/support.h /usr/include/x86_64-linux-gnu/sys/stat.h \
  /usr/include/x86_64-linux-gnu/bits/stat.h \
  /usr/lib/gcc/x86_64-linux-gnu/5/include/stdbool.h \
@@ -600,8 +591,7 @@ spaceshipdlg.lo: spaceshipdlg.c /usr/include/stdc-predef.h \
  /usr/include/x86_64-linux-gnu/bits/inf.h \
  /usr/include/x86_64-linux-gnu/bits/nan.h \
  /usr/include/x86_64-linux-gnu/bits/mathdef.h \
- /usr/include/x86_64-linux-gnu/bits/mathcalls.h \
- /usr/include/x86_64-linux-gnu/bits/mathinline.h ../../common/tile.h \
+ /usr/include/x86_64-linux-gnu/bits/mathcalls.h ../../common/tile.h \
  ../../common/road.h ../../common/team.h ../../common/traderoutes.h \
  ../../common/packets_gen.h ../../common/disaster.h ../../common/map.h \
  ../../common/packets.h ../../common/player.h ../../common/spaceship.h \
@@ -656,10 +646,6 @@ spaceshipdlg.lo: spaceshipdlg.c /usr/include/stdc-predef.h \
 
 /usr/include/x86_64-linux-gnu/bits/sys_errlist.h:
 
-/usr/include/x86_64-linux-gnu/bits/stdio.h:
-
-/usr/include/x86_64-linux-gnu/bits/stdio2.h:
-
 /usr/include/stdlib.h:
 
 /usr/include/x86_64-linux-gnu/bits/waitflags.h:
@@ -688,19 +674,13 @@ spaceshipdlg.lo: spaceshipdlg.c /usr/include/stdc-predef.h \
 
 /usr/include/x86_64-linux-gnu/bits/time.h:
 
-/usr/include/x86_64-linux-gnu/bits/select2.h:
-
 /usr/include/x86_64-linux-gnu/sys/sysmacros.h:
 
 /usr/include/x86_64-linux-gnu/bits/pthreadtypes.h:
 
 /usr/include/alloca.h:
 
-/usr/include/x86_64-linux-gnu/bits/stdlib-bsearch.h:
-
 /usr/include/x86_64-linux-gnu/bits/stdlib-float.h:
-
-/usr/include/x86_64-linux-gnu/bits/stdlib.h:
 
 /usr/include/gtk-2.0/gtk/gtk.h:
 
@@ -1011,8 +991,6 @@ spaceshipdlg.lo: spaceshipdlg.c /usr/include/stdc-predef.h \
 /usr/include/x86_64-linux-gnu/bits/confname.h:
 
 /usr/include/getopt.h:
-
-/usr/include/x86_64-linux-gnu/bits/unistd.h:
 
 /usr/include/glib-2.0/gio/gdatagrambased.h:
 
@@ -1894,12 +1872,6 @@ spaceshipdlg.lo: spaceshipdlg.c /usr/include/stdc-predef.h \
 
 /usr/include/string.h:
 
-/usr/include/x86_64-linux-gnu/bits/string.h:
-
-/usr/include/x86_64-linux-gnu/bits/string2.h:
-
-/usr/include/x86_64-linux-gnu/bits/string3.h:
-
 ../../utility/log.h:
 
 ../../utility/support.h:
@@ -2043,8 +2015,6 @@ spaceshipdlg.lo: spaceshipdlg.c /usr/include/stdc-predef.h \
 /usr/include/x86_64-linux-gnu/bits/mathdef.h:
 
 /usr/include/x86_64-linux-gnu/bits/mathcalls.h:
-
-/usr/include/x86_64-linux-gnu/bits/mathinline.h:
 
 ../../common/tile.h:
 

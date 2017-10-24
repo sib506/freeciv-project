@@ -2551,7 +2551,7 @@ void dai_manage_unit(struct ai_type *ait, struct player *pplayer,
 
 	//TODO: SB CHANGE - currently experimenting with random moves
 	//switch (manage_auto_explorer(punit)) {
-    switch (manage_random_auto_explorer(punit)) {
+    switch (manage_random_auto_explorer2(punit)) {
     case MR_DEATH:
       /* don't use punit! */
       break;

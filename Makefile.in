@@ -231,8 +231,8 @@ am__DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/fc_config.h.in \
 	$(top_srcdir)/bootstrap/missing ABOUT-NLS AUTHORS COPYING \
 	ChangeLog INSTALL NEWS README bootstrap/compile \
 	bootstrap/config.guess bootstrap/config.rpath \
-	bootstrap/config.sub bootstrap/install-sh bootstrap/ltmain.sh \
-	bootstrap/missing
+	bootstrap/config.sub bootstrap/depcomp bootstrap/install-sh \
+	bootstrap/ltmain.sh bootstrap/missing
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 distdir = $(PACKAGE)-$(VERSION)
 top_distdir = $(distdir)

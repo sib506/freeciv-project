@@ -50,7 +50,7 @@
 #define FC_CONFIG_H 1
 
 /* These are the CFLAGS used in compilation */
-#define FC_STORE_CFLAGS '-Wno-tautological-compare -Wno-deprecated-declarations -Wno-nonnull-compare -Wall -Wpointer-arith -Wcast-align -g -O2 -fsigned-char'
+#define FC_STORE_CFLAGS '-Wno-tautological-compare -Wno-deprecated-declarations -Wno-nonnull-compare -Wall -Wpointer-arith -Wcast-align -g -O0 -fsigned-char'
 
 /* These are the CPPFLAGS used in compilation */
 #define FC_STORE_CPPFLAGS ' -DLOCALEDIR="\"${datarootdir}/locale\"" -DBINDIR="\"${exec_prefix}/bin\"" -DFC_CONF_PATH="\"${prefix}/etc/freeciv\"" -DDEFAULT_DATA_PATH="\".:data:~/.freeciv/2.5:${datarootdir}/freeciv\"" -DDEFAULT_SAVE_PATH="\".:~/.freeciv/saves\"" -DDEFAULT_SCENARIO_PATH="\".:data/scenarios:~/.freeciv/2.5/scenarios:~/.freeciv/scenarios:${datarootdir}/freeciv/scenarios\""'

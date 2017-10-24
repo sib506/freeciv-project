@@ -17,5 +17,6 @@ struct unit;
 
 enum unit_move_result manage_auto_explorer(struct unit *punit);
 enum unit_move_result manage_random_auto_explorer(struct unit *punit);
+enum unit_move_result manage_random_auto_explorer2(struct unit *punit);
 
 #endif /* FC__AUTOEXPLORER_H */

@@ -231,8 +231,8 @@ am__DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/fc_config.h.in \
 	$(top_srcdir)/bootstrap/missing ABOUT-NLS AUTHORS COPYING \
 	ChangeLog INSTALL NEWS README bootstrap/compile \
 	bootstrap/config.guess bootstrap/config.rpath \
-	bootstrap/config.sub bootstrap/install-sh bootstrap/ltmain.sh \
-	bootstrap/missing
+	bootstrap/config.sub bootstrap/depcomp bootstrap/install-sh \
+	bootstrap/ltmain.sh bootstrap/missing
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 distdir = $(PACKAGE)-$(VERSION)
 top_distdir = $(distdir)
@@ -289,7 +289,7 @@ CATALOGS =  ar.gmo bg.gmo cs.gmo ca.gmo da.gmo de.gmo el.gmo en_GB.gmo eo.gmo es
 CATOBJEXT = .gmo
 CC = gcc
 CCDEPMODE = depmode=gcc3
-CFLAGS = -Wno-tautological-compare -Wno-deprecated-declarations -Wno-nonnull-compare -Wall -Wpointer-arith -Wcast-align -g -O2 -fsigned-char
+CFLAGS = -Wno-tautological-compare -Wno-deprecated-declarations -Wno-nonnull-compare -Wall -Wpointer-arith -Wcast-align -g -O0 -fsigned-char
 CLIENT_LIBS =  -lm 
 COMMON_LIBS = -lm -lz
 CONFIGURE_DEPENDENCIES =  $(top_srcdir)/fc_version

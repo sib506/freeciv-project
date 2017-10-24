@@ -18,12 +18,9 @@ citizenshand.lo: citizenshand.c /usr/include/stdc-predef.h ../fc_config.h \
  /usr/include/x86_64-linux-gnu/bits/select.h \
  /usr/include/x86_64-linux-gnu/bits/sigset.h \
  /usr/include/x86_64-linux-gnu/bits/time.h \
- /usr/include/x86_64-linux-gnu/bits/select2.h \
  /usr/include/x86_64-linux-gnu/sys/sysmacros.h \
  /usr/include/x86_64-linux-gnu/bits/pthreadtypes.h /usr/include/alloca.h \
- /usr/include/x86_64-linux-gnu/bits/stdlib-bsearch.h \
- /usr/include/x86_64-linux-gnu/bits/stdlib-float.h \
- /usr/include/x86_64-linux-gnu/bits/stdlib.h ../utility/support.h \
+ /usr/include/x86_64-linux-gnu/bits/stdlib-float.h ../utility/support.h \
  /usr/include/dirent.h /usr/include/x86_64-linux-gnu/bits/dirent.h \
  /usr/include/x86_64-linux-gnu/bits/posix1_lim.h \
  /usr/include/x86_64-linux-gnu/bits/local_lim.h \
@@ -31,8 +28,6 @@ citizenshand.lo: citizenshand.c /usr/include/stdc-predef.h ../fc_config.h \
  /usr/include/_G_config.h /usr/include/wchar.h \
  /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
  /usr/include/x86_64-linux-gnu/bits/sys_errlist.h \
- /usr/include/x86_64-linux-gnu/bits/stdio.h \
- /usr/include/x86_64-linux-gnu/bits/stdio2.h \
  /usr/include/x86_64-linux-gnu/sys/stat.h \
  /usr/include/x86_64-linux-gnu/bits/stat.h \
  /usr/lib/gcc/x86_64-linux-gnu/5/include/stdbool.h \
@@ -46,11 +41,8 @@ citizenshand.lo: citizenshand.c /usr/include/stdc-predef.h ../fc_config.h \
  /usr/include/x86_64-linux-gnu/bits/posix_opt.h \
  /usr/include/x86_64-linux-gnu/bits/environments.h \
  /usr/include/x86_64-linux-gnu/bits/confname.h /usr/include/getopt.h \
- /usr/include/x86_64-linux-gnu/bits/unistd.h ../utility/rand.h \
- ../utility/log.h ../common/citizens.h ../utility/shared.h \
- /usr/include/string.h /usr/include/x86_64-linux-gnu/bits/string.h \
- /usr/include/x86_64-linux-gnu/bits/string2.h \
- /usr/include/x86_64-linux-gnu/bits/string3.h \
+ ../utility/rand.h ../utility/log.h ../common/citizens.h \
+ ../utility/shared.h /usr/include/string.h \
  /usr/include/x86_64-linux-gnu/bits/timex.h ../utility/speclist.h \
  ../utility/genlist.h ../utility/fcthread.h /usr/include/pthread.h \
  /usr/include/sched.h /usr/include/x86_64-linux-gnu/bits/sched.h \
@@ -81,8 +73,7 @@ citizenshand.lo: citizenshand.c /usr/include/stdc-predef.h ../fc_config.h \
  /usr/include/x86_64-linux-gnu/bits/inf.h \
  /usr/include/x86_64-linux-gnu/bits/nan.h \
  /usr/include/x86_64-linux-gnu/bits/mathdef.h \
- /usr/include/x86_64-linux-gnu/bits/mathcalls.h \
- /usr/include/x86_64-linux-gnu/bits/mathinline.h ../common/tile.h \
+ /usr/include/x86_64-linux-gnu/bits/mathcalls.h ../common/tile.h \
  ../common/road.h ../common/team.h ../common/traderoutes.h \
  ../common/packets_gen.h ../common/disaster.h ../common/player.h \
  cityturn.h sanitycheck.h citizenshand.h
@@ -139,19 +130,13 @@ citizenshand.lo: citizenshand.c /usr/include/stdc-predef.h ../fc_config.h \
 
 /usr/include/x86_64-linux-gnu/bits/time.h:
 
-/usr/include/x86_64-linux-gnu/bits/select2.h:
-
 /usr/include/x86_64-linux-gnu/sys/sysmacros.h:
 
 /usr/include/x86_64-linux-gnu/bits/pthreadtypes.h:
 
 /usr/include/alloca.h:
 
-/usr/include/x86_64-linux-gnu/bits/stdlib-bsearch.h:
-
 /usr/include/x86_64-linux-gnu/bits/stdlib-float.h:
-
-/usr/include/x86_64-linux-gnu/bits/stdlib.h:
 
 ../utility/support.h:
 
@@ -176,10 +161,6 @@ citizenshand.lo: citizenshand.c /usr/include/stdc-predef.h ../fc_config.h \
 /usr/include/x86_64-linux-gnu/bits/stdio_lim.h:
 
 /usr/include/x86_64-linux-gnu/bits/sys_errlist.h:
-
-/usr/include/x86_64-linux-gnu/bits/stdio.h:
-
-/usr/include/x86_64-linux-gnu/bits/stdio2.h:
 
 /usr/include/x86_64-linux-gnu/sys/stat.h:
 
@@ -219,8 +200,6 @@ citizenshand.lo: citizenshand.c /usr/include/stdc-predef.h ../fc_config.h \
 
 /usr/include/getopt.h:
 
-/usr/include/x86_64-linux-gnu/bits/unistd.h:
-
 ../utility/rand.h:
 
 ../utility/log.h:
@@ -230,12 +209,6 @@ citizenshand.lo: citizenshand.c /usr/include/stdc-predef.h ../fc_config.h \
 ../utility/shared.h:
 
 /usr/include/string.h:
-
-/usr/include/x86_64-linux-gnu/bits/string.h:
-
-/usr/include/x86_64-linux-gnu/bits/string2.h:
-
-/usr/include/x86_64-linux-gnu/bits/string3.h:
 
 /usr/include/x86_64-linux-gnu/bits/timex.h:
 
@@ -374,8 +347,6 @@ citizenshand.lo: citizenshand.c /usr/include/stdc-predef.h ../fc_config.h \
 /usr/include/x86_64-linux-gnu/bits/mathdef.h:
 
 /usr/include/x86_64-linux-gnu/bits/mathcalls.h:
-
-/usr/include/x86_64-linux-gnu/bits/mathinline.h:
 
 ../common/tile.h:
 
