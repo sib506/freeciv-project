@@ -1188,7 +1188,7 @@ void dai_random_settler_run(struct ai_type *ait, struct player *pplayer,
 	//TODO: Need to check if unit is currently acting
 	// + give a chance to continue
 
-	int totalOptions = 2; // By default, all settlers have 3 possible moves
+	int totalOptions = 3; // By default, all settlers have 3 possible moves
 
 	const struct tile *init_tile = unit_tile(punit);
 	struct tile *best_tile = NULL;
@@ -1371,6 +1371,51 @@ void dai_random_settler_run(struct ai_type *ait, struct player *pplayer,
 		break;
 	}
 	case 2:
+		{
+			// TODO: SB - Respond to city requests
+			struct genlist* actionList = genlist_new();
+
+			city_list_iterate(pplayer->cities, pcity) {
+				struct worker_task *ptask = &pcity->server.task_req;
+				if (ptask->ptile != NULL) {
+					bool consider = TRUE;
+
+					/* Do not go to tiles that already have workers there. */
+					unit_list_iterate(ptask->ptile->units, aunit) {
+						if (unit_owner(aunit) == pplayer
+								&& aunit->id != punit->id
+								&& unit_has_type_flag(aunit, UTYF_SETTLERS)) {
+							consider = FALSE;
+						}
+					} unit_list_iterate_end;
+
+					if (consider
+							&& can_unit_do_activity_targeted_at(punit, ptask->act, &ptask->tgt,
+									ptask->ptile)) {
+
+						// TODO: Collect all possible possibilities
+						genlist_append(actionList, ptask);
+					}
+				}
+			} city_list_iterate_end;
+
+			// TODO: Pick an action, create a path and set that unit on the path
+			int possibleOptions = genlist_size(actionList);
+			struct worker_task *chosenTask = NULL;
+			chosenTask = genlist_get(actionList, fc_rand(possibleOptions));
+
+			if (chosenTask != NULL) {
+				struct pf_path *path = NULL;
+				int completion_time = 0;
+
+				auto_settler_setup_work(pplayer, punit, state, 0, path,
+						                          chosenTask->ptile, chosenTask->act, &chosenTask->tgt,
+						                          completion_time);
+			}
+
+			break;
+		}
+	case 3:
 	{
 		// Building a city functionality
 		adv_unit_new_task(punit, AUT_BUILD_CITY, init_tile);
@@ -1389,38 +1434,6 @@ void dai_random_settler_run(struct ai_type *ait, struct player *pplayer,
 				return; /* We came, we saw, we built... */
 			}
 		}
-		break;
-	}
-	case 3:
-	{
-		// TODO: SB - Respond to city requests
-		city_list_iterate(pplayer->cities, pcity) {
-			struct worker_task *ptask = &pcity->server.task_req;
-			if (ptask->ptile != NULL) {
-				bool consider = TRUE;
-
-				/* Do not go to tiles that already have workers there. */
-				unit_list_iterate(ptask->ptile->units, aunit) {
-					if (unit_owner(aunit) == pplayer
-							&& aunit->id != punit->id
-							&& unit_has_type_flag(aunit, UTYF_SETTLERS)) {
-						consider = FALSE;
-					}
-				} unit_list_iterate_end;
-
-				if (consider
-						&& can_unit_do_activity_targeted_at(punit, ptask->act, &ptask->tgt,
-								ptask->ptile)) {
-
-					// TODO: Collect all possible possibilities
-					//
-				}
-			}
-		} city_list_iterate_end;
-
-		// TODO: Pick an action, create a path and set that unit on the path
-
-
 		break;
 	}
 	}

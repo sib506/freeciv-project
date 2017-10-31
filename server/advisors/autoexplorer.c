@@ -487,6 +487,84 @@ enum unit_move_result manage_random_auto_explorer(struct unit *punit)
 #undef DIST_FACTOR
 }
 
+void collect_random_explorer_moves(struct unit *punit, struct genlist *moveList) {
+	struct player *pplayer = unit_owner(punit);
+	/* Loop prevention */
+	const struct tile *init_tile = unit_tile(punit);
+
+	/* Path-finding stuff */
+	struct pf_map *pfm;
+	struct pf_parameter parameter;
+
+	UNIT_LOG(LOG_DEBUG, punit, "auto-exploring.");
+
+	if (pplayer->ai_controlled && unit_has_type_flag(punit, UTYF_GAMELOSS)) {
+		UNIT_LOG(LOG_DEBUG, punit, "exploration too dangerous!");
+		return; /* too dangerous */
+	}
+
+	TIMING_LOG(AIT_EXPLORER, TIMER_START);
+
+	pft_fill_unit_parameter(&parameter, punit);
+	parameter.get_TB = no_fights_or_unknown;
+	parameter.omniscience = FALSE;
+
+	pfm = pf_map_new(&parameter);
+
+	int turns = 0;
+
+	genlist_append(moveList, init_tile);
+	pf_map_move_costs_iterate(pfm, ptile, move_cost, FALSE)
+			{
+				fc_assert_action(map_is_known(ptile, pplayer), continue);
+				turns = move_cost / parameter.move_rate;
+
+				if (turns <= 1) {
+					genlist_append(moveList, ptile);
+				}
+
+			}pf_map_move_costs_iterate_end;
+	pf_map_destroy(pfm);
+
+	TIMING_LOG(AIT_EXPLORER, TIMER_STOP);
+}
+
+enum unit_move_result move_random_auto_explorer(struct unit *punit,
+		struct tile *move_tile) {
+
+	if (move_tile != NULL) {
+		/* TODO: read the path off the map we made.  Then we can make a path
+		 * which goes beside the unknown, with a good EC callback... */
+		if (!explorer_goto(punit, move_tile)) {
+			/* Died?  Strange... */
+			return MR_DEATH;
+		}
+		UNIT_LOG(LOG_DEBUG, punit, "exploration GOTO succeeded");
+		if (punit->moves_left > 0) {
+			/* We can still move on... */
+			if (!same_pos(move_tile, unit_tile(punit))) {
+				/* At least we moved (and maybe even got to where we wanted).
+				 * Let's do more exploring.
+				 * (Checking only whether our position changed is unsafe: can allow
+				 * yoyoing on a RR) */
+				UNIT_LOG(LOG_DEBUG, punit, "recursively exploring...");
+
+				return manage_random_auto_explorer2(punit);
+			} else {
+				UNIT_LOG(LOG_DEBUG, punit, "done exploring (all finished)...");
+				return MR_PAUSE;
+			}
+		}
+		UNIT_LOG(LOG_DEBUG, punit, "done exploring (but more go go)...");
+		return MR_OK;
+	} else {
+		/* Didn't find anything. */
+		UNIT_LOG(LOG_DEBUG, punit, "failed to explore more");
+		return MR_BAD_MAP_POSITION;
+	}
+#undef DIST_FACTOR
+}
+
 enum unit_move_result manage_random_auto_explorer2(struct unit *punit)
 {
 	struct player *pplayer = unit_owner(punit);
@@ -517,11 +595,12 @@ enum unit_move_result manage_random_auto_explorer2(struct unit *punit)
 	struct genlist* actionList = genlist_new();
 	int turns = 0;
 
+	genlist_append(actionList, init_tile);
 	pf_map_move_costs_iterate(pfm, ptile, move_cost, FALSE) {
 		fc_assert_action(map_is_known(ptile, pplayer), continue);
 		turns = move_cost / parameter.move_rate;
 
-		if(turns == 1){
+		if(turns <= 1){
 			genlist_append(actionList, ptile);
 		}
 

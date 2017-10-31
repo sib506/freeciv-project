@@ -559,6 +559,71 @@ static struct pf_path *find_rampage_target(struct unit *punit,
 }
 
 /*************************************************************************
+  Returns all - Look for worthy targets within a one-turn horizon.
+*************************************************************************/
+static void find_all_rampage_targets(struct unit *punit,
+                                           int thresh_adj, int thresh_move,
+										   struct genlist *list)
+{
+  struct pf_map *tgt_map;
+  struct pf_parameter parameter;
+  /* Coordinates of the best target (initialize to silence compiler) */
+  struct tile *ptile = unit_tile(punit);
+  /* Want of the best target */
+  int max_want = 0;
+  struct player *pplayer = unit_owner(punit);
+
+  pft_fill_unit_attack_param(&parameter, punit);
+  /* When trying to find rampage targets we ignore risks such as
+   * enemy units because we are looking for trouble!
+   * Hence no call ai_avoid_risks()
+   */
+
+  tgt_map = pf_map_new(&parameter);
+  pf_map_move_costs_iterate(tgt_map, iter_tile, move_cost, FALSE) {
+    int want;
+    bool move_needed;
+    int thresh;
+    struct pf_path *path = NULL;
+
+    if (move_cost > punit->moves_left) {
+      /* This is too far */
+      break;
+    }
+
+    if (ai_handicap(pplayer, H_TARGETS)
+        && !map_is_known_and_seen(iter_tile, pplayer, V_MAIN)) {
+      /* The target is under fog of war */
+      continue;
+    }
+
+    want = dai_rampage_want(punit, iter_tile);
+
+    /* Negative want means move needed even though the tiles are adjacent */
+    move_needed = (!is_tiles_adjacent(unit_tile(punit), iter_tile)
+                   || want < 0);
+    /* Select the relevant threshold */
+    thresh = (move_needed ? thresh_move : thresh_adj);
+    want = (want < 0 ? -want : want);
+
+    if (want > thresh) {
+      /* The new want exceeds both the previous maximum
+       * and the relevant threshold, so it's worth recording */
+    	path = pf_map_path(tgt_map, ptile);
+    	fc_assert(path != NULL);
+    	genlist_append(list, path);
+
+    }
+  } pf_map_move_costs_iterate_end;
+
+  pf_map_destroy(tgt_map);
+
+  return;
+}
+
+
+
+/*************************************************************************
   Find and kill anything reachable within this turn and worth more than
   the relevant of the given thresholds until we have run out of juicy 
   targets or movement.  The first threshold is for attacking which will 
@@ -2401,6 +2466,32 @@ void dai_manage_military(struct ai_type *ait, struct player *pplayer,
     }
   }
 }
+
+
+void dai_manage_military_random(struct ai_type *ait, struct player *pplayer,
+		struct unit *punit) {
+
+	struct unit_ai *unit_data = def_ai_unit_data(punit, ait);
+	int id = punit->id;
+
+	CHECK_UNIT(punit);
+
+	switch (manage_random_auto_explorer2(punit)) {
+	    case MR_DEATH:
+	      /* don't use punit! */
+	      return;
+	    case MR_OK:
+	      UNIT_LOG(LOG_DEBUG, punit, "more exploring");
+	      break;
+	    default:
+	      UNIT_LOG(LOG_DEBUG, punit, "no more exploring either");
+	      break;
+	    };
+	    def_ai_unit_data(punit, ait)->done = (punit->moves_left <= 0);
+
+}
+
+
 
 /**************************************************************************
   Barbarian units may disband spontaneously if their age is more than
