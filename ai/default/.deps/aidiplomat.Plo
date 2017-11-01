@@ -90,7 +90,7 @@ aidiplomat.lo: aidiplomat.c /usr/include/stdc-predef.h ../../fc_config.h \
  ../../server/advisors/advgoto.h ../../common/aicore/path_finding.h \
  ../../server/advisors/autosettlers.h advmilitary.h aicity.h \
  ../../common/effects.h aidata.h aiguard.h aihand.h aiplayer.h aitools.h \
- aiunit.h aidiplomat.h
+ aiunit.h ../../server/advisors/autoexplorer.h aidiplomat.h
 
 /usr/include/stdc-predef.h:
 
@@ -449,5 +449,7 @@ aiplayer.h:
 aitools.h:
 
 aiunit.h:
+
+../../server/advisors/autoexplorer.h:
 
 aidiplomat.h:

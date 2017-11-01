@@ -15,8 +15,19 @@
 
 struct unit;
 
+enum moveType{
+	explore, sentry, fortify, pillage, rage
+};
+
+struct potentialMove {
+	enum moveType type;
+	void * moveInfo;
+};
+
 enum unit_move_result manage_auto_explorer(struct unit *punit);
 enum unit_move_result manage_random_auto_explorer(struct unit *punit);
 enum unit_move_result manage_random_auto_explorer2(struct unit *punit);
+enum unit_move_result move_randm_auto_explorer(struct unit *punit, struct tile *move_tile);
+void collect_random_explorer_moves(struct unit *punit, struct genlist *moveList);
 
 #endif /* FC__AUTOEXPLORER_H */

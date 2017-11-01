@@ -86,7 +86,8 @@ aiair.lo: aiair.c /usr/include/stdc-predef.h ../../fc_config.h \
  ../../server/srv_log.h ../../server/unithand.h ../../server/unittools.h \
  ../../server/advisors/advgoto.h ../../common/aicore/path_finding.h \
  aicity.h ../../common/effects.h ../../server/advisors/advdata.h \
- ../../common/improvement.h aiplayer.h aitools.h aiunit.h aiair.h
+ ../../common/improvement.h aiplayer.h aitools.h aiunit.h \
+ ../../server/advisors/autoexplorer.h aiair.h
 
 /usr/include/stdc-predef.h:
 
@@ -421,5 +422,7 @@ aiplayer.h:
 aitools.h:
 
 aiunit.h:
+
+../../server/advisors/autoexplorer.h:
 
 aiair.h:

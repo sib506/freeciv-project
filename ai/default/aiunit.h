@@ -17,6 +17,7 @@
 #include "combat.h"
 #include "fc_types.h"
 #include "unittype.h"
+#include "autoexplorer.h"
 
 struct pf_map;
 struct pf_path;

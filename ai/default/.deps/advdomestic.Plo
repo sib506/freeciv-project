@@ -91,7 +91,7 @@ advdomestic.lo: advdomestic.c /usr/include/stdc-predef.h \
  ../../common/effects.h aidata.h aiplayer.h ../../common/player.h \
  aitech.h aitools.h ../../server/advisors/advgoto.h \
  ../../common/aicore/path_finding.h aiunit.h ../../common/combat.h \
- advdomestic.h
+ ../../server/advisors/autoexplorer.h advdomestic.h
 
 /usr/include/stdc-predef.h:
 
@@ -440,5 +440,7 @@ aitools.h:
 aiunit.h:
 
 ../../common/combat.h:
+
+../../server/advisors/autoexplorer.h:
 
 advdomestic.h:

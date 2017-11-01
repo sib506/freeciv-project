@@ -86,7 +86,8 @@ classicai.lo: classicai.c /usr/include/stdc-predef.h ../../fc_config.h \
  ../../common/city.h ../../ai/default/aitools.h ../../common/unit.h \
  ../../server/advisors/advgoto.h ../../common/aicore/path_finding.h \
  ../../common/tile.h ../../ai/default/aicity.h ../../ai/default/aiunit.h \
- ../../common/combat.h ../../ai/default/aiunit.h classicai.h
+ ../../common/combat.h ../../server/advisors/autoexplorer.h \
+ ../../ai/default/aiunit.h classicai.h
 
 /usr/include/stdc-predef.h:
 
@@ -395,6 +396,8 @@ classicai.lo: classicai.c /usr/include/stdc-predef.h ../../fc_config.h \
 ../../ai/default/aiunit.h:
 
 ../../common/combat.h:
+
+../../server/advisors/autoexplorer.h:
 
 ../../ai/default/aiunit.h:
 

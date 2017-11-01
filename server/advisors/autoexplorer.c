@@ -513,14 +513,21 @@ void collect_random_explorer_moves(struct unit *punit, struct genlist *moveList)
 
 	int turns = 0;
 
-	genlist_append(moveList, init_tile);
+	struct potentialMove *pMove = malloc(sizeof(struct potentialMove));
+	pMove->type = explore;
+	pMove->moveInfo = init_tile;
+	genlist_append(moveList, pMove);
+
 	pf_map_move_costs_iterate(pfm, ptile, move_cost, FALSE)
 			{
 				fc_assert_action(map_is_known(ptile, pplayer), continue);
 				turns = move_cost / parameter.move_rate;
 
 				if (turns <= 1) {
-					genlist_append(moveList, ptile);
+					struct potentialMove *pMove = malloc(sizeof(struct potentialMove));
+					pMove->type = explore;
+					pMove->moveInfo = ptile;
+					genlist_append(moveList, pMove);
 				}
 
 			}pf_map_move_costs_iterate_end;

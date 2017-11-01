@@ -611,8 +611,10 @@ static void find_all_rampage_targets(struct unit *punit,
        * and the relevant threshold, so it's worth recording */
     	path = pf_map_path(tgt_map, ptile);
     	fc_assert(path != NULL);
-    	genlist_append(list, path);
-
+		struct potentialMove *pMove = malloc(sizeof(struct potentialMove));
+		pMove->type = rage;
+		pMove->moveInfo = &path;
+    	genlist_append(list, pMove);
     }
   } pf_map_move_costs_iterate_end;
 
@@ -2468,27 +2470,97 @@ void dai_manage_military(struct ai_type *ait, struct player *pplayer,
 }
 
 
+
+
 void dai_manage_military_random(struct ai_type *ait, struct player *pplayer,
 		struct unit *punit) {
 
-	struct unit_ai *unit_data = def_ai_unit_data(punit, ait);
-	int id = punit->id;
-
 	CHECK_UNIT(punit);
+	struct tile *ptile = unit_tile(punit);
 
-	switch (manage_random_auto_explorer2(punit)) {
-	    case MR_DEATH:
-	      /* don't use punit! */
-	      return;
-	    case MR_OK:
-	      UNIT_LOG(LOG_DEBUG, punit, "more exploring");
-	      break;
-	    default:
-	      UNIT_LOG(LOG_DEBUG, punit, "no more exploring either");
-	      break;
-	    };
-	    def_ai_unit_data(punit, ait)->done = (punit->moves_left <= 0);
+	struct genlist* actionList = genlist_new();
 
+	//unit_activity_handling(punit, ACTIVITY_IDLE);
+
+	collect_random_explorer_moves(punit, actionList);
+
+	if(punit->activity!=ACTIVITY_FORTIFYING &&
+	     can_unit_do_activity(punit, ACTIVITY_FORTIFYING)){
+		struct potentialMove *pMove = malloc(sizeof(struct potentialMove));
+		pMove->type = fortify;
+		pMove->moveInfo = NULL;
+		genlist_append(actionList, pMove);
+	}
+
+	if(punit->activity!=ACTIVITY_SENTRY &&
+	     can_unit_do_activity(punit, ACTIVITY_SENTRY)){
+
+		struct potentialMove *pMove = malloc(sizeof(struct potentialMove));
+		pMove->type = sentry;
+		pMove->moveInfo = NULL;
+		genlist_append(actionList, pMove);
+	}
+
+	if (can_unit_do_activity(punit, ACTIVITY_PILLAGE)) {
+		struct potentialMove *pMove = malloc(sizeof(struct potentialMove));
+		pMove->type = pillage;
+		pMove->moveInfo = NULL;
+		genlist_append(actionList, pMove);
+	}
+
+	//find_all_rampage_targets(punit, RAMPAGE_ANYTHING, RAMPAGE_ANYTHING, actionList);
+	//	if (!dai_military_rampage(punit, RAMPAGE_ANYTHING, RAMPAGE_ANYTHING)) {
+	//		return; /* we died */
+	//	}
+
+	// Add improve health function? This shouldn't be needed
+	// Defend city? Probably not needed also
+	// Should be achieved by random moves
+
+	struct potentialMove *chosen_action = genlist_get(actionList, fc_rand(genlist_size(actionList)));
+
+	switch(chosen_action->type){
+	case explore:
+		switch (move_random_auto_explorer(punit, chosen_action->moveInfo)) {
+		case MR_DEATH:
+			//don't use punit!
+			break;
+		case MR_OK:
+			UNIT_LOG(LOG_DEBUG, punit, "more exploring");
+			break;
+		default:
+			UNIT_LOG(LOG_DEBUG, punit, "no more exploring either");
+			break;
+		};
+		break;
+	case sentry:
+		unit_activity_handling(punit, ACTIVITY_SENTRY);
+		break;
+	case fortify:
+		unit_activity_handling(punit, ACTIVITY_FORTIFYING);
+		break;
+	case pillage:
+		unit_activity_handling(punit, ACTIVITY_PILLAGE);
+		break;
+	case rage:
+		break;
+	default:
+		break;
+	}
+
+	printf("Action size: %d\n\n",genlist_size(actionList));
+
+	// Destroy the list and elements within
+	for(int i = 0; i < genlist_size(actionList); i++ ){
+		void *toRemove = genlist_back(actionList);
+		genlist_pop_back(actionList);
+		free(toRemove);
+	}
+	genlist_destroy(actionList);
+
+	//dai_unit_new_task(ait, punit, AIUNIT_NONE, NULL);
+
+	def_ai_unit_data(punit, ait)->done = TRUE;
 }
 
 
@@ -2634,7 +2706,7 @@ void dai_manage_unit(struct ai_type *ait, struct player *pplayer,
   } else if (is_military_unit(punit)) {
     TIMING_LOG(AIT_MILITARY, TIMER_START);
     UNIT_LOG(LOG_DEBUG, punit, "recruit unit for the military");
-    dai_manage_military(ait, pplayer, punit); 
+    dai_manage_military_random(ait, pplayer, punit);
     TIMING_LOG(AIT_MILITARY, TIMER_STOP);
     return;
   } else {

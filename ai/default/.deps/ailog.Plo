@@ -92,7 +92,8 @@ ailog.lo: ailog.c /usr/include/stdc-predef.h ../../fc_config.h \
  ../../utility/fcthread.h ../../common/packets.h aicity.h \
  ../../common/effects.h ../../server/advisors/advdata.h \
  ../../common/improvement.h aidata.h aiplayer.h aiunit.h \
- ../../common/combat.h ../../common/unittype.h ailog.h
+ ../../common/combat.h ../../common/unittype.h \
+ ../../server/advisors/autoexplorer.h ailog.h
 
 /usr/include/stdc-predef.h:
 
@@ -425,5 +426,7 @@ aiunit.h:
 ../../common/combat.h:
 
 ../../common/unittype.h:
+
+../../server/advisors/autoexplorer.h:
 
 ailog.h:

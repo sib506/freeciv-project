@@ -105,7 +105,7 @@ aicity.lo: aicity.c /usr/include/stdc-predef.h ../../fc_config.h \
  ../../common/player.h aisettler.h ../../common/city.h aitools.h \
  ../../server/advisors/advgoto.h ../../common/aicore/path_finding.h \
  ../../common/tile.h aicity.h ../../common/effects.h aiunit.h \
- ../../common/combat.h
+ ../../common/combat.h ../../server/advisors/autoexplorer.h
 
 /usr/include/stdc-predef.h:
 
@@ -498,3 +498,5 @@ aicity.h:
 aiunit.h:
 
 ../../common/combat.h:
+
+../../server/advisors/autoexplorer.h:

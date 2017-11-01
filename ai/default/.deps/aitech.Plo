@@ -84,7 +84,7 @@ aitech.lo: aitech.c /usr/include/stdc-predef.h ../../fc_config.h \
  ../../server/advisors/advgoto.h ../../common/aicore/path_finding.h \
  ../../common/map.h ../../common/tile.h aicity.h ../../common/effects.h \
  ../../server/advisors/advdata.h ../../common/improvement.h aiunit.h \
- ../../common/combat.h aitech.h
+ ../../common/combat.h ../../server/advisors/autoexplorer.h aitech.h
 
 /usr/include/stdc-predef.h:
 
@@ -403,5 +403,7 @@ aicity.h:
 aiunit.h:
 
 ../../common/combat.h:
+
+../../server/advisors/autoexplorer.h:
 
 aitech.h:
