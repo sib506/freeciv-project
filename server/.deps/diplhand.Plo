@@ -10,7 +10,9 @@ diplhand.lo: diplhand.c /usr/include/stdc-predef.h ../fc_config.h \
  /usr/include/_G_config.h /usr/include/wchar.h \
  /usr/lib/gcc/x86_64-linux-gnu/5/include/stdarg.h \
  /usr/include/x86_64-linux-gnu/bits/stdio_lim.h \
- /usr/include/x86_64-linux-gnu/bits/sys_errlist.h /usr/include/stdlib.h \
+ /usr/include/x86_64-linux-gnu/bits/sys_errlist.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio2.h /usr/include/stdlib.h \
  /usr/include/x86_64-linux-gnu/bits/waitflags.h \
  /usr/include/x86_64-linux-gnu/bits/waitstatus.h /usr/include/endian.h \
  /usr/include/x86_64-linux-gnu/bits/endian.h \
@@ -21,11 +23,17 @@ diplhand.lo: diplhand.c /usr/include/stdc-predef.h ../fc_config.h \
  /usr/include/x86_64-linux-gnu/bits/select.h \
  /usr/include/x86_64-linux-gnu/bits/sigset.h \
  /usr/include/x86_64-linux-gnu/bits/time.h \
+ /usr/include/x86_64-linux-gnu/bits/select2.h \
  /usr/include/x86_64-linux-gnu/sys/sysmacros.h \
  /usr/include/x86_64-linux-gnu/bits/pthreadtypes.h /usr/include/alloca.h \
- /usr/include/x86_64-linux-gnu/bits/stdlib-float.h ../utility/bitvector.h \
- /usr/include/string.h ../utility/log.h ../utility/support.h \
- /usr/include/dirent.h /usr/include/x86_64-linux-gnu/bits/dirent.h \
+ /usr/include/x86_64-linux-gnu/bits/stdlib-bsearch.h \
+ /usr/include/x86_64-linux-gnu/bits/stdlib-float.h \
+ /usr/include/x86_64-linux-gnu/bits/stdlib.h ../utility/bitvector.h \
+ /usr/include/string.h /usr/include/x86_64-linux-gnu/bits/string.h \
+ /usr/include/x86_64-linux-gnu/bits/string2.h \
+ /usr/include/x86_64-linux-gnu/bits/string3.h ../utility/log.h \
+ ../utility/support.h /usr/include/dirent.h \
+ /usr/include/x86_64-linux-gnu/bits/dirent.h \
  /usr/include/x86_64-linux-gnu/bits/posix1_lim.h \
  /usr/include/x86_64-linux-gnu/bits/local_lim.h \
  /usr/include/linux/limits.h /usr/include/x86_64-linux-gnu/sys/stat.h \
@@ -41,11 +49,12 @@ diplhand.lo: diplhand.c /usr/include/stdc-predef.h ../fc_config.h \
  /usr/include/x86_64-linux-gnu/bits/posix_opt.h \
  /usr/include/x86_64-linux-gnu/bits/environments.h \
  /usr/include/x86_64-linux-gnu/bits/confname.h /usr/include/getopt.h \
- ../utility/fcintl.h /usr/include/locale.h \
- /usr/include/x86_64-linux-gnu/bits/locale.h ../utility/shared.h \
- /usr/include/x86_64-linux-gnu/bits/timex.h ../utility/speclist.h \
- ../utility/genlist.h ../utility/fcthread.h /usr/include/pthread.h \
- /usr/include/sched.h /usr/include/x86_64-linux-gnu/bits/sched.h \
+ /usr/include/x86_64-linux-gnu/bits/unistd.h ../utility/fcintl.h \
+ /usr/include/locale.h /usr/include/x86_64-linux-gnu/bits/locale.h \
+ ../utility/shared.h /usr/include/x86_64-linux-gnu/bits/timex.h \
+ ../utility/speclist.h ../utility/genlist.h ../utility/fcthread.h \
+ /usr/include/pthread.h /usr/include/sched.h \
+ /usr/include/x86_64-linux-gnu/bits/sched.h \
  /usr/include/x86_64-linux-gnu/bits/setjmp.h /usr/include/libintl.h \
  ../utility/log.h ../utility/mem.h ../common/diptreaty.h \
  ../utility/support.h ../utility/speclist.h ../common/events.h \
@@ -72,7 +81,8 @@ diplhand.lo: diplhand.c /usr/include/stdc-predef.h ../fc_config.h \
  /usr/include/x86_64-linux-gnu/bits/inf.h \
  /usr/include/x86_64-linux-gnu/bits/nan.h \
  /usr/include/x86_64-linux-gnu/bits/mathdef.h \
- /usr/include/x86_64-linux-gnu/bits/mathcalls.h ../common/tile.h \
+ /usr/include/x86_64-linux-gnu/bits/mathcalls.h \
+ /usr/include/x86_64-linux-gnu/bits/mathinline.h ../common/tile.h \
  ../common/road.h ../common/team.h ../common/traderoutes.h \
  ../common/packets_gen.h ../common/disaster.h ../common/map.h \
  ../common/packets.h ../common/player.h ../common/research.h \
@@ -93,6 +103,7 @@ diplhand.lo: diplhand.c /usr/include/stdc-predef.h ../fc_config.h \
  /usr/include/asm-generic/socket.h \
  /usr/include/x86_64-linux-gnu/asm/sockios.h \
  /usr/include/asm-generic/sockios.h \
+ /usr/include/x86_64-linux-gnu/bits/socket2.h \
  /usr/include/x86_64-linux-gnu/bits/in.h techtools.h unittools.h \
  advisors/autosettlers.h scripting/script_server.h diplhand.h
 
@@ -130,6 +141,10 @@ diplhand.lo: diplhand.c /usr/include/stdc-predef.h ../fc_config.h \
 
 /usr/include/x86_64-linux-gnu/bits/sys_errlist.h:
 
+/usr/include/x86_64-linux-gnu/bits/stdio.h:
+
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:
+
 /usr/include/stdlib.h:
 
 /usr/include/x86_64-linux-gnu/bits/waitflags.h:
@@ -158,17 +173,29 @@ diplhand.lo: diplhand.c /usr/include/stdc-predef.h ../fc_config.h \
 
 /usr/include/x86_64-linux-gnu/bits/time.h:
 
+/usr/include/x86_64-linux-gnu/bits/select2.h:
+
 /usr/include/x86_64-linux-gnu/sys/sysmacros.h:
 
 /usr/include/x86_64-linux-gnu/bits/pthreadtypes.h:
 
 /usr/include/alloca.h:
 
+/usr/include/x86_64-linux-gnu/bits/stdlib-bsearch.h:
+
 /usr/include/x86_64-linux-gnu/bits/stdlib-float.h:
+
+/usr/include/x86_64-linux-gnu/bits/stdlib.h:
 
 ../utility/bitvector.h:
 
 /usr/include/string.h:
+
+/usr/include/x86_64-linux-gnu/bits/string.h:
+
+/usr/include/x86_64-linux-gnu/bits/string2.h:
+
+/usr/include/x86_64-linux-gnu/bits/string3.h:
 
 ../utility/log.h:
 
@@ -221,6 +248,8 @@ diplhand.lo: diplhand.c /usr/include/stdc-predef.h ../fc_config.h \
 /usr/include/x86_64-linux-gnu/bits/confname.h:
 
 /usr/include/getopt.h:
+
+/usr/include/x86_64-linux-gnu/bits/unistd.h:
 
 ../utility/fcintl.h:
 
@@ -364,6 +393,8 @@ diplhand.lo: diplhand.c /usr/include/stdc-predef.h ../fc_config.h \
 
 /usr/include/x86_64-linux-gnu/bits/mathcalls.h:
 
+/usr/include/x86_64-linux-gnu/bits/mathinline.h:
+
 ../common/tile.h:
 
 ../common/road.h:
@@ -453,6 +484,8 @@ srv_main.h:
 /usr/include/x86_64-linux-gnu/asm/sockios.h:
 
 /usr/include/asm-generic/sockios.h:
+
+/usr/include/x86_64-linux-gnu/bits/socket2.h:
 
 /usr/include/x86_64-linux-gnu/bits/in.h:
 

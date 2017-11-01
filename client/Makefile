@@ -97,19 +97,19 @@ host_triplet = x86_64-pc-linux-gnu
 #am__append_3 = \
 #	freeciv-sdl.appdata.xml
 
-am__append_4 = gui-gtk-2.0
-am__append_5 = \
-	freeciv-gtk2.desktop
+#am__append_4 = gui-gtk-2.0
+#am__append_5 = \
+#	freeciv-gtk2.desktop
 
-am__append_6 = \
-	freeciv-gtk2.appdata.xml
+#am__append_6 = \
+#	freeciv-gtk2.appdata.xml
 
-#am__append_7 = gui-gtk-3.0
-#am__append_8 = \
-#	freeciv.desktop
+am__append_7 = gui-gtk-3.0
+am__append_8 = \
+	freeciv.desktop
 
-#am__append_9 = \
-#	freeciv-gtk3.appdata.xml
+am__append_9 = \
+	freeciv-gtk3.appdata.xml
 
 #am__append_10 = gui-xaw
 #am__append_11 = gui-qt
@@ -122,10 +122,10 @@ am__append_6 = \
 #am__append_14 = gui-stub
 bin_PROGRAMS = $(am__EXEEXT_1) $(am__EXEEXT_2) $(am__EXEEXT_3) \
 	$(am__EXEEXT_4) $(am__EXEEXT_5) $(am__EXEEXT_6)
-am__append_15 = freeciv-gtk2
-am__append_16 = libfcgui-gtk2.la
-#am__append_17 = freeciv-gtk3
-#am__append_18 = libfcgui-gtk3.la
+#am__append_15 = freeciv-gtk2
+#am__append_16 = libfcgui-gtk2.la
+am__append_17 = freeciv-gtk3
+am__append_18 = libfcgui-gtk3.la
 #am__append_19 = freeciv-sdl
 #am__append_20 = libfcgui-sdl.la
 #am__append_21 = freeciv-xaw
@@ -176,9 +176,9 @@ CONFIG_CLEAN_FILES = freeciv.desktop freeciv-gtk2.desktop \
 	freeciv-sdl.appdata.xml freeciv-qt.appdata.xml
 CONFIG_CLEAN_VPATH_FILES =
 LTLIBRARIES = $(noinst_LTLIBRARIES)
-libfcgui_gtk2_la_DEPENDENCIES =  \
-	gui-gtk-2.0/libgui-gtk2.la \
-	$(clientlibs)
+#libfcgui_gtk2_la_DEPENDENCIES =  \
+#	gui-gtk-2.0/libgui-gtk2.la \
+#	$(clientlibs)
 am__libfcgui_gtk2_la_SOURCES_DIST = audio_sdl.c audio_sdl.h \
 	attribute.h attribute.c citydlg_common.c citydlg_common.h \
 	cityrepdata.c cityrepdata.h client_main.c client_main.h \
@@ -211,17 +211,17 @@ am__objects_3 = $(am__objects_2) attribute.lo citydlg_common.lo \
 	servers.lo text.lo themes_common.lo tilespec.lo \
 	unitselect_common.lo update_queue.lo voteinfo.lo audio.lo \
 	audio_none.lo
-am_libfcgui_gtk2_la_OBJECTS =  \
-	$(am__objects_3)
+#am_libfcgui_gtk2_la_OBJECTS =  \
+#	$(am__objects_3)
 libfcgui_gtk2_la_OBJECTS = $(am_libfcgui_gtk2_la_OBJECTS)
 AM_V_lt = $(am__v_lt_$(V))
 am__v_lt_ = $(am__v_lt_$(AM_DEFAULT_VERBOSITY))
 am__v_lt_0 = --silent
 am__v_lt_1 = 
-am_libfcgui_gtk2_la_rpath =
-#libfcgui_gtk3_la_DEPENDENCIES =  \
-#	gui-gtk-3.0/libgui-gtk3.la \
-#	$(clientlibs)
+#am_libfcgui_gtk2_la_rpath =
+libfcgui_gtk3_la_DEPENDENCIES =  \
+	gui-gtk-3.0/libgui-gtk3.la \
+	$(clientlibs)
 am__libfcgui_gtk3_la_SOURCES_DIST = audio_sdl.c audio_sdl.h \
 	attribute.h attribute.c citydlg_common.c citydlg_common.h \
 	cityrepdata.c cityrepdata.h client_main.c client_main.h \
@@ -241,10 +241,10 @@ am__libfcgui_gtk3_la_SOURCES_DIST = audio_sdl.c audio_sdl.h \
 	unitselect_common.c unitselect_common.h update_queue.c \
 	update_queue.h voteinfo.c voteinfo.h audio.c audio.h \
 	audio_none.c audio_none.h
-#am_libfcgui_gtk3_la_OBJECTS =  \
-#	$(am__objects_3)
+am_libfcgui_gtk3_la_OBJECTS =  \
+	$(am__objects_3)
 libfcgui_gtk3_la_OBJECTS = $(am_libfcgui_gtk3_la_OBJECTS)
-#am_libfcgui_gtk3_la_rpath =
+am_libfcgui_gtk3_la_rpath =
 #libfcgui_qt_la_DEPENDENCIES = gui-qt/libgui-qt.la \
 #	$(clientlibs)
 am__libfcgui_qt_la_SOURCES_DIST = audio_sdl.c audio_sdl.h attribute.h \
@@ -338,8 +338,8 @@ am__libfcgui_xaw_la_SOURCES_DIST = audio_sdl.c audio_sdl.h attribute.h \
 #am_libfcgui_xaw_la_OBJECTS = $(am__objects_3)
 libfcgui_xaw_la_OBJECTS = $(am_libfcgui_xaw_la_OBJECTS)
 #am_libfcgui_xaw_la_rpath =
-am__EXEEXT_1 = freeciv-gtk2$(EXEEXT)
-#am__EXEEXT_2 = freeciv-gtk3$(EXEEXT)
+#am__EXEEXT_1 = freeciv-gtk2$(EXEEXT)
+am__EXEEXT_2 = freeciv-gtk3$(EXEEXT)
 #am__EXEEXT_3 = freeciv-sdl$(EXEEXT)
 #am__EXEEXT_4 = freeciv-xaw$(EXEEXT)
 #am__EXEEXT_5 = freeciv-qt$(EXEEXT)
@@ -348,28 +348,12 @@ am__installdirs = "$(DESTDIR)$(bindir)" "$(DESTDIR)$(appdatafiledir)" \
 	"$(DESTDIR)$(desktopfiledir)"
 PROGRAMS = $(bin_PROGRAMS)
 am__freeciv_gtk2_SOURCES_DIST = dummy.c
-am_freeciv_gtk2_OBJECTS = dummy.$(OBJEXT)
+#am_freeciv_gtk2_OBJECTS = dummy.$(OBJEXT)
 freeciv_gtk2_OBJECTS = $(am_freeciv_gtk2_OBJECTS)
 am__DEPENDENCIES_1 =
-freeciv_gtk2_DEPENDENCIES =  \
-	$(am__DEPENDENCIES_1) \
-	libfcgui-gtk2.la \
-	$(top_builddir)/common/libfreeciv.la \
-	$(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(CLIENTICON) \
-	$(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
-freeciv_gtk2_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
-	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
-	$(freeciv_gtk2_LDFLAGS) $(LDFLAGS) -o $@
-am__freeciv_gtk3_SOURCES_DIST = dummy.c
-#am_freeciv_gtk3_OBJECTS = dummy.$(OBJEXT)
-freeciv_gtk3_OBJECTS = $(am_freeciv_gtk3_OBJECTS)
-#freeciv_gtk3_DEPENDENCIES =  \
+#freeciv_gtk2_DEPENDENCIES =  \
 #	$(am__DEPENDENCIES_1) \
-#	libfcgui-gtk3.la \
+#	libfcgui-gtk2.la \
 #	$(top_builddir)/common/libfreeciv.la \
 #	$(am__DEPENDENCIES_1) \
 #	$(am__DEPENDENCIES_1) \
@@ -377,6 +361,22 @@ freeciv_gtk3_OBJECTS = $(am_freeciv_gtk3_OBJECTS)
 #	$(am__DEPENDENCIES_1) $(CLIENTICON) \
 #	$(am__DEPENDENCIES_1) \
 #	$(am__DEPENDENCIES_1)
+freeciv_gtk2_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
+	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
+	$(freeciv_gtk2_LDFLAGS) $(LDFLAGS) -o $@
+am__freeciv_gtk3_SOURCES_DIST = dummy.c
+am_freeciv_gtk3_OBJECTS = dummy.$(OBJEXT)
+freeciv_gtk3_OBJECTS = $(am_freeciv_gtk3_OBJECTS)
+freeciv_gtk3_DEPENDENCIES =  \
+	$(am__DEPENDENCIES_1) \
+	libfcgui-gtk3.la \
+	$(top_builddir)/common/libfreeciv.la \
+	$(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1) $(CLIENTICON) \
+	$(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 freeciv_gtk3_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(freeciv_gtk3_LDFLAGS) $(LDFLAGS) -o $@
@@ -619,21 +619,21 @@ am__relativize = \
     dir1=`echo "$$dir1" | sed -e "$$sed_rest"`; \
   done; \
   reldir="$$dir2"
-ACLOCAL = ${SHELL} /home/scott/Documents/freeciv-2.5.9/bootstrap/missing aclocal-1.15
+ACLOCAL = ${SHELL} /home/parallels/Documents/freeciv-project/bootstrap/missing aclocal-1.15
 AMTAR = $${TAR-tar}
 AM_DEFAULT_VERBOSITY = 0
 APPDATADIR = $(prefix)/share/appdata
 AR = ar
-AUTOCONF = ${SHELL} /home/scott/Documents/freeciv-2.5.9/bootstrap/missing autoconf
-AUTOHEADER = ${SHELL} /home/scott/Documents/freeciv-2.5.9/bootstrap/missing autoheader
-AUTOMAKE = ${SHELL} /home/scott/Documents/freeciv-2.5.9/bootstrap/missing automake-1.15
+AUTOCONF = ${SHELL} /home/parallels/Documents/freeciv-project/bootstrap/missing autoconf
+AUTOHEADER = ${SHELL} /home/parallels/Documents/freeciv-project/bootstrap/missing autoheader
+AUTOMAKE = ${SHELL} /home/parallels/Documents/freeciv-project/bootstrap/missing automake-1.15
 AWK = mawk
 BUG_URL = https://www.hostedredmine.com/projects/freeciv
 CATALOGS =  ar.gmo bg.gmo cs.gmo ca.gmo da.gmo de.gmo el.gmo en_GB.gmo eo.gmo es.gmo et.gmo fa.gmo fi.gmo fr.gmo ga.gmo gd.gmo he.gmo hu.gmo id.gmo it.gmo ja.gmo ko.gmo lt.gmo nl.gmo nb.gmo pl.gmo pt.gmo pt_BR.gmo ro.gmo ru.gmo sr.gmo sv.gmo tr.gmo uk.gmo zh_CN.gmo zh_TW.gmo
 CATOBJEXT = .gmo
 CC = gcc
 CCDEPMODE = depmode=gcc3
-CFLAGS = -Wno-tautological-compare -Wno-deprecated-declarations -Wno-nonnull-compare -Wall -Wpointer-arith -Wcast-align -g -O0 -fsigned-char
+CFLAGS = -Wno-tautological-compare -Wno-deprecated-declarations -Wno-nonnull-compare -Wall -Wpointer-arith -Wcast-align -g -O2 -fsigned-char
 CLIENT_LIBS =  -lm 
 COMMON_LIBS = -lm -lz
 CONFIGURE_DEPENDENCIES =  $(top_srcdir)/fc_version
@@ -709,10 +709,10 @@ GNULIB__EXIT = 0
 GREP = /bin/grep
 GTHREAD_CFLAGS = -pthread -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include
 GTHREAD_LIBS = -lgthread-2.0 -pthread -lglib-2.0
-GTK2_CFLAGS = -pthread -I/usr/include/gtk-2.0 -I/usr/lib/x86_64-linux-gnu/gtk-2.0/include -I/usr/include/gio-unix-2.0/ -I/usr/include/cairo -I/usr/include/pango-1.0 -I/usr/include/atk-1.0 -I/usr/include/cairo -I/usr/include/pixman-1 -I/usr/include/libpng12 -I/usr/include/gdk-pixbuf-2.0 -I/usr/include/libpng12 -I/usr/include/pango-1.0 -I/usr/include/harfbuzz -I/usr/include/pango-1.0 -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include -I/usr/include/freetype2
-GTK2_LIBS = -lgtk-x11-2.0 -lgdk-x11-2.0 -lpangocairo-1.0 -latk-1.0 -lcairo -lgdk_pixbuf-2.0 -lgio-2.0 -lpangoft2-1.0 -lpango-1.0 -lgobject-2.0 -lglib-2.0 -lfontconfig -lfreetype
-GTK3_CFLAGS = 
-GTK3_LIBS = 
+GTK2_CFLAGS = 
+GTK2_LIBS = 
+GTK3_CFLAGS = -pthread -I/usr/include/gtk-3.0 -I/usr/include/at-spi2-atk/2.0 -I/usr/include/at-spi-2.0 -I/usr/include/dbus-1.0 -I/usr/lib/x86_64-linux-gnu/dbus-1.0/include -I/usr/include/gtk-3.0 -I/usr/include/gio-unix-2.0/ -I/usr/include/mirclient -I/usr/include/mircore -I/usr/include/mircookie -I/usr/include/cairo -I/usr/include/pango-1.0 -I/usr/include/harfbuzz -I/usr/include/pango-1.0 -I/usr/include/atk-1.0 -I/usr/include/cairo -I/usr/include/pixman-1 -I/usr/include/freetype2 -I/usr/include/libpng12 -I/usr/include/gdk-pixbuf-2.0 -I/usr/include/libpng12 -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include
+GTK3_LIBS = -lgtk-3 -lgdk-3 -lpangocairo-1.0 -lpango-1.0 -latk-1.0 -lcairo-gobject -lcairo -lgdk_pixbuf-2.0 -lgio-2.0 -lgobject-2.0 -lglib-2.0
 GZIP = /bin/gzip
 HAVE_ATOLL = 1
 HAVE_CANONICALIZE_FILE_NAME = 1
@@ -773,7 +773,7 @@ LUA_CFLAGS = -I$(top_srcdir)/dependencies/lua-5.2/src
 LUA_LIBS = $(top_builddir)/dependencies/lua-5.2/src/liblua.la
 MAIL_ADDRESS = freeciv-dev AT freelists.org
 MAJOR_VERSION = 2
-MAKEINFO = ${SHELL} /home/scott/Documents/freeciv-2.5.9/bootstrap/missing makeinfo
+MAKEINFO = ${SHELL} /home/parallels/Documents/freeciv-project/bootstrap/missing makeinfo
 MANIFEST_TOOL = :
 MAPIMG_WAND_CFLAGS = 
 MAPIMG_WAND_LIBS = 
@@ -834,9 +834,9 @@ SDL2_CONFIG =
 SDL2_LIBS = 
 SDLMIXER_CFLAGS = 
 SDLMIXER_LIBS = 
-SDL_CFLAGS = -I/usr/include/SDL -D_GNU_SOURCE=1 -D_REENTRANT
-SDL_CONFIG = /usr/bin/sdl-config
-SDL_LIBS = -L/usr/lib/x86_64-linux-gnu -lSDL
+SDL_CFLAGS = 
+SDL_CONFIG = no
+SDL_LIBS = 
 SED = /bin/sed
 SERVER_LIBS = -lm 
 SET_MAKE = 
@@ -866,10 +866,10 @@ X_CFLAGS =
 X_EXTRA_LIBS = 
 X_LIBS = 
 X_PRE_LIBS =  -lSM -lICE
-abs_builddir = /home/scott/Documents/freeciv-2.5.9/client
-abs_srcdir = /home/scott/Documents/freeciv-2.5.9/client
-abs_top_builddir = /home/scott/Documents/freeciv-2.5.9
-abs_top_srcdir = /home/scott/Documents/freeciv-2.5.9
+abs_builddir = /home/parallels/Documents/freeciv-project/client
+abs_srcdir = /home/parallels/Documents/freeciv-project/client
+abs_top_builddir = /home/parallels/Documents/freeciv-project
+abs_top_srcdir = /home/parallels/Documents/freeciv-project
 ac_ct_AR = ar
 ac_ct_CC = gcc
 ac_ct_CXX = g++
@@ -906,12 +906,12 @@ ggzexecmoddir =
 ggzmod_includes = 
 ggzmod_libraries = 
 ggzmoduleconfdir = 
-gui_gtk2_cflags = -pthread -I/usr/include/gtk-2.0 -I/usr/lib/x86_64-linux-gnu/gtk-2.0/include -I/usr/include/gio-unix-2.0/ -I/usr/include/cairo -I/usr/include/pango-1.0 -I/usr/include/atk-1.0 -I/usr/include/cairo -I/usr/include/pixman-1 -I/usr/include/libpng12 -I/usr/include/gdk-pixbuf-2.0 -I/usr/include/libpng12 -I/usr/include/pango-1.0 -I/usr/include/harfbuzz -I/usr/include/pango-1.0 -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include -I/usr/include/freetype2
+gui_gtk2_cflags = 
 gui_gtk2_ldflags = 
-gui_gtk2_libs = -lgtk-x11-2.0 -lgdk-x11-2.0 -lpangocairo-1.0 -latk-1.0 -lcairo -lgdk_pixbuf-2.0 -lgio-2.0 -lpangoft2-1.0 -lpango-1.0 -lgobject-2.0 -lglib-2.0 -lfontconfig -lfreetype
-gui_gtk3_cflags = 
+gui_gtk2_libs = 
+gui_gtk3_cflags = -pthread -I/usr/include/gtk-3.0 -I/usr/include/at-spi2-atk/2.0 -I/usr/include/at-spi-2.0 -I/usr/include/dbus-1.0 -I/usr/lib/x86_64-linux-gnu/dbus-1.0/include -I/usr/include/gtk-3.0 -I/usr/include/gio-unix-2.0/ -I/usr/include/mirclient -I/usr/include/mircore -I/usr/include/mircookie -I/usr/include/cairo -I/usr/include/pango-1.0 -I/usr/include/harfbuzz -I/usr/include/pango-1.0 -I/usr/include/atk-1.0 -I/usr/include/cairo -I/usr/include/pixman-1 -I/usr/include/freetype2 -I/usr/include/libpng12 -I/usr/include/gdk-pixbuf-2.0 -I/usr/include/libpng12 -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include
 gui_gtk3_ldflags = 
-gui_gtk3_libs = 
+gui_gtk3_libs = -lgtk-3 -lgdk-3 -lpangocairo-1.0 -lpango-1.0 -latk-1.0 -lcairo-gobject -lcairo -lgdk_pixbuf-2.0 -lgio-2.0 -lgobject-2.0 -lglib-2.0 
 gui_qt_cflags = 
 gui_qt_cppflags = 
 gui_qt_cxxflags = 
@@ -934,7 +934,7 @@ host_vendor = pc
 htmldir = ${docdir}
 includedir = ${prefix}/include
 infodir = ${datarootdir}/info
-install_sh = ${SHELL} /home/scott/Documents/freeciv-2.5.9/bootstrap/install-sh
+install_sh = ${SHELL} /home/parallels/Documents/freeciv-project/bootstrap/install-sh
 libdir = ${exec_prefix}/lib
 libexecdir = ${exec_prefix}/libexec
 libggz_includes = 
@@ -946,12 +946,12 @@ mkdir_p = $(MKDIR_P)
 mp_cli_cflags = 
 mp_cli_ldflags = 
 mp_cli_libs = 
-mp_gtk2_cflags = -pthread -I/usr/include/gtk-2.0 -I/usr/lib/x86_64-linux-gnu/gtk-2.0/include -I/usr/include/gio-unix-2.0/ -I/usr/include/cairo -I/usr/include/pango-1.0 -I/usr/include/atk-1.0 -I/usr/include/cairo -I/usr/include/pixman-1 -I/usr/include/libpng12 -I/usr/include/gdk-pixbuf-2.0 -I/usr/include/libpng12 -I/usr/include/pango-1.0 -I/usr/include/harfbuzz -I/usr/include/pango-1.0 -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include -I/usr/include/freetype2 -pthread -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include -DMPICON_PATH="\"${datarootdir}/freeciv/misc/mpicon.png\""
+mp_gtk2_cflags =  -DMPICON_PATH="\"${datarootdir}/freeciv/misc/mpicon.png\""
 mp_gtk2_ldflags = 
-mp_gtk2_libs = -lgtk-x11-2.0 -lgdk-x11-2.0 -lpangocairo-1.0 -latk-1.0 -lcairo -lgdk_pixbuf-2.0 -lgio-2.0 -lpangoft2-1.0 -lpango-1.0 -lgobject-2.0 -lglib-2.0 -lfontconfig -lfreetype -lgthread-2.0 -pthread -lglib-2.0
-mp_gtk3_cflags =  -DMPICON_PATH="\"${datarootdir}/freeciv/misc/mpicon.png\""
+mp_gtk2_libs = 
+mp_gtk3_cflags = -pthread -I/usr/include/gtk-3.0 -I/usr/include/at-spi2-atk/2.0 -I/usr/include/at-spi-2.0 -I/usr/include/dbus-1.0 -I/usr/lib/x86_64-linux-gnu/dbus-1.0/include -I/usr/include/gtk-3.0 -I/usr/include/gio-unix-2.0/ -I/usr/include/mirclient -I/usr/include/mircore -I/usr/include/mircookie -I/usr/include/cairo -I/usr/include/pango-1.0 -I/usr/include/harfbuzz -I/usr/include/pango-1.0 -I/usr/include/atk-1.0 -I/usr/include/cairo -I/usr/include/pixman-1 -I/usr/include/freetype2 -I/usr/include/libpng12 -I/usr/include/gdk-pixbuf-2.0 -I/usr/include/libpng12 -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include  -DMPICON_PATH="\"${datarootdir}/freeciv/misc/mpicon.png\""
 mp_gtk3_ldflags = 
-mp_gtk3_libs = 
+mp_gtk3_libs = -lgtk-3 -lgdk-3 -lpangocairo-1.0 -lpango-1.0 -latk-1.0 -lcairo-gobject -lcairo -lgdk_pixbuf-2.0 -lgio-2.0 -lgobject-2.0 -lglib-2.0 -lgthread-2.0 -pthread -lglib-2.0
 mp_qt_cppflags = 
 mp_qt_cxxflags = 
 mp_qt_libs = 
@@ -1102,29 +1102,29 @@ clientlibs = \
  $(top_builddir)/client/luascript/libscripting_client.la \
  $(top_builddir)/dependencies/cvercmp/libcvercmp.la
 
-libfcgui_gtk2_la_SOURCES = $(freeciv_client_src)
-libfcgui_gtk2_la_LIBADD = gui-gtk-2.0/libgui-gtk2.la $(clientlibs)
-freeciv_gtk2_SOURCES = dummy.c
-freeciv_gtk2_LDFLAGS = $(gui_gtk2_ldflags) $(GGZMOD_ldflags)
-freeciv_gtk2_LDADD = \
- $(SOUND_LIBS) \
- libfcgui-gtk2.la \
- $(top_builddir)/common/libfreeciv.la \
- $(INTLLIBS) $(CLIENT_LIBS) $(SOUND_LIBS) $(LIB_GGZMOD) $(CLIENTICON) \
- $(MAPIMG_WAND_LIBS) \
- $(gui_gtk2_libs)
-
-#libfcgui_gtk3_la_SOURCES = $(freeciv_client_src)
-#libfcgui_gtk3_la_LIBADD = gui-gtk-3.0/libgui-gtk3.la $(clientlibs)
-#freeciv_gtk3_SOURCES = dummy.c
-#freeciv_gtk3_LDFLAGS = $(gui_gtk3_ldflags) $(GGZMOD_ldflags)
-#freeciv_gtk3_LDADD = \
+#libfcgui_gtk2_la_SOURCES = $(freeciv_client_src)
+#libfcgui_gtk2_la_LIBADD = gui-gtk-2.0/libgui-gtk2.la $(clientlibs)
+#freeciv_gtk2_SOURCES = dummy.c
+#freeciv_gtk2_LDFLAGS = $(gui_gtk2_ldflags) $(GGZMOD_ldflags)
+#freeciv_gtk2_LDADD = \
 # $(SOUND_LIBS) \
-# libfcgui-gtk3.la \
+# libfcgui-gtk2.la \
 # $(top_builddir)/common/libfreeciv.la \
 # $(INTLLIBS) $(CLIENT_LIBS) $(SOUND_LIBS) $(LIB_GGZMOD) $(CLIENTICON) \
 # $(MAPIMG_WAND_LIBS) \
-# $(gui_gtk3_libs)
+# $(gui_gtk2_libs)
+
+libfcgui_gtk3_la_SOURCES = $(freeciv_client_src)
+libfcgui_gtk3_la_LIBADD = gui-gtk-3.0/libgui-gtk3.la $(clientlibs)
+freeciv_gtk3_SOURCES = dummy.c
+freeciv_gtk3_LDFLAGS = $(gui_gtk3_ldflags) $(GGZMOD_ldflags)
+freeciv_gtk3_LDADD = \
+ $(SOUND_LIBS) \
+ libfcgui-gtk3.la \
+ $(top_builddir)/common/libfreeciv.la \
+ $(INTLLIBS) $(CLIENT_LIBS) $(SOUND_LIBS) $(LIB_GGZMOD) $(CLIENTICON) \
+ $(MAPIMG_WAND_LIBS) \
+ $(gui_gtk3_libs)
 
 #libfcgui_sdl_la_SOURCES = $(freeciv_client_src)
 #libfcgui_sdl_la_LIBADD = gui-sdl/libgui-sdl.la $(clientlibs)

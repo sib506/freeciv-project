@@ -549,18 +549,21 @@ enum unit_move_result move_random_auto_explorer(struct unit *punit,
 		UNIT_LOG(LOG_DEBUG, punit, "exploration GOTO succeeded");
 		if (punit->moves_left > 0) {
 			/* We can still move on... */
-			if (!same_pos(move_tile, unit_tile(punit))) {
-				/* At least we moved (and maybe even got to where we wanted).
+			UNIT_LOG(LOG_DEBUG, punit, "done exploring (all finished)...");
+			return MR_PAUSE;
+
+/*			if (!same_pos(move_tile, unit_tile(punit))) {
+				 At least we moved (and maybe even got to where we wanted).
 				 * Let's do more exploring.
 				 * (Checking only whether our position changed is unsafe: can allow
-				 * yoyoing on a RR) */
+				 * yoyoing on a RR)
 				UNIT_LOG(LOG_DEBUG, punit, "recursively exploring...");
 
 				return manage_random_auto_explorer2(punit);
 			} else {
 				UNIT_LOG(LOG_DEBUG, punit, "done exploring (all finished)...");
 				return MR_PAUSE;
-			}
+			}*/
 		}
 		UNIT_LOG(LOG_DEBUG, punit, "done exploring (but more go go)...");
 		return MR_OK;

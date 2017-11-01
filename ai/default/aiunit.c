@@ -2476,7 +2476,6 @@ void dai_manage_military_random(struct ai_type *ait, struct player *pplayer,
 		struct unit *punit) {
 
 	CHECK_UNIT(punit);
-	struct tile *ptile = unit_tile(punit);
 
 	struct genlist* actionList = genlist_new();
 
@@ -2521,6 +2520,7 @@ void dai_manage_military_random(struct ai_type *ait, struct player *pplayer,
 
 	switch(chosen_action->type){
 	case explore:
+//		printf("Explore \n\n");
 		switch (move_random_auto_explorer(punit, chosen_action->moveInfo)) {
 		case MR_DEATH:
 			//don't use punit!
@@ -2534,21 +2534,25 @@ void dai_manage_military_random(struct ai_type *ait, struct player *pplayer,
 		};
 		break;
 	case sentry:
+//		printf("sentry/n/n");
 		unit_activity_handling(punit, ACTIVITY_SENTRY);
 		break;
 	case fortify:
+//		printf("fortify\n\n");
 		unit_activity_handling(punit, ACTIVITY_FORTIFYING);
 		break;
 	case pillage:
+//		printf("pillage\n\n");
 		unit_activity_handling(punit, ACTIVITY_PILLAGE);
 		break;
 	case rage:
+//		printf("rage\n\n");
 		break;
 	default:
 		break;
 	}
 
-	printf("Action size: %d\n\n",genlist_size(actionList));
+	//printf("Action size: %d\n\n",genlist_size(actionList));
 
 	// Destroy the list and elements within
 	for(int i = 0; i < genlist_size(actionList); i++ ){
