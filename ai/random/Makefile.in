@@ -126,15 +126,57 @@ mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = $(top_builddir)/fc_config.h
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
-LTLIBRARIES = $(noinst_LTLIBRARIES)
-librandomai_la_LIBADD =
-am__objects_1 = aiRandom.lo
-am_librandomai_la_OBJECTS = $(am__objects_1)
-librandomai_la_OBJECTS = $(am_librandomai_la_OBJECTS)
+am__vpath_adj_setup = srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`;
+am__vpath_adj = case $$p in \
+    $(srcdir)/*) f=`echo "$$p" | sed "s|^$$srcdirstrip/||"`;; \
+    *) f=$$p;; \
+  esac;
+am__strip_dir = f=`echo $$p | sed -e 's|^.*/||'`;
+am__install_max = 40
+am__nobase_strip_setup = \
+  srcdirstrip=`echo "$(srcdir)" | sed 's/[].[^$$\\*|]/\\\\&/g'`
+am__nobase_strip = \
+  for p in $$list; do echo "$$p"; done | sed -e "s|$$srcdirstrip/||"
+am__nobase_list = $(am__nobase_strip_setup); \
+  for p in $$list; do echo "$$p $$p"; done | \
+  sed "s| $$srcdirstrip/| |;"' / .*\//!s/ .*/ ./; s,\( .*\)/[^/]*$$,\1,' | \
+  $(AWK) 'BEGIN { files["."] = "" } { files[$$2] = files[$$2] " " $$1; \
+    if (++n[$$2] == $(am__install_max)) \
+      { print $$2, files[$$2]; n[$$2] = 0; files[$$2] = "" } } \
+    END { for (dir in files) print dir, files[dir] }'
+am__base_list = \
+  sed '$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;s/\n/ /g' | \
+  sed '$$!N;$$!N;$$!N;$$!N;s/\n/ /g'
+am__uninstall_files_from_dir = { \
+  test -z "$$files" \
+    || { test ! -d "$$dir" && test ! -f "$$dir" && test ! -r "$$dir"; } \
+    || { echo " ( cd '$$dir' && rm -f" $$files ")"; \
+         $(am__cd) "$$dir" && rm -f $$files; }; \
+  }
+am__installdirs = "$(DESTDIR)$(aimoduledir)"
+LTLIBRARIES = $(aimodule_LTLIBRARIES) $(noinst_LTLIBRARIES)
+fc_ai_random_la_LIBADD =
+am__fc_ai_random_la_SOURCES_DIST = randomai.c randomai.h
+am__objects_1 = randomai.lo
+@AI_MOD_STATIC_RANDOM_FALSE@am_fc_ai_random_la_OBJECTS =  \
+@AI_MOD_STATIC_RANDOM_FALSE@	$(am__objects_1)
+fc_ai_random_la_OBJECTS = $(am_fc_ai_random_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
 am__v_lt_1 = 
+fc_ai_random_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
+	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
+	$(AM_CFLAGS) $(CFLAGS) $(fc_ai_random_la_LDFLAGS) $(LDFLAGS) \
+	-o $@
+@AI_MOD_STATIC_RANDOM_FALSE@am_fc_ai_random_la_rpath = -rpath \
+@AI_MOD_STATIC_RANDOM_FALSE@	$(aimoduledir)
+librandomai_la_LIBADD =
+am__librandomai_la_SOURCES_DIST = randomai.c randomai.h
+@AI_MOD_STATIC_RANDOM_TRUE@am_librandomai_la_OBJECTS =  \
+@AI_MOD_STATIC_RANDOM_TRUE@	$(am__objects_1)
+librandomai_la_OBJECTS = $(am_librandomai_la_OBJECTS)
+@AI_MOD_STATIC_RANDOM_TRUE@am_librandomai_la_rpath =
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
 am__v_P_0 = false
@@ -169,8 +211,9 @@ AM_V_CCLD = $(am__v_CCLD_@AM_V@)
 am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
-SOURCES = $(librandomai_la_SOURCES)
-DIST_SOURCES = $(librandomai_la_SOURCES)
+SOURCES = $(fc_ai_random_la_SOURCES) $(librandomai_la_SOURCES)
+DIST_SOURCES = $(am__fc_ai_random_la_SOURCES_DIST) \
+	$(am__librandomai_la_SOURCES_DIST)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -555,13 +598,16 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-noinst_LTLIBRARIES = librandomai.la
-AM_CPPFLAGS = -I$(top_srcdir)/utility -I$(top_srcdir)/common -I$(top_srcdir)/common/aicore -I$(top_srcdir)/server -I$(top_srcdir)/server/advisors
+@AI_MOD_STATIC_RANDOM_TRUE@noinst_LTLIBRARIES = librandomai.la
+@AI_MOD_STATIC_RANDOM_FALSE@aimodule_LTLIBRARIES = fc_ai_random.la
+AM_CPPFLAGS = -I$(top_srcdir)/utility -I$(top_srcdir)/common -I$(top_srcdir)/common/aicore -I$(top_srcdir)/server/advisors -I$(top_srcdir)/ai/default
 da_sources = \
-	aiRandom.c	\
-	aiRandom.h
+	randomai.c	\
+	randomai.h
 
-librandomai_la_SOURCES = $(da_sources)
+@AI_MOD_STATIC_RANDOM_FALSE@fc_ai_random_la_SOURCES = $(da_sources)
+@AI_MOD_STATIC_RANDOM_FALSE@fc_ai_random_la_LDFLAGS = -module
+@AI_MOD_STATIC_RANDOM_TRUE@librandomai_la_SOURCES = $(da_sources)
 all: all-am
 
 .SUFFIXES:
@@ -596,6 +642,41 @@ $(ACLOCAL_M4):  $(am__aclocal_m4_deps)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
 $(am__aclocal_m4_deps):
 
+install-aimoduleLTLIBRARIES: $(aimodule_LTLIBRARIES)
+	@$(NORMAL_INSTALL)
+	@list='$(aimodule_LTLIBRARIES)'; test -n "$(aimoduledir)" || list=; \
+	list2=; for p in $$list; do \
+	  if test -f $$p; then \
+	    list2="$$list2 $$p"; \
+	  else :; fi; \
+	done; \
+	test -z "$$list2" || { \
+	  echo " $(MKDIR_P) '$(DESTDIR)$(aimoduledir)'"; \
+	  $(MKDIR_P) "$(DESTDIR)$(aimoduledir)" || exit 1; \
+	  echo " $(LIBTOOL) $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=install $(INSTALL) $(INSTALL_STRIP_FLAG) $$list2 '$(DESTDIR)$(aimoduledir)'"; \
+	  $(LIBTOOL) $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=install $(INSTALL) $(INSTALL_STRIP_FLAG) $$list2 "$(DESTDIR)$(aimoduledir)"; \
+	}
+
+uninstall-aimoduleLTLIBRARIES:
+	@$(NORMAL_UNINSTALL)
+	@list='$(aimodule_LTLIBRARIES)'; test -n "$(aimoduledir)" || list=; \
+	for p in $$list; do \
+	  $(am__strip_dir) \
+	  echo " $(LIBTOOL) $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=uninstall rm -f '$(DESTDIR)$(aimoduledir)/$$f'"; \
+	  $(LIBTOOL) $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=uninstall rm -f "$(DESTDIR)$(aimoduledir)/$$f"; \
+	done
+
+clean-aimoduleLTLIBRARIES:
+	-test -z "$(aimodule_LTLIBRARIES)" || rm -f $(aimodule_LTLIBRARIES)
+	@list='$(aimodule_LTLIBRARIES)'; \
+	locs=`for p in $$list; do echo $$p; done | \
+	      sed 's|^[^/]*$$|.|; s|/[^/]*$$||; s|$$|/so_locations|' | \
+	      sort -u`; \
+	test -z "$$locs" || { \
+	  echo rm -f $${locs}; \
+	  rm -f $${locs}; \
+	}
+
 clean-noinstLTLIBRARIES:
 	-test -z "$(noinst_LTLIBRARIES)" || rm -f $(noinst_LTLIBRARIES)
 	@list='$(noinst_LTLIBRARIES)'; \
@@ -607,8 +688,11 @@ clean-noinstLTLIBRARIES:
 	  rm -f $${locs}; \
 	}
 
+fc_ai_random.la: $(fc_ai_random_la_OBJECTS) $(fc_ai_random_la_DEPENDENCIES) $(EXTRA_fc_ai_random_la_DEPENDENCIES) 
+	$(AM_V_CCLD)$(fc_ai_random_la_LINK) $(am_fc_ai_random_la_rpath) $(fc_ai_random_la_OBJECTS) $(fc_ai_random_la_LIBADD) $(LIBS)
+
 librandomai.la: $(librandomai_la_OBJECTS) $(librandomai_la_DEPENDENCIES) $(EXTRA_librandomai_la_DEPENDENCIES) 
-	$(AM_V_CCLD)$(LINK)  $(librandomai_la_OBJECTS) $(librandomai_la_LIBADD) $(LIBS)
+	$(AM_V_CCLD)$(LINK) $(am_librandomai_la_rpath) $(librandomai_la_OBJECTS) $(librandomai_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -616,7 +700,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/aiRandom.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/randomai.Plo@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -731,6 +815,9 @@ check-am: all-am
 check: check-am
 all-am: Makefile $(LTLIBRARIES)
 installdirs:
+	for dir in "$(DESTDIR)$(aimoduledir)"; do \
+	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
+	done
 install: install-am
 install-exec: install-exec-am
 install-data: install-data-am
@@ -763,8 +850,8 @@ maintainer-clean-generic:
 	@echo "it deletes files that may require special tools to rebuild."
 clean: clean-am
 
-clean-am: clean-generic clean-libtool clean-noinstLTLIBRARIES \
-	mostlyclean-am
+clean-am: clean-aimoduleLTLIBRARIES clean-generic clean-libtool \
+	clean-noinstLTLIBRARIES mostlyclean-am
 
 distclean: distclean-am
 	-rm -rf ./$(DEPDIR)
@@ -784,7 +871,7 @@ info: info-am
 
 info-am:
 
-install-data-am:
+install-data-am: install-aimoduleLTLIBRARIES
 
 install-dvi: install-dvi-am
 
@@ -830,15 +917,16 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am:
+uninstall-am: uninstall-aimoduleLTLIBRARIES
 
 .MAKE: install-am install-strip
 
-.PHONY: CTAGS GTAGS TAGS all all-am check check-am clean clean-generic \
-	clean-libtool clean-noinstLTLIBRARIES cscopelist-am ctags \
-	ctags-am distclean distclean-compile distclean-generic \
-	distclean-libtool distclean-tags distdir dvi dvi-am html \
-	html-am info info-am install install-am install-data \
+.PHONY: CTAGS GTAGS TAGS all all-am check check-am clean \
+	clean-aimoduleLTLIBRARIES clean-generic clean-libtool \
+	clean-noinstLTLIBRARIES cscopelist-am ctags ctags-am distclean \
+	distclean-compile distclean-generic distclean-libtool \
+	distclean-tags distdir dvi dvi-am html html-am info info-am \
+	install install-aimoduleLTLIBRARIES install-am install-data \
 	install-data-am install-dvi install-dvi-am install-exec \
 	install-exec-am install-html install-html-am install-info \
 	install-info-am install-man install-pdf install-pdf-am \
@@ -846,7 +934,8 @@ uninstall-am:
 	installcheck-am installdirs maintainer-clean \
 	maintainer-clean-generic mostlyclean mostlyclean-compile \
 	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
-	tags tags-am uninstall uninstall-am
+	tags tags-am uninstall uninstall-aimoduleLTLIBRARIES \
+	uninstall-am
 
 .PRECIOUS: Makefile
 

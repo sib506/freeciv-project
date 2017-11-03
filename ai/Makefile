@@ -90,10 +90,12 @@ build_triplet = x86_64-pc-linux-gnu
 host_triplet = x86_64-pc-linux-gnu
 am__append_1 = default
 am__append_2 = classic
-#am__append_3 = threaded
-##am__append_4 = classic
-##am__append_5 = threaded
-##am__append_6 = stub
+am__append_3 = random
+#am__append_4 = threaded
+##am__append_5 = classic
+##am__append_6 = random
+##am__append_7 = threaded
+##am__append_8 = stub
 subdir = ai
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/dependencies/m4/mkstemp.m4 \
@@ -216,7 +218,7 @@ am__define_uniq_tagged_files = \
   done | $(am__uniquify_input)`
 ETAGS = etags
 CTAGS = ctags
-DIST_SUBDIRS = random default classic threaded stub
+DIST_SUBDIRS = default classic random threaded stub
 am__DIST_COMMON = $(srcdir)/Makefile.in \
 	$(top_srcdir)/bootstrap/depcomp
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -602,8 +604,9 @@ target_alias =
 top_build_prefix = ../
 top_builddir = ..
 top_srcdir = ..
-module_dirs = random $(am__append_1) $(am__append_2) $(am__append_3) \
-	$(am__append_4) $(am__append_5) $(am__append_6)
+module_dirs = $(am__append_1) $(am__append_2) $(am__append_3) \
+	$(am__append_4) $(am__append_5) $(am__append_6) \
+	$(am__append_7) $(am__append_8)
 AM_CPPFLAGS = -I$(top_srcdir)/utility -I$(top_srcdir)/common
 # AI module loading supported, but experimental modules not built
 SUBDIRS = $(module_dirs)

@@ -13,6 +13,9 @@
 /* classic ai module statically linked */
 #define AI_MOD_STATIC_CLASSIC 1
 
+/* random ai module statically linked */
+/* #undef AI_MOD_STATIC_RANDOM */
+
 /* threaded ai module statically linked */
 /* #undef AI_MOD_STATIC_THREADED */
 

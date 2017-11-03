@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 
-module_dirs = random
+module_dirs = 
 
 if AI_MOD_DEFAULT_NEEDED
 module_dirs += default
@@ -8,6 +8,10 @@ endif
 
 if AI_MOD_STATIC_CLASSIC
 module_dirs += classic
+endif
+
+if AI_MOD_STATIC_RANDOM
+module_dirs += random
 endif
 
 if AI_MOD_STATIC_THREADED
@@ -19,6 +23,9 @@ AM_CPPFLAGS = -I$(top_srcdir)/utility -I$(top_srcdir)/common
 if AI_MODULES
 if !AI_MOD_STATIC_CLASSIC
 module_dirs += classic
+endif
+if !AI_MOD_STATIC_RANDOM
+module_dirs += random
 endif
 if EXP_AI_MODULES
 if !AI_MOD_STATIC_THREADED

@@ -907,6 +907,8 @@ AI_MOD_DEFAULT_NEEDED_FALSE
 AI_MOD_DEFAULT_NEEDED_TRUE
 AI_MOD_STATIC_THREADED_FALSE
 AI_MOD_STATIC_THREADED_TRUE
+AI_MOD_STATIC_RANDOM_FALSE
+AI_MOD_STATIC_RANDOM_TRUE
 AI_MOD_STATIC_CLASSIC_FALSE
 AI_MOD_STATIC_CLASSIC_TRUE
 EXP_AI_MODULES_FALSE
@@ -7183,6 +7185,7 @@ fi
 
 
 ai_mod_static_classic=no
+ai_mod_static_random=no
 ai_mod_static_threaded=no
 
 for module in $(echo $static_modules | $SED 's/,/ /g') ; do
@@ -7191,6 +7194,12 @@ for module in $(echo $static_modules | $SED 's/,/ /g') ; do
     ai_mod_default_needed=yes
     
 $as_echo "@%:@define AI_MOD_STATIC_CLASSIC 1" >>confdefs.h
+
+  elif test "x$module" = "xthreaded" ; then
+ 	 ai_mod_static_random=yes
+ 	 ai_mod_default_needed=yes
+ 	 
+$as_echo "@%:@define AI_MOD_STATIC_RANDOM 1" >>confdefs.h
 
   elif test "x$module" = "xthreaded" ; then
     ai_mod_static_threaded=yes
@@ -7211,6 +7220,14 @@ done
 else
   AI_MOD_STATIC_CLASSIC_TRUE='#'
   AI_MOD_STATIC_CLASSIC_FALSE=
+fi
+
+ if test "x$ai_mod_static_random" = "xyes" || test "x$enable_aimodules" != "xyes"; then
+  AI_MOD_STATIC_RANDOM_TRUE=
+  AI_MOD_STATIC_RANDOM_FALSE='#'
+else
+  AI_MOD_STATIC_RANDOM_TRUE='#'
+  AI_MOD_STATIC_RANDOM_FALSE=
 fi
 
  if test "x$ai_mod_static_threaded" = "xyes"; then
@@ -7251,6 +7268,9 @@ fi
 
 fc_ai_last=0
 if test "x$ai_mod_static_classic" = "xyes" ; then
+  fc_ai_last=$fc_ai_last+1
+fi
+if test "x$ai_mod_static_random" = "xyes" ; then
   fc_ai_last=$fc_ai_last+1
 fi
 if test "x$ai_mod_static_threaded" = "xyes" ; then
@@ -36725,6 +36745,10 @@ Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 if test -z "${AI_MOD_STATIC_CLASSIC_TRUE}" && test -z "${AI_MOD_STATIC_CLASSIC_FALSE}"; then
   as_fn_error $? "conditional \"AI_MOD_STATIC_CLASSIC\" was never defined.
+Usually this means the macro was only invoked conditionally." "$LINENO" 5
+fi
+if test -z "${AI_MOD_STATIC_RANDOM_TRUE}" && test -z "${AI_MOD_STATIC_RANDOM_FALSE}"; then
+  as_fn_error $? "conditional \"AI_MOD_STATIC_RANDOM\" was never defined.
 Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 if test -z "${AI_MOD_STATIC_THREADED_TRUE}" && test -z "${AI_MOD_STATIC_THREADED_FALSE}"; then
