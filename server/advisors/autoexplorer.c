@@ -490,7 +490,7 @@ enum unit_move_result manage_random_auto_explorer(struct unit *punit)
 void collect_random_explorer_moves(struct unit *punit, struct genlist *moveList) {
 	struct player *pplayer = unit_owner(punit);
 	/* Loop prevention */
-	const struct tile *init_tile = unit_tile(punit);
+	struct tile *init_tile = unit_tile(punit);
 
 	/* Path-finding stuff */
 	struct pf_map *pfm;
@@ -577,9 +577,11 @@ enum unit_move_result move_random_auto_explorer(struct unit *punit,
 
 enum unit_move_result manage_random_auto_explorer2(struct unit *punit)
 {
+	printf("RANDOM AUTO EXPLORER \n\n");
+
 	struct player *pplayer = unit_owner(punit);
 	/* Loop prevention */
-	const struct tile *init_tile = unit_tile(punit);
+	struct tile *init_tile = unit_tile(punit);
 
 	struct tile *best_tile = NULL;
 
@@ -632,12 +634,15 @@ enum unit_move_result manage_random_auto_explorer2(struct unit *punit)
 		}
 		UNIT_LOG(LOG_DEBUG, punit, "exploration GOTO succeeded");
 		if (punit->moves_left > 0) {
+			UNIT_LOG(LOG_DEBUG, punit, "done exploring (all finished)...");
+			return MR_PAUSE;
+
 			/* We can still move on... */
-			if (!same_pos(init_tile, unit_tile(punit))) {
-				/* At least we moved (and maybe even got to where we wanted).
+			/*if (!same_pos(init_tile, unit_tile(punit))) {
+				 At least we moved (and maybe even got to where we wanted).
 				 * Let's do more exploring.
 				 * (Checking only whether our position changed is unsafe: can allow
-				 * yoyoing on a RR) */
+				 * yoyoing on a RR)
 				UNIT_LOG(LOG_DEBUG, punit, "recursively exploring...");
 
 				return manage_random_auto_explorer2(punit);
@@ -645,7 +650,7 @@ enum unit_move_result manage_random_auto_explorer2(struct unit *punit)
 				UNIT_LOG(LOG_DEBUG, punit, "done exploring (all finished)...");
 				return MR_PAUSE;
 			}
-		}
+*/		}
 		UNIT_LOG(LOG_DEBUG, punit, "done exploring (but more go go)...");
 		return MR_OK;
 	} else {

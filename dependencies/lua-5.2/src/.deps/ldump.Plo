@@ -12,8 +12,8 @@ ldump.lo: ldump.c /usr/include/stdc-predef.h \
  /usr/include/x86_64-linux-gnu/bits/local_lim.h \
  /usr/include/linux/limits.h \
  /usr/include/x86_64-linux-gnu/bits/posix2_lim.h localluaconf.h \
- ../../../fc_config.h lobject.h llimits.h lstate.h ltm.h lzio.h lmem.h \
- lundump.h
+ ../../../fc_config.h lobject.h llimits.h /usr/include/assert.h lstate.h \
+ ltm.h lzio.h lmem.h lundump.h
 
 /usr/include/stdc-predef.h:
 
@@ -56,6 +56,8 @@ localluaconf.h:
 lobject.h:
 
 llimits.h:
+
+/usr/include/assert.h:
 
 lstate.h:
 

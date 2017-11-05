@@ -19,9 +19,9 @@ lparser.lo: lparser.c /usr/include/stdc-predef.h /usr/include/string.h \
  /usr/include/x86_64-linux-gnu/bits/local_lim.h \
  /usr/include/linux/limits.h \
  /usr/include/x86_64-linux-gnu/bits/posix2_lim.h localluaconf.h \
- ../../../fc_config.h lcode.h llex.h lobject.h llimits.h lzio.h lmem.h \
- lopcodes.h lparser.h ldebug.h lstate.h ltm.h ldo.h lfunc.h lstring.h \
- lgc.h ltable.h
+ ../../../fc_config.h lcode.h llex.h lobject.h llimits.h \
+ /usr/include/assert.h lzio.h lmem.h lopcodes.h lparser.h ldebug.h \
+ lstate.h ltm.h ldo.h lfunc.h lstring.h lgc.h ltable.h
 
 /usr/include/stdc-predef.h:
 
@@ -92,6 +92,8 @@ llex.h:
 lobject.h:
 
 llimits.h:
+
+/usr/include/assert.h:
 
 lzio.h:
 

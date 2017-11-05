@@ -24,25 +24,25 @@ if test "x$FREECIV_DATA_PATH" = "x" ; then
     FREECIV_DATA_PATH="${FREECIV_PATH}"
   fi
 fi
-FREECIV_DATA_PATH="${FREECIV_DATA_PATH}:/home/parallels/Documents/freeciv-project/data:/home/parallels/Documents/freeciv-project/data"
+FREECIV_DATA_PATH="${FREECIV_DATA_PATH}:/home/scott/Documents/freeciv-2.5.9/data:/home/scott/Documents/freeciv-2.5.9/data"
 export FREECIV_DATA_PATH
 
 if test "x$FREECIV_PATH" = "x" ; then
   FREECIV_PATH=".:data:~/.freeciv:~/.freeciv/2.5"
 fi
-FREECIV_PATH="${FREECIV_PATH}:/home/parallels/Documents/freeciv-project"
+FREECIV_PATH="${FREECIV_PATH}:/home/scott/Documents/freeciv-2.5.9"
 export FREECIV_PATH
 
 if test "x$FREECIV_SAVE_PATH" = "x" ; then
   FREECIV_SAVE_PATH=".:~/.freeciv/saves"
 fi
-FREECIV_SAVE_PATH="${FREECIV_SAVE_PATH}:/home/parallels/Documents/freeciv-project:/home/parallels/Documents/freeciv-project"
+FREECIV_SAVE_PATH="${FREECIV_SAVE_PATH}:/home/scott/Documents/freeciv-2.5.9:/home/scott/Documents/freeciv-2.5.9"
 export FREECIV_SAVE_PATH
 
 if test "x$FREECIV_SCENARIO_PATH" = "x" ; then
   FREECIV_SCENARIO_PATH=".:data/scenarios:~/.freeciv/2.5/scenarios:~/.freeciv/scenarios"
 fi
-FREECIV_SCENARIO_PATH="${FREECIV_SCENARIO_PATH}:/home/parallels/Documents/freeciv-project/data/scenarios:/home/parallels/Documents/freeciv-project/data/scenarios"
+FREECIV_SCENARIO_PATH="${FREECIV_SCENARIO_PATH}:/home/scott/Documents/freeciv-2.5.9/data/scenarios:/home/scott/Documents/freeciv-2.5.9/data/scenarios"
 export FREECIV_SCENARIO_PATH
 
 [ -x $BUILDDIR/server/$EXENAME ] && EXE=$BUILDDIR/server/$EXENAME

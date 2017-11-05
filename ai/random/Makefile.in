@@ -154,12 +154,9 @@ am__uninstall_files_from_dir = { \
          $(am__cd) "$$dir" && rm -f $$files; }; \
   }
 am__installdirs = "$(DESTDIR)$(aimoduledir)"
-LTLIBRARIES = $(aimodule_LTLIBRARIES) $(noinst_LTLIBRARIES)
-fc_ai_random_la_LIBADD =
-am__fc_ai_random_la_SOURCES_DIST = randomai.c randomai.h
-am__objects_1 = randomai.lo
-@AI_MOD_STATIC_RANDOM_FALSE@am_fc_ai_random_la_OBJECTS =  \
-@AI_MOD_STATIC_RANDOM_FALSE@	$(am__objects_1)
+LTLIBRARIES = $(aimodule_LTLIBRARIES)
+fc_ai_random_la_DEPENDENCIES =
+am_fc_ai_random_la_OBJECTS = raisettler.lo raiunit.lo randomai.lo
 fc_ai_random_la_OBJECTS = $(am_fc_ai_random_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
@@ -169,14 +166,6 @@ fc_ai_random_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
 	$(AM_CFLAGS) $(CFLAGS) $(fc_ai_random_la_LDFLAGS) $(LDFLAGS) \
 	-o $@
-@AI_MOD_STATIC_RANDOM_FALSE@am_fc_ai_random_la_rpath = -rpath \
-@AI_MOD_STATIC_RANDOM_FALSE@	$(aimoduledir)
-librandomai_la_LIBADD =
-am__librandomai_la_SOURCES_DIST = randomai.c randomai.h
-@AI_MOD_STATIC_RANDOM_TRUE@am_librandomai_la_OBJECTS =  \
-@AI_MOD_STATIC_RANDOM_TRUE@	$(am__objects_1)
-librandomai_la_OBJECTS = $(am_librandomai_la_OBJECTS)
-@AI_MOD_STATIC_RANDOM_TRUE@am_librandomai_la_rpath =
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
 am__v_P_0 = false
@@ -211,9 +200,8 @@ AM_V_CCLD = $(am__v_CCLD_@AM_V@)
 am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
-SOURCES = $(fc_ai_random_la_SOURCES) $(librandomai_la_SOURCES)
-DIST_SOURCES = $(am__fc_ai_random_la_SOURCES_DIST) \
-	$(am__librandomai_la_SOURCES_DIST)
+SOURCES = $(fc_ai_random_la_SOURCES)
+DIST_SOURCES = $(fc_ai_random_la_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -598,16 +586,18 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-@AI_MOD_STATIC_RANDOM_TRUE@noinst_LTLIBRARIES = librandomai.la
-@AI_MOD_STATIC_RANDOM_FALSE@aimodule_LTLIBRARIES = fc_ai_random.la
-AM_CPPFLAGS = -I$(top_srcdir)/utility -I$(top_srcdir)/common -I$(top_srcdir)/common/aicore -I$(top_srcdir)/server/advisors -I$(top_srcdir)/ai/default
-da_sources = \
+aimodule_LTLIBRARIES = fc_ai_random.la
+AM_CPPFLAGS = -I$(top_srcdir)/utility -I$(top_srcdir)/common -I$(top_srcdir)/common/aicore -I$(top_srcdir)/server -I$(top_srcdir)/server/advisors -I$(top_srcdir)/ai/default
+fc_ai_random_la_SOURCES = \
+	raisettler.c	\
+	raisettler.h	\
+	raiunit.c	\
+	raiunit.h	\
 	randomai.c	\
-	randomai.h
+	randomai.h	
 
-@AI_MOD_STATIC_RANDOM_FALSE@fc_ai_random_la_SOURCES = $(da_sources)
-@AI_MOD_STATIC_RANDOM_FALSE@fc_ai_random_la_LDFLAGS = -module
-@AI_MOD_STATIC_RANDOM_TRUE@librandomai_la_SOURCES = $(da_sources)
+fc_ai_random_la_LDFLAGS = -module
+fc_ai_random_la_LIBADD = -lm
 all: all-am
 
 .SUFFIXES:
@@ -677,22 +667,8 @@ clean-aimoduleLTLIBRARIES:
 	  rm -f $${locs}; \
 	}
 
-clean-noinstLTLIBRARIES:
-	-test -z "$(noinst_LTLIBRARIES)" || rm -f $(noinst_LTLIBRARIES)
-	@list='$(noinst_LTLIBRARIES)'; \
-	locs=`for p in $$list; do echo $$p; done | \
-	      sed 's|^[^/]*$$|.|; s|/[^/]*$$||; s|$$|/so_locations|' | \
-	      sort -u`; \
-	test -z "$$locs" || { \
-	  echo rm -f $${locs}; \
-	  rm -f $${locs}; \
-	}
-
 fc_ai_random.la: $(fc_ai_random_la_OBJECTS) $(fc_ai_random_la_DEPENDENCIES) $(EXTRA_fc_ai_random_la_DEPENDENCIES) 
-	$(AM_V_CCLD)$(fc_ai_random_la_LINK) $(am_fc_ai_random_la_rpath) $(fc_ai_random_la_OBJECTS) $(fc_ai_random_la_LIBADD) $(LIBS)
-
-librandomai.la: $(librandomai_la_OBJECTS) $(librandomai_la_DEPENDENCIES) $(EXTRA_librandomai_la_DEPENDENCIES) 
-	$(AM_V_CCLD)$(LINK) $(am_librandomai_la_rpath) $(librandomai_la_OBJECTS) $(librandomai_la_LIBADD) $(LIBS)
+	$(AM_V_CCLD)$(fc_ai_random_la_LINK) -rpath $(aimoduledir) $(fc_ai_random_la_OBJECTS) $(fc_ai_random_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -700,6 +676,8 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/raisettler.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/raiunit.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/randomai.Plo@am__quote@
 
 .c.o:
@@ -851,7 +829,7 @@ maintainer-clean-generic:
 clean: clean-am
 
 clean-am: clean-aimoduleLTLIBRARIES clean-generic clean-libtool \
-	clean-noinstLTLIBRARIES mostlyclean-am
+	mostlyclean-am
 
 distclean: distclean-am
 	-rm -rf ./$(DEPDIR)
@@ -923,10 +901,10 @@ uninstall-am: uninstall-aimoduleLTLIBRARIES
 
 .PHONY: CTAGS GTAGS TAGS all all-am check check-am clean \
 	clean-aimoduleLTLIBRARIES clean-generic clean-libtool \
-	clean-noinstLTLIBRARIES cscopelist-am ctags ctags-am distclean \
-	distclean-compile distclean-generic distclean-libtool \
-	distclean-tags distdir dvi dvi-am html html-am info info-am \
-	install install-aimoduleLTLIBRARIES install-am install-data \
+	cscopelist-am ctags ctags-am distclean distclean-compile \
+	distclean-generic distclean-libtool distclean-tags distdir dvi \
+	dvi-am html html-am info info-am install \
+	install-aimoduleLTLIBRARIES install-am install-data \
 	install-data-am install-dvi install-dvi-am install-exec \
 	install-exec-am install-html install-html-am install-info \
 	install-info-am install-man install-pdf install-pdf-am \

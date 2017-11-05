@@ -12,7 +12,7 @@ lctype.lo: lctype.c /usr/include/stdc-predef.h lctype.h lua.h \
  /usr/include/x86_64-linux-gnu/bits/local_lim.h \
  /usr/include/linux/limits.h \
  /usr/include/x86_64-linux-gnu/bits/posix2_lim.h localluaconf.h \
- ../../../fc_config.h llimits.h
+ ../../../fc_config.h llimits.h /usr/include/assert.h
 
 /usr/include/stdc-predef.h:
 
@@ -55,3 +55,5 @@ localluaconf.h:
 ../../../fc_config.h:
 
 llimits.h:
+
+/usr/include/assert.h:

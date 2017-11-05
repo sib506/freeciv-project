@@ -1,1 +1,6 @@
 Please see the doc/ directory for a complete list of documentation files.
+
+** To load AI module - run server with tag "--LoadAI random" (where random is the AI Module)
+** Module needs to be installed for this to work - run "sudo make install" to install libraries
+** When configuring - need tags "--enable-shared --enable-aimodules=yes"
+** To enable debug ... add tag "--enable-debug"

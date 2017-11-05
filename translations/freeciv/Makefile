@@ -39,8 +39,8 @@ XGETTEXT = /usr/bin/xgettext
 MSGMERGE = msgmerge
 
 DEFS = -DHAVE_CONFIG_H
-CFLAGS = -Wno-tautological-compare -Wno-deprecated-declarations -Wno-nonnull-compare -Wall -Wpointer-arith -Wcast-align -g -O2 -fsigned-char
-CPPFLAGS =  -DLOCALEDIR="\"${datarootdir}/locale\"" -DBINDIR="\"${exec_prefix}/bin\"" -DFC_CONF_PATH="\"${prefix}/etc/freeciv\"" -DDEFAULT_DATA_PATH="\".:data:~/.freeciv/2.5:${datarootdir}/freeciv\"" -DDEFAULT_SAVE_PATH="\".:~/.freeciv/saves\"" -DDEFAULT_SCENARIO_PATH="\".:data/scenarios:~/.freeciv/2.5/scenarios:~/.freeciv/scenarios:${datarootdir}/freeciv/scenarios\""
+CFLAGS = -Wno-tautological-compare -Wno-deprecated-declarations -Wno-nonnull-compare -Wall -Wpointer-arith -Wcast-align -Werror -Wmissing-prototypes -Wmissing-declarations -Wformat -Wformat-security -Wnested-externs -g -O2 -fsigned-char
+CPPFLAGS =  -DAI_MODULEDIR="\"${exec_prefix}/lib/fcai\"" -DLOCALEDIR="\"${datarootdir}/locale\"" -DBINDIR="\"${exec_prefix}/bin\"" -DFC_CONF_PATH="\"${prefix}/etc/freeciv\"" -DDEFAULT_DATA_PATH="\".:data:~/.freeciv/2.5:${datarootdir}/freeciv\"" -DDEFAULT_SAVE_PATH="\".:~/.freeciv/saves\"" -DDEFAULT_SCENARIO_PATH="\".:data/scenarios:~/.freeciv/2.5/scenarios:~/.freeciv/scenarios:${datarootdir}/freeciv/scenarios\""
 
 INCLUDES = -I.. -I$(top_srcdir)/intl
 

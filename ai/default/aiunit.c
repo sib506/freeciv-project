@@ -558,72 +558,6 @@ static struct pf_path *find_rampage_target(struct unit *punit,
   return path;
 }
 
-/*************************************************************************
-  Returns all - Look for worthy targets within a one-turn horizon.
-*************************************************************************/
-static void find_all_rampage_targets(struct unit *punit,
-                                           int thresh_adj, int thresh_move,
-										   struct genlist *list)
-{
-  struct pf_map *tgt_map;
-  struct pf_parameter parameter;
-  /* Coordinates of the best target (initialize to silence compiler) */
-  struct tile *ptile = unit_tile(punit);
-  /* Want of the best target */
-  int max_want = 0;
-  struct player *pplayer = unit_owner(punit);
-
-  pft_fill_unit_attack_param(&parameter, punit);
-  /* When trying to find rampage targets we ignore risks such as
-   * enemy units because we are looking for trouble!
-   * Hence no call ai_avoid_risks()
-   */
-
-  tgt_map = pf_map_new(&parameter);
-  pf_map_move_costs_iterate(tgt_map, iter_tile, move_cost, FALSE) {
-    int want;
-    bool move_needed;
-    int thresh;
-    struct pf_path *path = NULL;
-
-    if (move_cost > punit->moves_left) {
-      /* This is too far */
-      break;
-    }
-
-    if (ai_handicap(pplayer, H_TARGETS)
-        && !map_is_known_and_seen(iter_tile, pplayer, V_MAIN)) {
-      /* The target is under fog of war */
-      continue;
-    }
-
-    want = dai_rampage_want(punit, iter_tile);
-
-    /* Negative want means move needed even though the tiles are adjacent */
-    move_needed = (!is_tiles_adjacent(unit_tile(punit), iter_tile)
-                   || want < 0);
-    /* Select the relevant threshold */
-    thresh = (move_needed ? thresh_move : thresh_adj);
-    want = (want < 0 ? -want : want);
-
-    if (want > thresh) {
-      /* The new want exceeds both the previous maximum
-       * and the relevant threshold, so it's worth recording */
-    	path = pf_map_path(tgt_map, ptile);
-    	fc_assert(path != NULL);
-		struct potentialMove *pMove = malloc(sizeof(struct potentialMove));
-		pMove->type = rage;
-		pMove->moveInfo = &path;
-    	genlist_append(list, pMove);
-    }
-  } pf_map_move_costs_iterate_end;
-
-  pf_map_destroy(tgt_map);
-
-  return;
-}
-
-
 
 /*************************************************************************
   Find and kill anything reachable within this turn and worth more than
@@ -2470,105 +2404,6 @@ void dai_manage_military(struct ai_type *ait, struct player *pplayer,
 }
 
 
-
-
-void dai_manage_military_random(struct ai_type *ait, struct player *pplayer,
-		struct unit *punit) {
-
-	CHECK_UNIT(punit);
-
-	struct genlist* actionList = genlist_new();
-
-	//unit_activity_handling(punit, ACTIVITY_IDLE);
-
-	collect_random_explorer_moves(punit, actionList);
-
-	if(punit->activity!=ACTIVITY_FORTIFYING &&
-	     can_unit_do_activity(punit, ACTIVITY_FORTIFYING)){
-		struct potentialMove *pMove = malloc(sizeof(struct potentialMove));
-		pMove->type = fortify;
-		pMove->moveInfo = NULL;
-		genlist_append(actionList, pMove);
-	}
-
-	if(punit->activity!=ACTIVITY_SENTRY &&
-	     can_unit_do_activity(punit, ACTIVITY_SENTRY)){
-
-		struct potentialMove *pMove = malloc(sizeof(struct potentialMove));
-		pMove->type = sentry;
-		pMove->moveInfo = NULL;
-		genlist_append(actionList, pMove);
-	}
-
-	if (can_unit_do_activity(punit, ACTIVITY_PILLAGE)) {
-		struct potentialMove *pMove = malloc(sizeof(struct potentialMove));
-		pMove->type = pillage;
-		pMove->moveInfo = NULL;
-		genlist_append(actionList, pMove);
-	}
-
-	//find_all_rampage_targets(punit, RAMPAGE_ANYTHING, RAMPAGE_ANYTHING, actionList);
-	//	if (!dai_military_rampage(punit, RAMPAGE_ANYTHING, RAMPAGE_ANYTHING)) {
-	//		return; /* we died */
-	//	}
-
-	// Add improve health function? This shouldn't be needed
-	// Defend city? Probably not needed also
-	// Should be achieved by random moves
-
-	struct potentialMove *chosen_action = genlist_get(actionList, fc_rand(genlist_size(actionList)));
-
-	switch(chosen_action->type){
-	case explore:
-//		printf("Explore \n\n");
-		switch (move_random_auto_explorer(punit, chosen_action->moveInfo)) {
-		case MR_DEATH:
-			//don't use punit!
-			break;
-		case MR_OK:
-			UNIT_LOG(LOG_DEBUG, punit, "more exploring");
-			break;
-		default:
-			UNIT_LOG(LOG_DEBUG, punit, "no more exploring either");
-			break;
-		};
-		break;
-	case sentry:
-//		printf("sentry/n/n");
-		unit_activity_handling(punit, ACTIVITY_SENTRY);
-		break;
-	case fortify:
-//		printf("fortify\n\n");
-		unit_activity_handling(punit, ACTIVITY_FORTIFYING);
-		break;
-	case pillage:
-//		printf("pillage\n\n");
-		unit_activity_handling(punit, ACTIVITY_PILLAGE);
-		break;
-	case rage:
-//		printf("rage\n\n");
-		break;
-	default:
-		break;
-	}
-
-	//printf("Action size: %d\n\n",genlist_size(actionList));
-
-	// Destroy the list and elements within
-	for(int i = 0; i < genlist_size(actionList); i++ ){
-		void *toRemove = genlist_back(actionList);
-		genlist_pop_back(actionList);
-		free(toRemove);
-	}
-	genlist_destroy(actionList);
-
-	//dai_unit_new_task(ait, punit, AIUNIT_NONE, NULL);
-
-	def_ai_unit_data(punit, ait)->done = TRUE;
-}
-
-
-
 /**************************************************************************
   Barbarian units may disband spontaneously if their age is more than
   BARBARIAN_MIN_LIFESPAN, they are not in cities, and they are far from
@@ -2710,15 +2545,13 @@ void dai_manage_unit(struct ai_type *ait, struct player *pplayer,
   } else if (is_military_unit(punit)) {
     TIMING_LOG(AIT_MILITARY, TIMER_START);
     UNIT_LOG(LOG_DEBUG, punit, "recruit unit for the military");
-    dai_manage_military_random(ait, pplayer, punit);
+    dai_manage_military(ait, pplayer, punit);
     TIMING_LOG(AIT_MILITARY, TIMER_STOP);
     return;
   } else {
     /* what else could this be? -- Syela */
 
-	//TODO: SB CHANGE - currently experimenting with random moves
-	//switch (manage_auto_explorer(punit)) {
-    switch (manage_random_auto_explorer2(punit)) {
+	switch (manage_auto_explorer(punit)) {
     case MR_DEATH:
       /* don't use punit! */
       break;

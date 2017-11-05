@@ -907,8 +907,6 @@ AI_MOD_DEFAULT_NEEDED_FALSE
 AI_MOD_DEFAULT_NEEDED_TRUE
 AI_MOD_STATIC_THREADED_FALSE
 AI_MOD_STATIC_THREADED_TRUE
-AI_MOD_STATIC_RANDOM_FALSE
-AI_MOD_STATIC_RANDOM_TRUE
 AI_MOD_STATIC_CLASSIC_FALSE
 AI_MOD_STATIC_CLASSIC_TRUE
 EXP_AI_MODULES_FALSE
@@ -7185,7 +7183,6 @@ fi
 
 
 ai_mod_static_classic=no
-ai_mod_static_random=no
 ai_mod_static_threaded=no
 
 for module in $(echo $static_modules | $SED 's/,/ /g') ; do
@@ -7194,12 +7191,6 @@ for module in $(echo $static_modules | $SED 's/,/ /g') ; do
     ai_mod_default_needed=yes
 
 $as_echo "#define AI_MOD_STATIC_CLASSIC 1" >>confdefs.h
-
-  elif test "x$module" = "xthreaded" ; then
- 	 ai_mod_static_random=yes
- 	 ai_mod_default_needed=yes
-
-$as_echo "#define AI_MOD_STATIC_RANDOM 1" >>confdefs.h
 
   elif test "x$module" = "xthreaded" ; then
     ai_mod_static_threaded=yes
@@ -7220,14 +7211,6 @@ done
 else
   AI_MOD_STATIC_CLASSIC_TRUE='#'
   AI_MOD_STATIC_CLASSIC_FALSE=
-fi
-
- if test "x$ai_mod_static_random" = "xyes" || test "x$enable_aimodules" != "xyes"; then
-  AI_MOD_STATIC_RANDOM_TRUE=
-  AI_MOD_STATIC_RANDOM_FALSE='#'
-else
-  AI_MOD_STATIC_RANDOM_TRUE='#'
-  AI_MOD_STATIC_RANDOM_FALSE=
 fi
 
  if test "x$ai_mod_static_threaded" = "xyes"; then
@@ -7268,9 +7251,6 @@ fi
 
 fc_ai_last=0
 if test "x$ai_mod_static_classic" = "xyes" ; then
-  fc_ai_last=$fc_ai_last+1
-fi
-if test "x$ai_mod_static_random" = "xyes" ; then
   fc_ai_last=$fc_ai_last+1
 fi
 if test "x$ai_mod_static_threaded" = "xyes" ; then
@@ -29350,7 +29330,7 @@ for i in $libggz_incdirs;
 do
   for j in $libggz_header;
   do
-    echo "configure: 29353: $i/$j" >&5
+    echo "configure: 29333: $i/$j" >&5
     if test -r "$i/$j"; then
       echo "taking that" >&5
       libggz_incdir=$i
@@ -29606,7 +29586,7 @@ for i in $ggzmod_incdirs;
 do
   for j in $ggzmod_header;
   do
-    echo "configure: 29609: $i/$j" >&5
+    echo "configure: 29589: $i/$j" >&5
     if test -r "$i/$j"; then
       echo "taking that" >&5
       ggzmod_incdir=$i
@@ -29736,7 +29716,7 @@ for i in $ggz_config_dirs;
 do
   for j in ggz-config;
   do
-    echo "configure: 29739: $i/$j" >&5
+    echo "configure: 29719: $i/$j" >&5
     if test -r "$i/$j"; then
       echo "taking that" >&5
       ggz_config_dir=$i
@@ -29965,7 +29945,7 @@ for i in $ggz_gtk_incdirs;
 do
   for j in $ggz_gtk_header;
   do
-    echo "configure: 29968: $i/$j" >&5
+    echo "configure: 29948: $i/$j" >&5
     if test -r "$i/$j"; then
       echo "taking that" >&5
       ggz_gtk_incdir=$i
@@ -30157,7 +30137,7 @@ for i in $libggz_incdirs;
 do
   for j in $libggz_header;
   do
-    echo "configure: 30160: $i/$j" >&5
+    echo "configure: 30140: $i/$j" >&5
     if test -r "$i/$j"; then
       echo "taking that" >&5
       libggz_incdir=$i
@@ -30409,7 +30389,7 @@ for i in $ggzdmod_incdirs;
 do
   for j in $ggzdmod_header;
   do
-    echo "configure: 30412: $i/$j" >&5
+    echo "configure: 30392: $i/$j" >&5
     if test -r "$i/$j"; then
       echo "taking that" >&5
       ggzdmod_incdir=$i
@@ -30844,7 +30824,7 @@ for i in $libggz_incdirs;
 do
   for j in $libggz_header;
   do
-    echo "configure: 30847: $i/$j" >&5
+    echo "configure: 30827: $i/$j" >&5
     if test -r "$i/$j"; then
       echo "taking that" >&5
       libggz_incdir=$i
@@ -31100,7 +31080,7 @@ for i in $ggzmod_incdirs;
 do
   for j in $ggzmod_header;
   do
-    echo "configure: 31103: $i/$j" >&5
+    echo "configure: 31083: $i/$j" >&5
     if test -r "$i/$j"; then
       echo "taking that" >&5
       ggzmod_incdir=$i
@@ -31230,7 +31210,7 @@ for i in $ggz_config_dirs;
 do
   for j in ggz-config;
   do
-    echo "configure: 31233: $i/$j" >&5
+    echo "configure: 31213: $i/$j" >&5
     if test -r "$i/$j"; then
       echo "taking that" >&5
       ggz_config_dir=$i
@@ -31459,7 +31439,7 @@ for i in $ggz_gtk_incdirs;
 do
   for j in $ggz_gtk_header;
   do
-    echo "configure: 31462: $i/$j" >&5
+    echo "configure: 31442: $i/$j" >&5
     if test -r "$i/$j"; then
       echo "taking that" >&5
       ggz_gtk_incdir=$i
@@ -31651,7 +31631,7 @@ for i in $libggz_incdirs;
 do
   for j in $libggz_header;
   do
-    echo "configure: 31654: $i/$j" >&5
+    echo "configure: 31634: $i/$j" >&5
     if test -r "$i/$j"; then
       echo "taking that" >&5
       libggz_incdir=$i
@@ -31903,7 +31883,7 @@ for i in $ggzdmod_incdirs;
 do
   for j in $ggzdmod_header;
   do
-    echo "configure: 31906: $i/$j" >&5
+    echo "configure: 31886: $i/$j" >&5
     if test -r "$i/$j"; then
       echo "taking that" >&5
       ggzdmod_incdir=$i
@@ -36745,10 +36725,6 @@ Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 if test -z "${AI_MOD_STATIC_CLASSIC_TRUE}" && test -z "${AI_MOD_STATIC_CLASSIC_FALSE}"; then
   as_fn_error $? "conditional \"AI_MOD_STATIC_CLASSIC\" was never defined.
-Usually this means the macro was only invoked conditionally." "$LINENO" 5
-fi
-if test -z "${AI_MOD_STATIC_RANDOM_TRUE}" && test -z "${AI_MOD_STATIC_RANDOM_FALSE}"; then
-  as_fn_error $? "conditional \"AI_MOD_STATIC_RANDOM\" was never defined.
 Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 if test -z "${AI_MOD_STATIC_THREADED_TRUE}" && test -z "${AI_MOD_STATIC_THREADED_FALSE}"; then

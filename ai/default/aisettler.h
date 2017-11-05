@@ -32,6 +32,8 @@ void dai_auto_settler_run(struct ai_type *ait, struct player *pplayer,
                           struct unit *punit, struct settlermap *state);
 void dai_random_settler_run(struct ai_type *ait, struct player *pplayer,
 	struct unit *punit, struct settlermap *state);
+void dai_random_settler_run2(struct ai_type *ait, struct player *pplayer,
+	struct unit *punit, struct settlermap *state);
 void dai_auto_settler_cont(struct ai_type *ait, struct player *pplayer,
                            struct unit *punit, struct settlermap *state);
 
