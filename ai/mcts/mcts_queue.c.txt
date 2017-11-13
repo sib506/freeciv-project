@@ -1,0 +1,118 @@
+#include "mcts_queue.h"
+#include <stdlib.h>
+#include "rand.h"
+
+Queue* init_queue() {
+	Queue* queue = malloc(sizeof(Queue));
+
+	queue->head = NULL;
+	queue->tail = NULL;
+	queue->size = 0;
+
+	return queue;
+}
+
+void enqueue(Queue* queue, void* data) {
+	Node* node = (Node*) malloc(sizeof(Node));
+	node->data = data;
+	node->next = NULL;
+
+	if (queue->head == NULL) {
+		queue->head = node;
+		queue->tail = node;
+		queue->size++;
+	} else {
+		queue->tail->next = node;
+		queue->tail = node;
+		queue->size++;
+	}
+}
+
+void* dequeue(Queue* queue) {
+	if (queue->head == NULL) {
+		return NULL;
+	}
+
+	Node* returnedNode = queue->head;
+	void* data = returnedNode->data;
+
+	if (queue->head == queue->tail) {
+		queue->tail = NULL;
+	}
+
+	queue->head = returnedNode->next;
+	queue->size--;
+
+	free(returnedNode);
+	return data;
+}
+
+void* peek(Queue *queue) {
+	return queue->head->data;
+}
+
+void* random_remove(Queue* queue) {
+	if (queue->size == 0) {
+		return NULL;
+	} else if (queue->size == 1) {
+		return dequeue(queue);
+	}
+
+	int rand_index = fc_rand(queue->size);
+
+	if (rand_index == 0) {
+		return dequeue(queue);
+	}
+
+	Node* predecessor = queue->head;
+	Node* current = predecessor->next;
+
+	for (int i = 1; i < rand_index; i++) {
+		predecessor = current;
+		current = current->next;
+	}
+
+	predecessor->next = current->next;
+	queue->size--;
+
+	if (predecessor->next == NULL) {
+		queue->tail = predecessor;
+	}
+
+	void* data = current->data;
+	free(current);
+	return data;
+}
+
+void destruct_queue(Queue* queue) {
+	Node* current = queue->head;
+
+	while (current != NULL) {
+		Node* tmp = current;
+		current = current->next;
+		if (tmp != NULL) {
+			free(tmp);
+		}
+	}
+
+	free(queue);
+}
+
+void free_data(Queue* queue) {
+	Node* current = queue->head;
+
+	while (current != NULL) {
+		if (current->data != NULL) {
+			free(current->data);
+		}
+		current = current->next;
+	}
+}
+
+int is_empty(Queue* queue) {
+	if ((queue->head == NULL) && (queue->tail == NULL)) {
+		return 1;
+	} else {
+		return 0;
+	}
+}

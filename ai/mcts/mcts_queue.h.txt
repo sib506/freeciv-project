@@ -1,0 +1,27 @@
+#ifndef FC__QUEUE_H__
+#define FC__QUEUE_H__
+
+typedef struct Node {
+   void* data;
+   struct Node* next;
+} Node;
+
+typedef struct Queue {
+    Node* head;
+    Node* tail;
+    int size;
+} Queue;
+
+
+Queue* init_queue();
+
+void enqueue(Queue* queue, void* data);
+void* dequeue(Queue* queue);
+void* peek(Queue* queue);
+void* random_remove(Queue* queue);
+
+void destruct_queue(Queue* queue);
+void free_data(Queue* queue);
+int is_empty(Queue* queue);
+
+#endif

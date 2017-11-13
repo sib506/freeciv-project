@@ -1470,7 +1470,7 @@ static void rai_manage_barbarian_leader(struct ai_type *ait,
 
 void rai_manage_military(struct ai_type *ait, struct player *pplayer,
 		struct unit *punit) {
-	printf("RANDOM MILITARY");
+	//printf("RANDOM MILITARY");
 
 	CHECK_UNIT(punit);
 
