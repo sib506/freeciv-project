@@ -19,8 +19,7 @@ lzio.lo: lzio.c /usr/include/stdc-predef.h /usr/include/string.h \
  /usr/include/x86_64-linux-gnu/bits/local_lim.h \
  /usr/include/linux/limits.h \
  /usr/include/x86_64-linux-gnu/bits/posix2_lim.h localluaconf.h \
- ../../../fc_config.h llimits.h /usr/include/assert.h lmem.h lstate.h \
- lobject.h ltm.h lzio.h
+ ../../../fc_config.h llimits.h lmem.h lstate.h lobject.h ltm.h lzio.h
 
 /usr/include/stdc-predef.h:
 
@@ -85,8 +84,6 @@ localluaconf.h:
 ../../../fc_config.h:
 
 llimits.h:
-
-/usr/include/assert.h:
 
 lmem.h:
 

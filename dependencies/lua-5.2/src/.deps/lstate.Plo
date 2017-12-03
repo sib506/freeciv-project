@@ -19,10 +19,9 @@ lstate.lo: lstate.c /usr/include/stdc-predef.h \
  /usr/include/x86_64-linux-gnu/bits/local_lim.h \
  /usr/include/linux/limits.h \
  /usr/include/x86_64-linux-gnu/bits/posix2_lim.h localluaconf.h \
- ../../../fc_config.h lapi.h llimits.h /usr/include/assert.h lstate.h \
- lobject.h ltm.h lzio.h lmem.h ldebug.h ldo.h lfunc.h lgc.h llex.h \
- lstring.h ltable.h /usr/include/time.h \
- /usr/include/x86_64-linux-gnu/bits/time.h
+ ../../../fc_config.h lapi.h llimits.h lstate.h lobject.h ltm.h lzio.h \
+ lmem.h ldebug.h ldo.h lfunc.h lgc.h llex.h lstring.h ltable.h \
+ /usr/include/time.h /usr/include/x86_64-linux-gnu/bits/time.h
 
 /usr/include/stdc-predef.h:
 
@@ -89,8 +88,6 @@ localluaconf.h:
 lapi.h:
 
 llimits.h:
-
-/usr/include/assert.h:
 
 lstate.h:
 

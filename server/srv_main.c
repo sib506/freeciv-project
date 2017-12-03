@@ -1488,6 +1488,60 @@ void start_game(void)
 }
 
 /**************************************************************************
+ Clear the server down but do not exit.
+**************************************************************************/
+void server_clear(void)
+{
+  if (server_state() == S_S_RUNNING) {
+    /* Quitting mid-game. */
+    phase_players_iterate(pplayer) {
+      CALL_PLR_AI_FUNC(phase_finished, pplayer, pplayer);
+      /* This has to be after all access to advisor data. */
+      /* We used to run this for ai players only, but data phase
+         is initialized for human players also. */
+      adv_data_phase_done(pplayer);
+    } phase_players_iterate_end;
+  }
+
+  if (eot_timer != NULL) {
+    timer_destroy(eot_timer);
+  }
+  set_server_state(S_S_OVER);
+  mapimg_free();
+  server_game_free();
+  diplhand_free();
+  voting_free();
+  adv_settlers_free();
+  ai_timer_free();
+  if (game.server.phase_timer != NULL) {
+    timer_destroy(game.server.phase_timer);
+    game.server.phase_timer = NULL;
+  }
+
+#ifdef HAVE_FCDB
+  if (srvarg.fcdb_enabled) {
+	  /* If freeciv database has been initialized */
+	  fcdb_free();
+  }
+#endif /* HAVE_FCDB */
+
+  settings_free();
+  stdinhand_free();
+  edithand_free();
+  voting_free();
+  generator_free();
+  close_connections_and_socket();
+  rulesets_deinit();
+  ruleset_choices_free();
+  timing_log_free();
+  registry_module_close();
+  fc_destroy_mutex(&game.server.mutexes.city_list);
+  free_libfreeciv();
+  free_nls();
+  con_log_close();
+}
+
+/**************************************************************************
  Quit the server and exit.
 **************************************************************************/
 void server_quit(void)
@@ -3014,6 +3068,17 @@ void server_game_free(void)
   playercolor_free();
   citymap_free();
   game_free();
+}
+
+void srv_reload_setup(void){
+	srv_init();
+	srv_prepare();
+}
+
+void srv_reload_run(void){
+	srv_ready(); /* srv_ready() sets server state to S_S_RUNNING. */
+	srv_running();
+	srv_scores();
 }
 
 /**************************************************************************

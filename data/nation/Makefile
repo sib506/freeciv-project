@@ -193,18 +193,18 @@ CATALOGS =  ar.gmo bg.gmo cs.gmo ca.gmo da.gmo de.gmo el.gmo en_GB.gmo eo.gmo es
 CATOBJEXT = .gmo
 CC = gcc
 CCDEPMODE = depmode=gcc3
-CFLAGS = -Wno-tautological-compare -Wno-deprecated-declarations -Wno-nonnull-compare -Wall -Wpointer-arith -Wcast-align -Werror -Wmissing-prototypes -Wmissing-declarations -Wformat -Wformat-security -Wnested-externs -g -O2 -fsigned-char
+CFLAGS = -Wno-tautological-compare -Wno-deprecated-declarations -Wno-nonnull-compare -Wall -Wpointer-arith -Wcast-align -g -O2 -fsigned-char
 CLIENT_LIBS =  -lm 
 COMMON_LIBS = -lm -lz
 CONFIGURE_DEPENDENCIES =  $(top_srcdir)/fc_version
 CPP = gcc -E
-CPPFLAGS =  -DAI_MODULEDIR="\"${exec_prefix}/lib/fcai\"" -DLOCALEDIR="\"${datarootdir}/locale\"" -DBINDIR="\"${exec_prefix}/bin\"" -DFC_CONF_PATH="\"${prefix}/etc/freeciv\"" -DDEFAULT_DATA_PATH="\".:data:~/.freeciv/2.5:${datarootdir}/freeciv\"" -DDEFAULT_SAVE_PATH="\".:~/.freeciv/saves\"" -DDEFAULT_SCENARIO_PATH="\".:data/scenarios:~/.freeciv/2.5/scenarios:~/.freeciv/scenarios:${datarootdir}/freeciv/scenarios\""
+CPPFLAGS =  -DLOCALEDIR="\"${datarootdir}/locale\"" -DBINDIR="\"${exec_prefix}/bin\"" -DFC_CONF_PATH="\"${prefix}/etc/freeciv\"" -DDEFAULT_DATA_PATH="\".:data:~/.freeciv/2.5:${datarootdir}/freeciv\"" -DDEFAULT_SAVE_PATH="\".:~/.freeciv/saves\"" -DDEFAULT_SCENARIO_PATH="\".:data/scenarios:~/.freeciv/2.5/scenarios:~/.freeciv/scenarios:${datarootdir}/freeciv/scenarios\""
 CURL_CFLAGS = 
 CURL_LIBS = -lcurl
 CXX = g++
 CXXCPP = g++ -E
 CXXDEPMODE = depmode=gcc3
-CXXFLAGS = -Wno-tautological-compare -Wno-deprecated-declarations -Wno-nonnull-compare -Wall -Wpointer-arith -Wcast-align -Werror -Wmissing-declarations -Wformat -Wformat-security -g -O2 -fsigned-char
+CXXFLAGS = -Wno-tautological-compare -Wno-deprecated-declarations -Wno-nonnull-compare -Wall -Wpointer-arith -Wcast-align -g -O2 -fsigned-char
 CYGPATH_W = echo
 DATADIRNAME = share
 DATASUBDIR = 2.5
@@ -310,7 +310,7 @@ INSTALL_STRIP_PROGRAM = $(install_sh) -c -s
 INSTOBJEXT = .mo
 INTLLIBS = 
 LD = /usr/bin/ld -m elf_x86_64
-LDFLAGS = -rdynamic -Wl,--no-add-needed 
+LDFLAGS =  
 LIBGGZ_INCLUDES = 
 LIBGGZ_ldflags = 
 LIBICONV = 
@@ -398,7 +398,7 @@ SDL_CFLAGS = -I/usr/include/SDL -D_GNU_SOURCE=1 -D_REENTRANT
 SDL_CONFIG = /usr/bin/sdl-config
 SDL_LIBS = -L/usr/lib/x86_64-linux-gnu -lSDL
 SED = /bin/sed
-SERVER_LIBS = -lm  -lltdl
+SERVER_LIBS = -lm 
 SET_MAKE = 
 SHELL = /bin/bash
 SOUND_CFLAGS = 

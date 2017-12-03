@@ -20,9 +20,8 @@ llex.lo: llex.c /usr/include/stdc-predef.h /usr/include/locale.h \
  /usr/include/x86_64-linux-gnu/bits/local_lim.h \
  /usr/include/linux/limits.h \
  /usr/include/x86_64-linux-gnu/bits/posix2_lim.h localluaconf.h \
- ../../../fc_config.h lctype.h llimits.h /usr/include/assert.h ldo.h \
- lobject.h lstate.h ltm.h lzio.h lmem.h llex.h lparser.h lstring.h lgc.h \
- ltable.h
+ ../../../fc_config.h lctype.h llimits.h ldo.h lobject.h lstate.h ltm.h \
+ lzio.h lmem.h llex.h lparser.h lstring.h lgc.h ltable.h
 
 /usr/include/stdc-predef.h:
 
@@ -93,8 +92,6 @@ localluaconf.h:
 lctype.h:
 
 llimits.h:
-
-/usr/include/assert.h:
 
 ldo.h:
 

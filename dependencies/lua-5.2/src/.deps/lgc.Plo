@@ -19,9 +19,8 @@ lgc.lo: lgc.c /usr/include/stdc-predef.h /usr/include/string.h \
  /usr/include/x86_64-linux-gnu/bits/local_lim.h \
  /usr/include/linux/limits.h \
  /usr/include/x86_64-linux-gnu/bits/posix2_lim.h localluaconf.h \
- ../../../fc_config.h ldebug.h lstate.h lobject.h llimits.h \
- /usr/include/assert.h ltm.h lzio.h lmem.h ldo.h lfunc.h lgc.h lstring.h \
- ltable.h
+ ../../../fc_config.h ldebug.h lstate.h lobject.h llimits.h ltm.h lzio.h \
+ lmem.h ldo.h lfunc.h lgc.h lstring.h ltable.h
 
 /usr/include/stdc-predef.h:
 
@@ -92,8 +91,6 @@ lstate.h:
 lobject.h:
 
 llimits.h:
-
-/usr/include/assert.h:
 
 ltm.h:
 

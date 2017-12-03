@@ -87,7 +87,12 @@ extern struct civserver {
 
 void init_game_seed(void);
 void srv_init(void);
+
+void srv_reload_setup(void);
+void srv_reload_run(void);
+
 void srv_main(void);
+void server_clear(void);
 void server_quit(void);
 void save_game_auto(const char *save_reason, enum autosave_type type);
 

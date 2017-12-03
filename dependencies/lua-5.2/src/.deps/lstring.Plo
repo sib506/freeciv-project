@@ -19,8 +19,8 @@ lstring.lo: lstring.c /usr/include/stdc-predef.h /usr/include/string.h \
  /usr/include/x86_64-linux-gnu/bits/local_lim.h \
  /usr/include/linux/limits.h \
  /usr/include/x86_64-linux-gnu/bits/posix2_lim.h localluaconf.h \
- ../../../fc_config.h lmem.h llimits.h /usr/include/assert.h lobject.h \
- lstate.h ltm.h lzio.h lstring.h lgc.h
+ ../../../fc_config.h lmem.h llimits.h lobject.h lstate.h ltm.h lzio.h \
+ lstring.h lgc.h
 
 /usr/include/stdc-predef.h:
 
@@ -87,8 +87,6 @@ localluaconf.h:
 lmem.h:
 
 llimits.h:
-
-/usr/include/assert.h:
 
 lobject.h:
 
