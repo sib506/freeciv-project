@@ -3791,6 +3791,11 @@ static void sg_load_player_main(struct loaddata *loading,
                                      "player%d.ai.control", plrno),
                  "%s", secfile_error());
 
+  /* SB: Load the player mode */
+  plr->player_mode = secfile_lookup_int_default(loading->file, 0, "player%d.player_mode", plrno);
+  /* SB: End change */
+
+
   /* Load diplomatic data (diplstate + embassy + vision).
    * Shared vision is loaded in sg_load_players(). */
   BV_CLR_ALL(plr->real_embassy);
@@ -4113,6 +4118,11 @@ static void sg_save_player_main(struct savedata *saving,
                       "player%d.is_alive", plrno);
   secfile_insert_bool(saving->file, plr->ai_controlled,
                       "player%d.ai.control", plrno);
+
+  /* SB: Save the player mode */
+  secfile_insert_int(saving->file, plr->player_mode,
+                         "player%d.player_mode", plrno);
+  /* SB: End change */
 
   players_iterate(pplayer) {
     char buf[32];

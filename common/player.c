@@ -542,6 +542,9 @@ static void player_defaults(struct player *pplayer)
 
   pplayer->revolution_finishes = -1;
 
+  /* SB: Default players to normal mode */
+  pplayer->player_mode = P_NORMAL;
+
   BV_CLR_ALL(pplayer->real_embassy);
   players_iterate(aplayer) {
     /* create diplomatic states for all other players */

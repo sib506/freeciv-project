@@ -181,6 +181,12 @@ enum player_debug_types {
 
 BV_DEFINE(bv_debug, PLAYER_DEBUG_LAST);
 
+/* SB: Enum to define if player is in MCTS mode or not*/
+enum player_modes {
+	P_NORMAL, P_MCTS, P_RANDOM
+};
+
+
 struct attribute_block_s {
   void *data;
   int length;
@@ -222,6 +228,9 @@ struct player {
   bool ai_controlled; /* 0: not automated; 1: automated */
   struct player_ai ai_common;
   const struct ai_type *ai;
+
+  /* SB: Modes for players */
+  enum player_modes player_mode;
 
   bool was_created;                    /* if the player was /created */
   bool is_connected;
