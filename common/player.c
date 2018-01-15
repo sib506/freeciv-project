@@ -544,6 +544,7 @@ static void player_defaults(struct player *pplayer)
 
   /* SB: Default players to normal mode */
   pplayer->player_mode = P_NORMAL;
+  pplayer->mcts_root = NULL;
 
   BV_CLR_ALL(pplayer->real_embassy);
   players_iterate(aplayer) {

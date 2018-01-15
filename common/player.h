@@ -33,6 +33,10 @@ extern "C" {
 #include "unitlist.h"
 #include "vision.h"
 
+/* SB: MCTS */
+#include "mcts_node.h"
+
+
 #define PLAYER_DEFAULT_TAX_RATE 0
 #define PLAYER_DEFAULT_SCIENCE_RATE 100
 #define PLAYER_DEFAULT_LUXURY_RATE 0
@@ -186,7 +190,6 @@ enum player_modes {
 	P_NORMAL, P_MCTS, P_RANDOM
 };
 
-
 struct attribute_block_s {
   void *data;
   int length;
@@ -231,6 +234,8 @@ struct player {
 
   /* SB: Modes for players */
   enum player_modes player_mode;
+  /* SB: Root of the MCTS tree (if applicable) */
+  mcts_node *mcts_root;
 
   bool was_created;                    /* if the player was /created */
   bool is_connected;

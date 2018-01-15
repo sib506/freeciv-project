@@ -6,7 +6,7 @@ static double UCT(const mcts_node* const node, const int rootPlays, const double
 
 void* bestMove(fc_game_state* state, const int duration, const double c) {
 
-	mcts_node *root = create_root_node(state->player,state->getMoves(state));
+	mcts_node *root = create_root_node(NULL, NULL);
 
 	int elapsed_time = 0;
 

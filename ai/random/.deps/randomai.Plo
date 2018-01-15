@@ -71,11 +71,12 @@ randomai.lo: randomai.c /usr/include/stdc-predef.h ../../fc_config.h \
  ../../common/nation.h ../../utility/iterator.h ../../common/rgbcolor.h \
  ../../utility/spechash.h ../../utility/genhash.h \
  ../../utility/iterator.h ../../common/spaceship.h ../../common/tech.h \
- ../../common/traits.h ../../server/srv_log.h ../../common/fc_types.h \
- ../../server/sernet.h ../../server/advisors/advdata.h \
- ../../common/improvement.h ../../server/advisors/autosettlers.h \
- ../../common/map.h /usr/include/math.h \
- /usr/include/x86_64-linux-gnu/bits/math-vector.h \
+ ../../common/traits.h ../../ai/mcts/mcts_node.h ../../utility/genlist.h \
+ ../../ai/mcts/mcts.h ../../ai/mcts/mcts_state.h ../../server/srv_log.h \
+ ../../common/fc_types.h ../../server/sernet.h \
+ ../../server/advisors/advdata.h ../../common/improvement.h \
+ ../../server/advisors/autosettlers.h ../../common/map.h \
+ /usr/include/math.h /usr/include/x86_64-linux-gnu/bits/math-vector.h \
  /usr/include/x86_64-linux-gnu/bits/libm-simd-decl-stubs.h \
  /usr/include/x86_64-linux-gnu/bits/huge_val.h \
  /usr/include/x86_64-linux-gnu/bits/huge_valf.h \
@@ -345,6 +346,14 @@ randomai.lo: randomai.c /usr/include/stdc-predef.h ../../fc_config.h \
 ../../common/tech.h:
 
 ../../common/traits.h:
+
+../../ai/mcts/mcts_node.h:
+
+../../utility/genlist.h:
+
+../../ai/mcts/mcts.h:
+
+../../ai/mcts/mcts_state.h:
 
 ../../server/srv_log.h:
 

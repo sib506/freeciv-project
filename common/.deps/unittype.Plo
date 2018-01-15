@@ -78,8 +78,10 @@ unittype.lo: unittype.c /usr/include/stdc-predef.h ../fc_config.h \
  ../utility/registry_ini.h ../utility/ioz.h nation.h \
  ../utility/iterator.h rgbcolor.h ../utility/spechash.h \
  ../utility/genhash.h ../utility/iterator.h spaceship.h tech.h traits.h \
- packets.h diptreaty.h effects.h events.h map.h tile.h road.h team.h \
- traderoutes.h packets_gen.h disaster.h government.h movement.h
+ ../ai/mcts/mcts_node.h ../utility/genlist.h ../ai/mcts/mcts.h \
+ ../ai/mcts/mcts_state.h packets.h diptreaty.h effects.h events.h map.h \
+ tile.h road.h team.h traderoutes.h packets_gen.h disaster.h government.h \
+ movement.h
 
 /usr/include/stdc-predef.h:
 
@@ -360,6 +362,14 @@ spaceship.h:
 tech.h:
 
 traits.h:
+
+../ai/mcts/mcts_node.h:
+
+../utility/genlist.h:
+
+../ai/mcts/mcts.h:
+
+../ai/mcts/mcts_state.h:
 
 packets.h:
 

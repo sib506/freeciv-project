@@ -1,5 +1,1 @@
-ggzserver.lo: ggzserver.c /usr/include/stdc-predef.h ../fc_config.h
-
-/usr/include/stdc-predef.h:
-
-../fc_config.h:
+# dummy

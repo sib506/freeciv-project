@@ -3791,8 +3791,9 @@ static void sg_load_player_main(struct loaddata *loading,
                                      "player%d.ai.control", plrno),
                  "%s", secfile_error());
 
-  /* SB: Load the player mode */
+  /* SB: Load the player mode + MCTS root of tree*/
   plr->player_mode = secfile_lookup_int_default(loading->file, 0, "player%d.player_mode", plrno);
+  plr->mcts_root = secfile_lookup_int_default(loading->file, 0, "player%d.mcts_root", plrno);
   /* SB: End change */
 
 
@@ -4122,6 +4123,8 @@ static void sg_save_player_main(struct savedata *saving,
   /* SB: Save the player mode */
   secfile_insert_int(saving->file, plr->player_mode,
                          "player%d.player_mode", plrno);
+  secfile_insert_int(saving->file, plr->mcts_root,
+                           "player%d.mcts_root", plrno);
   /* SB: End change */
 
   players_iterate(pplayer) {

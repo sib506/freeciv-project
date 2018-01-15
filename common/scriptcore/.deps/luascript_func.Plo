@@ -83,9 +83,11 @@ luascript_func.lo: luascript_func.c /usr/include/stdc-predef.h \
  ../../common/city.h ../../common/nation.h ../../utility/iterator.h \
  ../../common/rgbcolor.h ../../utility/spechash.h ../../utility/genhash.h \
  ../../utility/iterator.h ../../common/spaceship.h ../../common/tech.h \
- ../../common/traits.h ../../common/packets.h ../../common/diptreaty.h \
- ../../common/effects.h ../../common/events.h ../../common/map.h \
- /usr/include/math.h /usr/include/x86_64-linux-gnu/bits/math-vector.h \
+ ../../common/traits.h ../../ai/mcts/mcts_node.h ../../ai/mcts/mcts.h \
+ ../../ai/mcts/mcts_state.h ../../common/packets.h \
+ ../../common/diptreaty.h ../../common/effects.h ../../common/events.h \
+ ../../common/map.h /usr/include/math.h \
+ /usr/include/x86_64-linux-gnu/bits/math-vector.h \
  /usr/include/x86_64-linux-gnu/bits/libm-simd-decl-stubs.h \
  /usr/include/x86_64-linux-gnu/bits/huge_val.h \
  /usr/include/x86_64-linux-gnu/bits/huge_valf.h \
@@ -381,6 +383,12 @@ luascript_types.h:
 ../../common/tech.h:
 
 ../../common/traits.h:
+
+../../ai/mcts/mcts_node.h:
+
+../../ai/mcts/mcts.h:
+
+../../ai/mcts/mcts_state.h:
 
 ../../common/packets.h:
 

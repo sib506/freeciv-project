@@ -2,11 +2,12 @@
 #define FC__MCTS_NODE_H__
 
 #include "genlist.h"
+#include "mcts.h"
 
 typedef struct mcts_node {
-	int32_t wins = 0;
-	int32_t visits = 0;
-	int32_t player = 0;
+	int32_t wins;
+	int32_t visits;
+	int32_t player;
 	struct mcts_node *parent;
 	struct genlist *children;
 
@@ -27,7 +28,7 @@ typedef struct mcts_node {
  * @pre newLplayer is 0 or 1
  */
 mcts_node* create_node(int player, struct genlist *possible_moves,
-		void * move, mcts_node parent);
+		void * move, mcts_node *parent);
 
 /**
  * Creates a new root node. parent and move set to NULL.
@@ -59,7 +60,7 @@ mcts_node* add_child_node(mcts_node* parent, fc_game_state* state);
  *
  * @param root the root node to destruct it's subtree
  */
-void destruct_tree(mcts_node root_node);
+void destruct_tree(mcts_node *root_node);
 
 /**
  * Recursively backpropagates up the tree adding the win value and always

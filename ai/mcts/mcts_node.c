@@ -1,7 +1,8 @@
 #include "mcts_node.h"
+#include "genlist.h"
 
 mcts_node* create_node(int player, struct genlist *possible_moves, void * move,
-		mcts_node parent) {
+		mcts_node *parent) {
 
 	mcts_node* node = (mcts_node*) malloc(sizeof(mcts_node));
 	node->parent = parent;
@@ -24,33 +25,33 @@ mcts_node* add_child_node(mcts_node* parent, fc_game_state* state) {
 
 	//TODO: *** Perform chosen move ***
 
-	struct genlist untried_child_moves = genlist_new();
-	mcts_node *child_node = create_node(parent.player, untried_child_moves,
+	struct genlist* untried_child_moves = genlist_new();
+	mcts_node *child_node = create_node(parent->player, untried_child_moves,
 			rnd_child_move, parent);
 	genlist_append(parent->children, child_node);
 
 	return child_node;
 }
 
-void destruct_tree(mcts_node root_node) {
+void destruct_tree(mcts_node *root_node) {
 	if (root_node == NULL) {
 		return;
 	}
 
 	mcts_node* child;
 
-	while(genlist_size(root_node.children) != 0){
-		child = genlist_pop_front(root_node.children);
-		destruct_tree(child);
+	while(genlist_size(root_node->children) != 0){
+//		child = genlist_pop_front(root_node->children);
+//		destruct_tree(child);
 	}
 
 	// free + destroy move lists data
-	for(int i = 0; i < genlist_size(root_node.untried_moves); i++){
-		free(genlist_pop_front(root_node.untried_moves));
+	for(int i = 0; i < genlist_size(root_node->untried_moves); i++){
+//		free(genlist_pop_front(root_node->untried_moves));
 	}
-	genlist_destroy(root_node.untried_moves);
+	genlist_destroy(root_node->untried_moves);
 
-	genlist_destroy(root_node.children);
+	genlist_destroy(root_node->children);
 
 	if(root_node != NULL){
 		free(root_node);

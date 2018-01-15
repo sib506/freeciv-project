@@ -72,9 +72,11 @@ api_game_methods.lo: api_game_methods.c /usr/include/stdc-predef.h \
  ../../utility/ioz.h ../../common/nation.h ../../utility/iterator.h \
  ../../common/rgbcolor.h ../../utility/spechash.h ../../utility/genhash.h \
  ../../utility/iterator.h ../../common/spaceship.h ../../common/tech.h \
- ../../common/traits.h ../../common/packets.h ../../common/diptreaty.h \
- ../../common/effects.h ../../common/events.h ../../common/map.h \
- /usr/include/math.h /usr/include/x86_64-linux-gnu/bits/math-vector.h \
+ ../../common/traits.h ../../ai/mcts/mcts_node.h ../../utility/genlist.h \
+ ../../ai/mcts/mcts.h ../../ai/mcts/mcts_state.h ../../common/packets.h \
+ ../../common/diptreaty.h ../../common/effects.h ../../common/events.h \
+ ../../common/map.h /usr/include/math.h \
+ /usr/include/x86_64-linux-gnu/bits/math-vector.h \
  /usr/include/x86_64-linux-gnu/bits/libm-simd-decl-stubs.h \
  /usr/include/x86_64-linux-gnu/bits/huge_val.h \
  /usr/include/x86_64-linux-gnu/bits/huge_valf.h \
@@ -96,10 +98,9 @@ api_game_methods.lo: api_game_methods.c /usr/include/stdc-predef.h \
  ../../dependencies/lua-5.2/src/localluaconf.h \
  ../../dependencies/lua-5.2/src/lauxlib.h \
  ../../dependencies/lua-5.2/src/lua.h luascript_types.h \
- ../../utility/genlist.h ../../common/city.h ../../common/connection.h \
- ../../common/events.h ../../common/fc_types.h ../../common/player.h \
- ../../common/unit.h luascript_func.h luascript_signal.h \
- api_game_methods.h
+ ../../common/city.h ../../common/connection.h ../../common/events.h \
+ ../../common/fc_types.h ../../common/player.h ../../common/unit.h \
+ luascript_func.h luascript_signal.h api_game_methods.h
 
 /usr/include/stdc-predef.h:
 
@@ -353,6 +354,14 @@ api_game_methods.lo: api_game_methods.c /usr/include/stdc-predef.h \
 
 ../../common/traits.h:
 
+../../ai/mcts/mcts_node.h:
+
+../../utility/genlist.h:
+
+../../ai/mcts/mcts.h:
+
+../../ai/mcts/mcts_state.h:
+
 ../../common/packets.h:
 
 ../../common/diptreaty.h:
@@ -434,8 +443,6 @@ luascript.h:
 ../../dependencies/lua-5.2/src/lua.h:
 
 luascript_types.h:
-
-../../utility/genlist.h:
 
 ../../common/city.h:
 

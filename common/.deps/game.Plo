@@ -78,9 +78,10 @@ game.lo: game.c /usr/include/stdc-predef.h ../fc_config.h \
  /usr/include/x86_64-linux-gnu/bits/mathcalls.h \
  /usr/include/x86_64-linux-gnu/bits/mathinline.h ../utility/iterator.h \
  tile.h player.h ai.h nation.h rgbcolor.h terrain.h spaceship.h tech.h \
- traits.h unitlist.h vision.h road.h packets.h diptreaty.h effects.h \
- events.h improvement.h team.h traderoutes.h unittype.h worklist.h \
- packets_gen.h research.h specialist.h unit.h game.h \
+ traits.h unitlist.h vision.h ../ai/mcts/mcts_node.h ../utility/genlist.h \
+ ../ai/mcts/mcts.h ../ai/mcts/mcts_state.h road.h packets.h diptreaty.h \
+ effects.h events.h improvement.h team.h traderoutes.h unittype.h \
+ worklist.h packets_gen.h research.h specialist.h unit.h game.h \
  ../utility/fcthread.h
 
 /usr/include/stdc-predef.h:
@@ -384,6 +385,14 @@ traits.h:
 unitlist.h:
 
 vision.h:
+
+../ai/mcts/mcts_node.h:
+
+../utility/genlist.h:
+
+../ai/mcts/mcts.h:
+
+../ai/mcts/mcts_state.h:
 
 road.h:
 

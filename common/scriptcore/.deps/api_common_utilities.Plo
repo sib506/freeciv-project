@@ -92,15 +92,17 @@ api_common_utilities.lo: api_common_utilities.c \
  ../../utility/iterator.h ../../common/rgbcolor.h \
  ../../utility/spechash.h ../../utility/genhash.h \
  ../../utility/iterator.h ../../common/spaceship.h ../../common/tech.h \
- ../../common/traits.h ../../common/packets.h ../../common/diptreaty.h \
- ../../common/effects.h ../../common/events.h ../../common/map.h \
- ../../common/tile.h ../../common/road.h ../../common/team.h \
- ../../common/traderoutes.h ../../common/packets_gen.h \
- ../../common/disaster.h ../../common/government.h \
- ../../common/improvement.h ../../common/nation.h ../../common/player.h \
- ../../common/tech.h ../../common/terrain.h ../../common/tile.h \
- ../../common/unit.h ../../common/unittype.h luascript_func.h \
- luascript_signal.h api_common_utilities.h
+ ../../common/traits.h ../../ai/mcts/mcts_node.h ../../ai/mcts/mcts.h \
+ ../../ai/mcts/mcts_state.h ../../common/packets.h \
+ ../../common/diptreaty.h ../../common/effects.h ../../common/events.h \
+ ../../common/map.h ../../common/tile.h ../../common/road.h \
+ ../../common/team.h ../../common/traderoutes.h \
+ ../../common/packets_gen.h ../../common/disaster.h \
+ ../../common/government.h ../../common/improvement.h \
+ ../../common/nation.h ../../common/player.h ../../common/tech.h \
+ ../../common/terrain.h ../../common/tile.h ../../common/unit.h \
+ ../../common/unittype.h luascript_func.h luascript_signal.h \
+ api_common_utilities.h
 
 /usr/include/stdc-predef.h:
 
@@ -403,6 +405,12 @@ luascript_types.h:
 ../../common/tech.h:
 
 ../../common/traits.h:
+
+../../ai/mcts/mcts_node.h:
+
+../../ai/mcts/mcts.h:
+
+../../ai/mcts/mcts_state.h:
 
 ../../common/packets.h:
 

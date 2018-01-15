@@ -67,8 +67,10 @@ citymap.lo: citymap.c /usr/include/stdc-predef.h ../../fc_config.h \
  ../player.h ../city.h ../nation.h ../../utility/iterator.h ../rgbcolor.h \
  ../../utility/spechash.h ../../utility/genhash.h \
  ../../utility/iterator.h ../spaceship.h ../tech.h ../traits.h \
- ../packets.h ../diptreaty.h ../effects.h ../events.h ../map.h \
- /usr/include/math.h /usr/include/x86_64-linux-gnu/bits/math-vector.h \
+ ../../ai/mcts/mcts_node.h ../../utility/genlist.h ../../ai/mcts/mcts.h \
+ ../../ai/mcts/mcts_state.h ../packets.h ../diptreaty.h ../effects.h \
+ ../events.h ../map.h /usr/include/math.h \
+ /usr/include/x86_64-linux-gnu/bits/math-vector.h \
  /usr/include/x86_64-linux-gnu/bits/libm-simd-decl-stubs.h \
  /usr/include/x86_64-linux-gnu/bits/huge_val.h \
  /usr/include/x86_64-linux-gnu/bits/huge_valf.h \
@@ -334,6 +336,14 @@ citymap.lo: citymap.c /usr/include/stdc-predef.h ../../fc_config.h \
 ../tech.h:
 
 ../traits.h:
+
+../../ai/mcts/mcts_node.h:
+
+../../utility/genlist.h:
+
+../../ai/mcts/mcts.h:
+
+../../ai/mcts/mcts_state.h:
 
 ../packets.h:
 

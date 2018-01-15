@@ -8,6 +8,8 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)/utility \
 	-I$(srcdir)/aicore \
 	-I$(srcdir)/scriptcore \
+	-I$(top_srcdir)/ai/		\
+	-I$(top_srcdir)/ai/mcts \
 	$(MAPIMG_WAND_CFLAGS)
 
 libfreeciv_la_SOURCES = \

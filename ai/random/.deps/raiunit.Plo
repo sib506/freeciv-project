@@ -83,31 +83,33 @@ raiunit.lo: raiunit.c /usr/include/stdc-predef.h ../../fc_config.h \
  ../../common/city.h ../../common/nation.h ../../utility/iterator.h \
  ../../common/rgbcolor.h ../../utility/spechash.h ../../utility/genhash.h \
  ../../utility/iterator.h ../../common/spaceship.h ../../common/tech.h \
- ../../common/traits.h ../../common/packets.h ../../common/diptreaty.h \
- ../../common/effects.h ../../common/events.h ../../common/map.h \
- ../../common/tile.h ../../common/road.h ../../common/team.h \
- ../../common/traderoutes.h ../../common/packets_gen.h \
- ../../common/disaster.h ../../common/government.h ../../common/map.h \
- ../../common/movement.h ../../common/packets.h ../../common/player.h \
- ../../common/specialist.h ../../common/traderoutes.h ../../common/unit.h \
- ../../common/unitlist.h ../../common/aicore/caravan.h \
- ../../common/fc_types.h ../../common/aicore/pf_tools.h \
- ../../common/aicore/path_finding.h ../../common/tile.h \
- ../../common/unittype.h ../../ai/default/advmilitary.h \
- ../../ai/default/aiair.h ../../ai/default/aicity.h \
- ../../common/effects.h ../../server/advisors/advdata.h \
- ../../common/improvement.h ../../ai/default/aidata.h \
- ../../ai/default/aidiplomat.h ../../ai/default/aiferry.h \
- ../../ai/default/aiguard.h ../../ai/default/aihand.h \
- ../../ai/default/aihunt.h ../../ai/default/ailog.h \
- ../../ai/default/aiparatrooper.h ../../ai/default/aiplayer.h \
- ../../ai/default/aitools.h ../../server/advisors/advgoto.h \
- ../../common/aicore/path_finding.h ../../ai/default/aicity.h \
- ../../ai/default/aiunit.h ../../server/advisors/autoexplorer.h \
- ../../server/barbarian.h ../../server/citytools.h ../../common/events.h \
- ../../server/cityturn.h ../../server/diplomats.h ../../server/maphand.h \
- ../../common/terrain.h ../../common/vision.h ../../server/hand_gen.h \
- ../../server/srv_log.h ../../server/unithand.h ../../server/unittools.h \
+ ../../common/traits.h ../../ai/mcts/mcts_node.h ../../utility/genlist.h \
+ ../../ai/mcts/mcts.h ../../ai/mcts/mcts_state.h ../../common/packets.h \
+ ../../common/diptreaty.h ../../common/effects.h ../../common/events.h \
+ ../../common/map.h ../../common/tile.h ../../common/road.h \
+ ../../common/team.h ../../common/traderoutes.h \
+ ../../common/packets_gen.h ../../common/disaster.h \
+ ../../common/government.h ../../common/map.h ../../common/movement.h \
+ ../../common/packets.h ../../common/player.h ../../common/specialist.h \
+ ../../common/traderoutes.h ../../common/unit.h ../../common/unitlist.h \
+ ../../common/aicore/caravan.h ../../common/fc_types.h \
+ ../../common/aicore/pf_tools.h ../../common/aicore/path_finding.h \
+ ../../common/tile.h ../../common/unittype.h \
+ ../../ai/default/advmilitary.h ../../ai/default/aiair.h \
+ ../../ai/default/aicity.h ../../common/effects.h \
+ ../../server/advisors/advdata.h ../../common/improvement.h \
+ ../../ai/default/aidata.h ../../ai/default/aidiplomat.h \
+ ../../ai/default/aiferry.h ../../ai/default/aiguard.h \
+ ../../ai/default/aihand.h ../../ai/default/aihunt.h \
+ ../../ai/default/ailog.h ../../ai/default/aiparatrooper.h \
+ ../../ai/default/aiplayer.h ../../ai/default/aitools.h \
+ ../../server/advisors/advgoto.h ../../common/aicore/path_finding.h \
+ ../../ai/default/aicity.h ../../ai/default/aiunit.h \
+ ../../server/advisors/autoexplorer.h ../../server/barbarian.h \
+ ../../server/citytools.h ../../common/events.h ../../server/cityturn.h \
+ ../../server/diplomats.h ../../server/maphand.h ../../common/terrain.h \
+ ../../common/vision.h ../../server/hand_gen.h ../../server/srv_log.h \
+ ../../server/unithand.h ../../server/unittools.h \
  ../../server/advisors/advtools.h ../../server/advisors/autosettlers.h \
  raiunit.h
 
@@ -390,6 +392,14 @@ raiunit.lo: raiunit.c /usr/include/stdc-predef.h ../../fc_config.h \
 ../../common/tech.h:
 
 ../../common/traits.h:
+
+../../ai/mcts/mcts_node.h:
+
+../../utility/genlist.h:
+
+../../ai/mcts/mcts.h:
+
+../../ai/mcts/mcts_state.h:
 
 ../../common/packets.h:
 
