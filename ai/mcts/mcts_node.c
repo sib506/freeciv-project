@@ -1,5 +1,4 @@
 #include "mcts_node.h"
-#include "genlist.h"
 
 mcts_node* create_node(int player, struct genlist *possible_moves, void * move,
 		mcts_node *parent) {
@@ -59,7 +58,7 @@ void destruct_tree(mcts_node *root_node) {
 
 }
 
-void update_node(int32_t result, mcts_node* node) {
+void update_node(int result, mcts_node* node) {
 	node->visits++;
 	node->wins += result;
 }

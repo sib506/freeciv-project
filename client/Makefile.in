@@ -996,6 +996,7 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)/common -I$(top_srcdir)/common/aicore \
 	-I$(top_srcdir)/common/scriptcore \
 	-I$(srcdir)/luascript -I$(srcdir)/agents \
+	-I$(top_srcdir)/ai/mcts \
 	$(CLIENT_CFLAGS) $(SOUND_CFLAGS) \
 	$(LIBGGZ_INCLUDES) $(GGZMOD_INCLUDES) $(GGZ_GTK_INCLUDES) \
 	-I$(top_srcdir)/dependencies/cvercmp

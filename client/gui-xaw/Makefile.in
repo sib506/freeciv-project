@@ -562,7 +562,7 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 noinst_LTLIBRARIES = libgui-xaw.la
 AM_CPPFLAGS = -I. -I$(srcdir)/.. -I$(srcdir)/../include -I$(top_srcdir)/utility \
-        -I$(top_srcdir)/common -I$(top_srcdir)/common/aicore -I$(srcdir)/../agents \
+        -I$(top_srcdir)/common -I$(top_srcdir)/common/aicore -I$(srcdir)/../agents -I$(top_srcdir)/ai/mcts \
         $(gui_xaw_cflags) $(SOUND_CFLAGS)
 
 

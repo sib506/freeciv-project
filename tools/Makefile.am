@@ -36,7 +36,8 @@ common_cppflags = \
 	-I$(top_srcdir)/common \
 	-I$(top_srcdir)/server \
 	-I$(top_srcdir)/client \
-	-I$(top_srcdir)/client/include
+	-I$(top_srcdir)/client/include \
+	-I$(top_srcdir)/ai/mcts
 
 AM_CPPFLAGS = $(common_cppflags)
 

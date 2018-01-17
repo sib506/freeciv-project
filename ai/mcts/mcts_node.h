@@ -5,9 +5,9 @@
 #include "mcts.h"
 
 typedef struct mcts_node {
-	int32_t wins;
-	int32_t visits;
-	int32_t player;
+	int wins;
+	int visits;
+	int player;
 	struct mcts_node *parent;
 	struct genlist *children;
 
@@ -70,7 +70,7 @@ void destruct_tree(mcts_node *root_node);
  * @param gameResult is the value to be added to the win value of the node.
  * @param node the node that was simulated from and to backpropagate from
  */
-void update_node(int32_t result, mcts_node* node);
+void update_node(int result, mcts_node* node);
 
 
 

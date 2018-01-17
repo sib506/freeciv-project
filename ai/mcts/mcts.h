@@ -2,6 +2,7 @@
 #define FC__MCTS_H__
 
 #include "mcts_state.h"
+#include <stdio.h>
 
 /**
  * Using the 4 cycles of the Monte Carlo tree search:

@@ -4,7 +4,7 @@
 typedef struct fc_game_state {
 	//TODO: Add more - need to define a state for FreeCiv
 
-	int32_t score; //Function that returns the score of the game
+	int score; //Function that returns the score of the game
 } fc_game_state;
 
 #endif

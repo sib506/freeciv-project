@@ -1,7 +1,9 @@
 #include "mcts.h"
 #include "mcts_node.h"
+#include <math.h>
 
 static mcts_node* select(const mcts_node* const root, const double c);
+static mcts_node* UCT_select_child(const mcts_node* const root, const double c);
 static double UCT(const mcts_node* const node, const int rootPlays, const double c);
 
 void* bestMove(fc_game_state* state, const int duration, const double c) {
@@ -19,7 +21,7 @@ void* bestMove(fc_game_state* state, const int duration, const double c) {
 		// Traverse Nodes that have all their children generated
 		while((genlist_size(current_node->untried_moves) == 0) &&
 				(genlist_size(current_node->children) != 0)){
-			current_node = UCT_select_child();
+			//current_node = UCT_select_child();
 			//TODO: Now perform the move
 
 		}
@@ -38,7 +40,7 @@ void* bestMove(fc_game_state* state, const int duration, const double c) {
 
 
 static mcts_node* UCT_select_child(const mcts_node* const root, const double c){
-	uint32_t t = root->visits;
+	int t = root->visits;
 
 	mcts_node *best_node;
 	mcts_node *tmp;
@@ -48,7 +50,7 @@ static mcts_node* UCT_select_child(const mcts_node* const root, const double c){
 	int no_children = genlist_size(root->children);
 
 	for(int i = 0; i < no_children; i++){
-		tmp = genlist_get(root->children, i);
+		tmp = (mcts_node*) genlist_get(root->children, i);
 		tmp_weight = UCT(tmp, t, c);
 		if (tmp_weight > best_weight){
 			best_node = tmp;
