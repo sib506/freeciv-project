@@ -1,39 +1,41 @@
 #include "mcts.h"
 #include "mcts_node.h"
+#include <stdio.h>
 
 static mcts_node* select(const mcts_node* const root, const double c);
 static double UCT(const mcts_node* const node, const int rootPlays, const double c);
 
-void* bestMove(fc_game_state* state, const int duration, const double c) {
-
-	mcts_node *root = create_root_node(state->player,state->getMoves(state));
-
-	int elapsed_time = 0;
-
-	while( elapsed_time < duration){
-
-		mcts_node *current_node = root;
-		// TODO: Take a copy of current state
-
-		// Selection
-		// Traverse Nodes that have all their children generated
-		while((genlist_size(current_node->untried_moves) == 0) &&
-				(genlist_size(current_node->children) != 0)){
-			current_node = UCT_select_child();
-			//TODO: Now perform the move
-
-		}
-
-		// Expansion
-		// Simulation
-		// Backpropagation
-	}
-
-	// choose best move out of possible
-
-	// destroy mcts tree
-
+void* mcts_best_move() {
+	printf("Best move here\n");
+	mcts_node *root = create_root_node(1,NULL);
 	return NULL;
+
+//	int elapsed_time = 0;
+//
+//	while( elapsed_time < duration){
+//
+//		mcts_node *current_node = root;
+//		// TODO: Take a copy of current state
+//
+//		// Selection
+//		// Traverse Nodes that have all their children generated
+//		while((genlist_size(current_node->untried_moves) == 0) &&
+//				(genlist_size(current_node->children) != 0)){
+//			current_node = UCT_select_child();
+//			//TODO: Now perform the move
+//
+//		}
+//
+//		// Expansion
+//		// Simulation
+//		// Backpropagation
+//	}
+//
+//	// choose best move out of possible
+//
+//	// destroy mcts tree
+//
+//	return NULL;
 }
 
 

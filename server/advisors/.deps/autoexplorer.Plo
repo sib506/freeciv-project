@@ -91,7 +91,8 @@ autoexplorer.lo: autoexplorer.c /usr/include/stdc-predef.h \
  ../../common/map.h ../../common/team.h ../../common/traderoutes.h \
  ../../common/packets_gen.h ../../common/disaster.h \
  ../../common/terrain.h ../../common/vision.h ../../server/hand_gen.h \
- ../../server/srv_log.h advgoto.h ../../utility/rand.h autoexplorer.h
+ ../../server/srv_log.h advgoto.h ../../utility/rand.h \
+ ../../ai/mcts/mcts.h ../../ai/mcts/mcts_state.h autoexplorer.h
 
 /usr/include/stdc-predef.h:
 
@@ -416,5 +417,9 @@ autoexplorer.lo: autoexplorer.c /usr/include/stdc-predef.h \
 advgoto.h:
 
 ../../utility/rand.h:
+
+../../ai/mcts/mcts.h:
+
+../../ai/mcts/mcts_state.h:
 
 autoexplorer.h:

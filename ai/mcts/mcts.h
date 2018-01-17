@@ -1,7 +1,9 @@
+
 #ifndef FC__MCTS_H__
 #define FC__MCTS_H__
 
 #include "mcts_state.h"
+
 
 /**
  * Using the 4 cycles of the Monte Carlo tree search:
@@ -16,6 +18,7 @@
  * @param c the exploration parameter in the UCT
  * @return a pointer to the calculated best move
  */
-void* bestMove(fc_game_state* state, int duration, double c);
+void* mcts_best_move();
+
 
 #endif
