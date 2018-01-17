@@ -25,6 +25,15 @@ struct worker_task
   int want;
 };
 
+/* So can use between load/ save games*/
+struct worker_task_load_compatible
+{
+  int ptile_x;
+  int ptile_y;
+  enum unit_activity act;
+  struct act_tgt tgt;
+};
+
 void worker_task_init(struct worker_task *ptask);
 
 #ifdef __cplusplus

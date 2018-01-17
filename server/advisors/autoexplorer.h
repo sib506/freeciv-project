@@ -24,10 +24,15 @@ struct potentialMove {
 	void * moveInfo;
 };
 
+struct move_tile_natcoord {
+	int x;
+	int y;
+};
+
 enum unit_move_result manage_auto_explorer(struct unit *punit);
 enum unit_move_result manage_random_auto_explorer(struct unit *punit);
 enum unit_move_result manage_random_auto_explorer2(struct unit *punit);
-enum unit_move_result move_random_auto_explorer(struct unit *punit, struct tile *move_tile);
+enum unit_move_result move_random_auto_explorer(struct unit *punit, struct move_tile_natcoord *move_coord);
 void collect_random_explorer_moves(struct unit *punit, struct genlist *moveList);
 
 #endif /* FC__AUTOEXPLORER_H */

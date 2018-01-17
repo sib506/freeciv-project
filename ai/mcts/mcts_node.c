@@ -1,6 +1,7 @@
 #include "mcts_node.h"
+#include <string.h>
 
-mcts_node* create_node(int player, struct genlist *possible_moves, void * move,
+mcts_node* create_node(char *username, struct genlist *possible_moves, void * move,
 		mcts_node parent) {
 
 	mcts_node* node = (mcts_node*) malloc(sizeof(mcts_node));
@@ -8,13 +9,13 @@ mcts_node* create_node(int player, struct genlist *possible_moves, void * move,
 	node->children = genlist_new();
 	node->move = move;
 	node->untried_moves = possible_moves;
-	node->player = player;
+	strcpy(node->player_username, username);
 
 	return node;
 }
 
-mcts_node* create_root_node(int player, struct genlist *possible_moves) {
-	return create_node(player, possible_moves, NULL, NULL);
+mcts_node* create_root_node(char *username, struct genlist *possible_moves) {
+	return create_node(username, possible_moves, NULL, NULL);
 }
 
 mcts_node* add_child_node(mcts_node* parent, fc_game_state* state) {
@@ -25,7 +26,7 @@ mcts_node* add_child_node(mcts_node* parent, fc_game_state* state) {
 	//TODO: *** Perform chosen move ***
 
 	struct genlist untried_child_moves = genlist_new();
-	mcts_node *child_node = create_node(parent.player, untried_child_moves,
+	mcts_node *child_node = create_node(parent.player_username, untried_child_moves,
 			rnd_child_move, parent);
 	genlist_append(parent->children, child_node);
 

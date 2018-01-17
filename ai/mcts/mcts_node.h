@@ -4,9 +4,9 @@
 #include "genlist.h"
 
 typedef struct mcts_node {
-	int32_t wins = 0;
-	int32_t visits = 0;
-	int32_t player = 0;
+	int wins;
+	int visits;
+	char player_username[MAX_LEN_NAME];
 	struct mcts_node *parent;
 	struct genlist *children;
 

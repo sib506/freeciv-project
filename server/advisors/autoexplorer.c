@@ -515,7 +515,11 @@ void collect_random_explorer_moves(struct unit *punit, struct genlist *moveList)
 
 	struct potentialMove *pMove = malloc(sizeof(struct potentialMove));
 	pMove->type = explore;
-	pMove->moveInfo = init_tile;
+
+	struct move_tile_natcoord *move_tile = malloc(sizeof(struct move_tile_natcoord));
+	index_to_native_pos(&move_tile->x, &move_tile->y, tile_index(init_tile));
+
+	pMove->moveInfo = move_tile;
 	genlist_append(moveList, pMove);
 
 	pf_map_move_costs_iterate(pfm, ptile, move_cost, FALSE)
@@ -526,7 +530,10 @@ void collect_random_explorer_moves(struct unit *punit, struct genlist *moveList)
 				if (turns <= 1) {
 					struct potentialMove *pMove = malloc(sizeof(struct potentialMove));
 					pMove->type = explore;
-					pMove->moveInfo = ptile;
+
+					struct move_tile_natcoord *move_tile = malloc(sizeof(struct move_tile_natcoord));
+					index_to_native_pos(&move_tile->x, &move_tile->y, tile_index(ptile));
+					pMove->moveInfo = move_tile;
 					genlist_append(moveList, pMove);
 				}
 
@@ -537,9 +544,10 @@ void collect_random_explorer_moves(struct unit *punit, struct genlist *moveList)
 }
 
 enum unit_move_result move_random_auto_explorer(struct unit *punit,
-		struct tile *move_tile) {
+		struct move_tile_natcoord *move_coord) {
 
-	if (move_tile != NULL) {
+	if (move_coord != NULL) {
+		struct tile *move_tile= native_pos_to_tile(move_coord->x, move_coord->y);
 		/* TODO: read the path off the map we made.  Then we can make a path
 		 * which goes beside the unknown, with a good EC callback... */
 		if (!explorer_goto(punit, move_tile)) {

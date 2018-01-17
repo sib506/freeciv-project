@@ -1547,7 +1547,10 @@ void rai_manage_military(struct ai_type *ait, struct player *pplayer,
 
 	// Destroy the list and elements within
 	for(int i = 0; i < genlist_size(actionList); i++ ){
-		void *toRemove = genlist_back(actionList);
+		struct potentialMove *toRemove = genlist_back(actionList);
+		if(toRemove->type == explore){
+			free(toRemove->moveInfo);
+		}
 		genlist_pop_back(actionList);
 		free(toRemove);
 	}

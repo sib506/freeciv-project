@@ -1,19 +1,27 @@
 #include "mcts.h"
 #include "mcts_node.h"
 
-static mcts_node* select(const mcts_node* const root, const double c);
+#define MAXDEPTH 20
+
+static mcts_node* UCT_select_child(const mcts_node* const root, const double c);
 static double UCT(const mcts_node* const node, const int rootPlays, const double c);
 
-void* bestMove(fc_game_state* state, const int duration, const double c) {
+mcts_node *mcts_root; //Permanent root of the tree
+int mcts_mode = 0; // Bool: True/False
+int depth = 0;
 
-	mcts_node *root = create_root_node(state->player,state->getMoves(state));
+void mcts_best_move(struct player *pplayer) {
 
-	int elapsed_time = 0;
+	if(mcts_mode != 1){
+		mcts_mode = 1;
+		//Need to get the available moves of that player
+		mcts_root = create_root_node(pplayer->username,NULL);
+		//Create save point
+	}
 
-	while( elapsed_time < duration){
-
-		mcts_node *current_node = root;
-		// TODO: Take a copy of current state
+	if(depth < MAXDEPTH){
+		//Keep going - select a move to make from the tree
+		mcts_node *current_node = mcts_root;
 
 		// Selection
 		// Traverse Nodes that have all their children generated
@@ -27,13 +35,16 @@ void* bestMove(fc_game_state* state, const int duration, const double c) {
 		// Expansion
 		// Simulation
 		// Backpropagation
+
+
+	} else {
+		//Choose best move + return or make it
+		//Turn mcts mode off
+		//Free MCTS Tree
+		//Continue game with other players as normal
 	}
 
-	// choose best move out of possible
-
-	// destroy mcts tree
-
-	return NULL;
+	return;
 }
 
 
