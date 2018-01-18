@@ -283,6 +283,12 @@ static struct command commands[] = {
    N_("Toggle AI status of player."), NULL, NULL,
    CMD_ECHO_ADMINS, VCF_NONE, 50
   },
+  {"mctstoggle",	ALLOW_CTRL,
+   /* TRANS: translate text between <> only */
+   N_("mctstoggle <player-name>"),
+   N_("Toggle MCTS player mode."), NULL, NULL,
+   CMD_ECHO_ADMINS, VCF_NONE, 50
+  },
   {"take",    ALLOW_INFO,
    /* TRANS: translate text between [] and <> only */
    N_("take [connection-name] <player-name>"),
