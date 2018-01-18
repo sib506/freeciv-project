@@ -2403,6 +2403,92 @@ void dai_manage_military(struct ai_type *ait, struct player *pplayer,
   }
 }
 
+/**************************************************************************
+
+**************************************************************************/
+void collect_military_moves(struct unit *punit, struct genlist *moveList){
+	CHECK_UNIT(punit);
+	collect_explorer_moves(punit, moveList);
+
+	if(punit->activity!=ACTIVITY_FORTIFYING &&
+			can_unit_do_activity(punit, ACTIVITY_FORTIFYING)){
+		struct potentialMove *pMove = malloc(sizeof(struct potentialMove));
+		pMove->type = fortify;
+		pMove->moveInfo = NULL;
+		genlist_append(moveList, pMove);
+	}
+
+	if(punit->activity!=ACTIVITY_SENTRY &&
+			can_unit_do_activity(punit, ACTIVITY_SENTRY)){
+
+		struct potentialMove *pMove = malloc(sizeof(struct potentialMove));
+		pMove->type = sentry;
+		pMove->moveInfo = NULL;
+		genlist_append(moveList, pMove);
+	}
+
+	if (can_unit_do_activity(punit, ACTIVITY_PILLAGE)) {
+		struct potentialMove *pMove = malloc(sizeof(struct potentialMove));
+		pMove->type = pillage;
+		pMove->moveInfo = NULL;
+		genlist_append(moveList, pMove);
+	}
+	return;
+}
+
+/**************************************************************************
+
+**************************************************************************/
+void make_military_move(struct ai_type *ait, struct player *pplayer,
+		struct unit *punit, struct potentialMove *chosen_action){
+	switch(chosen_action->type){
+	case explore:
+		switch (make_explorer_move(punit, chosen_action->moveInfo)) {
+		case MR_DEATH:
+			//don't use punit!
+			break;
+		case MR_OK:
+			UNIT_LOG(LOG_DEBUG, punit, "more exploring");
+			break;
+		default:
+			UNIT_LOG(LOG_DEBUG, punit, "no more exploring either");
+			break;
+		};
+		break;
+		case sentry:
+			unit_activity_handling(punit, ACTIVITY_SENTRY);
+			break;
+		case fortify:
+			unit_activity_handling(punit, ACTIVITY_FORTIFYING);
+			break;
+		case pillage:
+			unit_activity_handling(punit, ACTIVITY_PILLAGE);
+			break;
+		case rage:
+			break;
+		default:
+			break;
+	}
+
+	def_ai_unit_data(punit, ait)->done = TRUE;
+	return;
+}
+
+/**************************************************************************
+
+**************************************************************************/
+void free_military_moves(struct genlist *moveList){
+	for(int i = 0; i < genlist_size(moveList); i++ ){
+		struct potentialMove *toRemove = genlist_back(moveList);
+		if(toRemove->type == explore){
+			free(toRemove->moveInfo);
+		}
+		genlist_pop_back(moveList);
+		free(toRemove);
+	}
+	genlist_destroy(moveList);
+	return;
+}
 
 /**************************************************************************
   Barbarian units may disband spontaneously if their age is more than
@@ -2677,6 +2763,7 @@ void dai_manage_units(struct ai_type *ait, struct player *pplayer)
 
   /* Clear previous orders, if desirable, here. */
   unit_list_iterate(pplayer->units, punit) {
+	//printf("Unit ID: %d\n", punit->id);
     struct unit_ai *unit_data = def_ai_unit_data(punit, ait);
 
     unit_data->done = FALSE;

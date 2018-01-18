@@ -48,6 +48,7 @@
 #include "advgoto.h"
 #include "advtools.h"
 #include "autosettlers.h"
+#include "autoexplorer.h"
 #include "infracache.h"
 
 /* ai */
@@ -1169,6 +1170,242 @@ CLEANUP:
     pf_path_destroy(path);
   }
 }
+
+struct potentialImprovement{
+	enum unit_activity activity;
+	struct act_tgt target;
+};
+
+/**************************************************************************
+  Settler collect all possible moves/actions.
+**************************************************************************/
+void collect_settler_moves(struct unit *punit, struct genlist *moveList,
+		struct player *pplayer){
+	CHECK_UNIT(punit);
+
+	struct tile *init_tile = unit_tile(punit);
+
+	if (unit_has_type_flag(punit, UTYF_CITIES)) {
+		if (city_can_be_built_here(init_tile, punit)) {
+			struct potentialMove *pMove = malloc(sizeof(struct potentialMove));
+			pMove->type = build_city;
+			pMove->moveInfo = NULL;
+			genlist_append(moveList, pMove);
+		}
+	}
+
+	collect_explorer_moves(punit, moveList);
+
+	bool consider = TRUE;
+	// Improving the tile currently standing on
+	if (!adv_settler_safe_tile(pplayer, punit, init_tile)) {
+		/* Too dangerous place */
+		consider = FALSE;
+	}
+	/* Do not work on tiles that already have workers there. */
+	unit_list_iterate(init_tile->units, aunit) {
+		if (unit_owner(aunit) == pplayer
+				&& aunit->id != punit->id
+				&& unit_has_type_flag(aunit, UTYF_SETTLERS)) {
+			consider = FALSE;
+		}
+	} unit_list_iterate_end;
+
+	if (consider) {
+		activity_type_iterate(act) {
+			struct act_tgt target = { .type = ATT_SPECIAL, .obj.spe = S_LAST };
+
+			if (act != ACTIVITY_BASE
+					&& act != ACTIVITY_GEN_ROAD
+					&& can_unit_do_activity_targeted_at(punit, act, &target,
+							init_tile)){
+				if(act != ACTIVITY_EXPLORE){
+					//Add the action to a list to choose from
+					struct potentialMove *pMove = malloc(sizeof(struct potentialMove));
+					pMove->type = improvement;
+
+					struct potentialImprovement *action = malloc(sizeof(struct potentialImprovement));
+					action->activity = act;
+					action->target = target;
+
+					pMove->moveInfo = action;
+					genlist_append(moveList, pMove);
+				}
+			}
+		} activity_type_iterate_end;
+
+		road_type_iterate(proad) {
+			struct act_tgt target = { .type = ATT_ROAD, .obj.road = road_number(proad) };
+
+			if (can_unit_do_activity_targeted_at(punit, ACTIVITY_GEN_ROAD, &target, init_tile)) {
+				struct potentialMove *pMove = malloc(sizeof(struct potentialMove));
+				pMove->type = improvement;
+
+				struct potentialImprovement *action=malloc(sizeof(struct potentialImprovement));
+				action->activity = ACTIVITY_GEN_ROAD;
+				action->target = target;
+
+				pMove->moveInfo = action;
+				genlist_append(moveList, pMove);
+			}
+			else {
+				road_deps_iterate(&(proad->reqs), pdep) {
+					struct act_tgt dep_tgt = { .type = ATT_ROAD, .obj.road = road_number(pdep) };
+					if (can_unit_do_activity_targeted_at(punit, ACTIVITY_GEN_ROAD,
+							&dep_tgt, init_tile)) {
+						//Add the action to a list to choose from
+						struct potentialMove *pMove = malloc(sizeof(struct potentialMove));
+						pMove->type = improvement;
+
+						struct potentialImprovement *action=malloc(sizeof(struct potentialImprovement));
+						action->activity = ACTIVITY_GEN_ROAD;
+						action->target = target;
+
+						pMove->moveInfo = action;
+						genlist_append(moveList, pMove);
+					}
+				} road_deps_iterate_end;
+			}
+		} road_type_iterate_end;
+
+
+		base_type_iterate(pbase) {
+			struct act_tgt target = { .type = ATT_BASE, .obj.base = base_number(pbase) };
+			if (can_unit_do_activity_targeted_at(punit, ACTIVITY_BASE, &target,
+					init_tile)) {
+				//Add the action to a list to choose from
+				struct potentialMove *pMove = malloc(sizeof(struct potentialMove));
+				pMove->type = improvement;
+
+				struct potentialImprovement *action=malloc(sizeof(struct potentialImprovement));
+				action->activity = ACTIVITY_BASE;
+				action->target = target;
+
+				pMove->moveInfo = action;
+				genlist_append(moveList, pMove);
+			} else {
+				base_deps_iterate(&(pbase->reqs), pdep) {
+					struct act_tgt dep_tgt = { .type = ATT_BASE, .obj.base = base_number(pdep) };
+					if (can_unit_do_activity_targeted_at(punit, ACTIVITY_BASE,
+							&dep_tgt, init_tile)) {
+						//Add the action to a list to choose from
+						struct potentialMove *pMove = malloc(sizeof(struct potentialMove));
+						pMove->type = improvement;
+
+						struct potentialImprovement *action=malloc(sizeof(struct potentialImprovement));
+						action->activity = ACTIVITY_BASE;
+						action->target = target;
+
+						pMove->moveInfo = action;
+						genlist_append(moveList, pMove);
+					}
+				} base_deps_iterate_end;
+			}
+		} base_type_iterate_end;
+	}
+
+	city_list_iterate(pplayer->cities, pcity) {
+		struct worker_task *ptask = &pcity->server.task_req;
+		if (ptask->ptile != NULL) {
+			bool consider = TRUE;
+
+			/* Do not go to tiles that already have workers there. */
+			unit_list_iterate(ptask->ptile->units, aunit) {
+				if (unit_owner(aunit) == pplayer
+						&& aunit->id != punit->id
+						&& unit_has_type_flag(aunit, UTYF_SETTLERS)) {
+					consider = FALSE;
+				}
+			} unit_list_iterate_end;
+
+			if (consider
+					&& can_unit_do_activity_targeted_at(punit, ptask->act, &ptask->tgt,
+							ptask->ptile)) {
+				struct potentialMove *pMove = malloc(sizeof(struct potentialMove));
+				pMove->type = request;
+
+				struct worker_task_load_compatible *ptask_save = malloc(sizeof(struct worker_task_load_compatible));
+				ptask_save->act = ptask->act;
+				ptask_save->tgt = ptask->tgt;
+				index_to_native_pos(&ptask_save->ptile_x,&ptask_save->ptile_y, tile_index(ptask->ptile));
+				pMove->moveInfo = ptask_save;
+				genlist_append(moveList, pMove);
+			}
+		}
+	} city_list_iterate_end;
+
+	return;
+}
+
+/**************************************************************************
+  Make chosen settler move.
+**************************************************************************/
+void make_settler_move(struct ai_type *ait, struct player *pplayer,
+		struct unit *punit, struct settlermap *state, struct potentialMove *chosen_action){
+	struct worker_task_load_compatible *chosen_req_task;
+	struct tile *init_tile = unit_tile(punit);
+	struct potentialImprovement *action;
+
+	switch(chosen_action->type){
+	case explore:
+		make_explorer_move(punit, chosen_action->moveInfo);
+		break;
+	case build_city:
+		adv_unit_new_task(punit, AUT_BUILD_CITY, init_tile);
+		if (def_ai_unit_data(punit, ait)->task == AIUNIT_BUILD_CITY) {
+			if (!dai_do_build_city(ait, pplayer, punit)) {
+				UNIT_LOG(LOG_DEBUG, punit, "could not make city on %s",
+						tile_get_info_text(unit_tile(punit), TRUE, 0));
+				dai_unit_new_task(ait, punit, AIUNIT_NONE, NULL);
+			}
+		}
+		break;
+	case improvement:
+		action = chosen_action->moveInfo;
+		if (punit->server.adv->task == AUT_AUTO_SETTLER) {
+			if(punit->moves_left > 0){
+				if (activity_requires_target(action->activity)) {
+					unit_activity_handling_targeted(punit, action->activity, &action->target);
+				} else {
+					unit_activity_handling(punit, action->activity);
+				}
+				send_unit_info(NULL, punit); /* FIXME: probably duplicate */
+			}
+		}
+		break;
+	case request:
+		chosen_req_task = chosen_action->moveInfo;
+		if (chosen_req_task != NULL) {
+			struct pf_path *path = NULL;
+			int completion_time = 0;
+
+			auto_settler_setup_work(pplayer, punit, state, 0, path,
+					native_pos_to_tile(chosen_req_task->ptile_x, chosen_req_task->ptile_y), chosen_req_task->act, &chosen_req_task->tgt,
+					completion_time);
+		}
+		break;
+	default:
+		break;
+	}
+	return;
+}
+
+/**************************************************************************
+  Free given moves list
+**************************************************************************/
+void free_settler_moves(struct genlist *moveList){
+	for(int i = 0; i < genlist_size(moveList); i++ ){
+		struct potentialMove *toRemove = genlist_back(moveList);
+		if((toRemove->type == explore) || (toRemove->type == improvement)
+				|| (toRemove->type == request)){
+			free(toRemove->moveInfo);
+		}
+		genlist_pop_back(moveList);
+		free(toRemove);
+	}
+	genlist_destroy(moveList);
+}
+
 
 /**************************************************************************
   Auto settler continuing its work.

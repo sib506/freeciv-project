@@ -92,8 +92,12 @@ void dai_manage_unit(struct ai_type *ait, struct player *pplayer,
                      struct unit *punit);
 void dai_manage_military(struct ai_type *ait, struct player *pplayer,
                          struct unit *punit);
-void dai_manage_military_random(struct ai_type *ait, struct player *pplayer,
-        struct unit *punit);
+
+void collect_military_moves(struct unit *punit, struct genlist *moveList);
+void make_military_move(struct ai_type *ait, struct player *pplayer,
+		struct unit *punit, struct potentialMove *chosen_action);
+void free_military_moves(struct genlist *moveList);
+
 struct city *find_nearest_safe_city(struct unit *punit);
 int look_for_charge(struct ai_type *ait, struct player *pplayer,
                     struct unit *punit,

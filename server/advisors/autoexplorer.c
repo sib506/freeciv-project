@@ -487,7 +487,7 @@ enum unit_move_result manage_random_auto_explorer(struct unit *punit)
 #undef DIST_FACTOR
 }
 
-void collect_random_explorer_moves(struct unit *punit, struct genlist *moveList) {
+void collect_explorer_moves(struct unit *punit, struct genlist *moveList) {
 	struct player *pplayer = unit_owner(punit);
 	/* Loop prevention */
 	struct tile *init_tile = unit_tile(punit);
@@ -543,7 +543,7 @@ void collect_random_explorer_moves(struct unit *punit, struct genlist *moveList)
 	TIMING_LOG(AIT_EXPLORER, TIMER_STOP);
 }
 
-enum unit_move_result move_random_auto_explorer(struct unit *punit,
+enum unit_move_result make_explorer_move(struct unit *punit,
 		struct move_tile_natcoord *move_coord) {
 
 	if (move_coord != NULL) {
@@ -559,7 +559,6 @@ enum unit_move_result move_random_auto_explorer(struct unit *punit,
 			/* We can still move on... */
 			UNIT_LOG(LOG_DEBUG, punit, "done exploring (all finished)...");
 			return MR_PAUSE;
-
 /*			if (!same_pos(move_tile, unit_tile(punit))) {
 				 At least we moved (and maybe even got to where we wanted).
 				 * Let's do more exploring.
@@ -581,6 +580,16 @@ enum unit_move_result move_random_auto_explorer(struct unit *punit,
 		return MR_BAD_MAP_POSITION;
 	}
 #undef DIST_FACTOR
+}
+
+void free_explorer_moves(struct genlist *moveList){
+	for(int i = 0; i < genlist_size(moveList); i++ ){
+		struct potentialMove *toRemove = genlist_back(moveList);
+		free(toRemove->moveInfo);
+		genlist_pop_back(moveList);
+		free(toRemove);
+	}
+	genlist_destroy(moveList);
 }
 
 enum unit_move_result manage_random_auto_explorer2(struct unit *punit)

@@ -226,7 +226,7 @@ void rai_settler_run(struct ai_type *ait, struct player *pplayer,
 		}
 	}
 
-	collect_random_explorer_moves(punit, actionList);
+	collect_explorer_moves(punit, actionList);
 
 	bool consider = TRUE;
 	// Improving the tile currently standing on
@@ -372,7 +372,7 @@ void rai_settler_run(struct ai_type *ait, struct player *pplayer,
 	struct worker_task_load_compatible *chosen_req_task;
 	switch(chosen_action->type){
 	case explore:
-		move_random_auto_explorer(punit, chosen_action->moveInfo);
+		make_explorer_move(punit, chosen_action->moveInfo);
 		break;
 	case build_city:
 		adv_unit_new_task(punit, AUT_BUILD_CITY, init_tile);

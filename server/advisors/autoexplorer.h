@@ -32,7 +32,9 @@ struct move_tile_natcoord {
 enum unit_move_result manage_auto_explorer(struct unit *punit);
 enum unit_move_result manage_random_auto_explorer(struct unit *punit);
 enum unit_move_result manage_random_auto_explorer2(struct unit *punit);
-enum unit_move_result move_random_auto_explorer(struct unit *punit, struct move_tile_natcoord *move_coord);
-void collect_random_explorer_moves(struct unit *punit, struct genlist *moveList);
+
+void collect_explorer_moves(struct unit *punit, struct genlist *moveList);
+enum unit_move_result make_explorer_move(struct unit *punit, struct move_tile_natcoord *move_coord);
+void free_explorer_moves(struct genlist *moveList);
 
 #endif /* FC__AUTOEXPLORER_H */

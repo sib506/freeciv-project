@@ -30,10 +30,13 @@ void dai_auto_settler_free(struct ai_plr *ai);
 void dai_auto_settler_reset(struct ai_type *ait, struct player *pplayer);
 void dai_auto_settler_run(struct ai_type *ait, struct player *pplayer,
                           struct unit *punit, struct settlermap *state);
-void dai_random_settler_run(struct ai_type *ait, struct player *pplayer,
-	struct unit *punit, struct settlermap *state);
-void dai_random_settler_run2(struct ai_type *ait, struct player *pplayer,
-	struct unit *punit, struct settlermap *state);
+
+void collect_settler_moves(struct unit *punit, struct genlist *moveList,
+		struct player *pplayer);
+void make_settler_move(struct ai_type *ait, struct player *pplayer,
+        struct unit *punit, struct settlermap *state, struct potentialMove *chosen_action);
+void free_settler_moves(struct genlist *moveList);
+
 void dai_auto_settler_cont(struct ai_type *ait, struct player *pplayer,
                            struct unit *punit, struct settlermap *state);
 
