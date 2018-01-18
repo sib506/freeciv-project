@@ -59,7 +59,7 @@ mcts_node* add_child_node(mcts_node* parent, fc_game_state* state);
  *
  * @param root the root node to destruct it's subtree
  */
-void destruct_tree(mcts_node root_node);
+void free_search_tree(mcts_node root_node);
 
 /**
  * Recursively backpropagates up the tree adding the win value and always

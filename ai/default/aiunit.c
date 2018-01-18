@@ -2776,6 +2776,8 @@ void dai_manage_units(struct ai_type *ait, struct player *pplayer)
    * allowed to leave home. */
   dai_set_defenders(ait, pplayer);
 
+  player_available_moves(pplayer);
+
   unit_list_iterate_safe(pplayer->units, punit) {
     if ((!unit_transported(punit) || unit_owner(unit_transport_get(punit)) != pplayer)
          && !def_ai_unit_data(punit, ait)->done) {
@@ -3261,3 +3263,40 @@ struct unit_type *dai_role_utype_for_move_type(struct city *pcity, int role,
 
   return role_units_iterate_backwards(role, role_unit_cb, &cb_data);
 }
+
+/**************************************************************************
+  Calculate all available moves for a player (stored in a genlist)
+**************************************************************************/
+struct unit_moves{
+	int id;
+	struct genlist* moves;
+};
+
+struct genlist* player_available_moves(struct player *pplayer){
+	// Create a list
+	//printf("%s\n", pplayer->name);
+	struct genlist *player_moves = genlist_new();
+
+	unit_list_iterate_safe(pplayer->units, punit) {
+		struct unit_moves *umoves = malloc(sizeof(struct unit_moves));
+		umoves->id = punit->id;
+
+		struct genlist *moves = genlist_new();
+		if (unit_has_type_flag(punit, UTYF_SETTLERS) || unit_has_type_flag(punit, UTYF_CITIES)){
+			collect_settler_moves(punit,moves,pplayer);
+//			printf("\tCheck settler possible moves: %d\n", genlist_size(moves));
+		} else if (is_military_unit(punit)){
+			collect_military_moves(punit,moves);
+//			printf("\tCheck military possible moves: %d\n", genlist_size(moves));
+		} else if (unit_has_type_role(punit, L_EXPLORER)){
+			collect_explorer_moves(punit, moves);
+//			printf("\tCheck explorer possible moves: %d\n", genlist_size(moves));
+		}
+		// Add list to main list, along with this units ID
+		genlist_append(player_moves, umoves);
+	} unit_list_iterate_safe_end;
+
+//	printf("\t No of Units: %d\n", genlist_size(player_moves));
+	return player_moves;
+}
+

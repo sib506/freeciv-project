@@ -33,7 +33,7 @@ mcts_node* add_child_node(mcts_node* parent, fc_game_state* state) {
 	return child_node;
 }
 
-void destruct_tree(mcts_node root_node) {
+void free_search_tree(mcts_node root_node) {
 	if (root_node == NULL) {
 		return;
 	}
@@ -42,7 +42,7 @@ void destruct_tree(mcts_node root_node) {
 
 	while(genlist_size(root_node.children) != 0){
 		child = genlist_pop_front(root_node.children);
-		destruct_tree(child);
+		free_search_tree(child);
 	}
 
 	// free + destroy move lists data
