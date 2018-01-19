@@ -54,5 +54,5 @@ Module.symvers
 Mkfile.old
 dkms.conf
 
-*.plo
+*.Plo
 Makefile
