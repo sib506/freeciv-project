@@ -96,7 +96,8 @@ aiferry.lo: aiferry.c /usr/include/stdc-predef.h ../../fc_config.h \
  ../../server/unithand.h ../../server/hand_gen.h ../../server/unittools.h \
  ../../server/advisors/advdata.h ../../common/improvement.h aidata.h \
  aiguard.h aiplayer.h ../../common/player.h aitools.h aicity.h \
- ../../common/effects.h aiunit.h ../../common/combat.h aiferry.h
+ ../../common/effects.h aiunit.h ../../common/combat.h \
+ ../../utility/genlist.h aiferry.h
 
 /usr/include/stdc-predef.h:
 
@@ -451,5 +452,7 @@ aicity.h:
 aiunit.h:
 
 ../../common/combat.h:
+
+../../utility/genlist.h:
 
 aiferry.h:

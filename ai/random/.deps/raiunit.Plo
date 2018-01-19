@@ -103,11 +103,12 @@ raiunit.lo: raiunit.c /usr/include/stdc-predef.h ../../fc_config.h \
  ../../ai/default/aiparatrooper.h ../../ai/default/aiplayer.h \
  ../../ai/default/aitools.h ../../server/advisors/advgoto.h \
  ../../common/aicore/path_finding.h ../../ai/default/aicity.h \
- ../../ai/default/aiunit.h ../../server/advisors/autoexplorer.h \
- ../../server/barbarian.h ../../server/citytools.h ../../common/events.h \
- ../../server/cityturn.h ../../server/diplomats.h ../../server/maphand.h \
- ../../common/terrain.h ../../common/vision.h ../../server/hand_gen.h \
- ../../server/srv_log.h ../../server/unithand.h ../../server/unittools.h \
+ ../../ai/default/aiunit.h ../../utility/genlist.h \
+ ../../server/advisors/autoexplorer.h ../../server/barbarian.h \
+ ../../server/citytools.h ../../common/events.h ../../server/cityturn.h \
+ ../../server/diplomats.h ../../server/maphand.h ../../common/terrain.h \
+ ../../common/vision.h ../../server/hand_gen.h ../../server/srv_log.h \
+ ../../server/unithand.h ../../server/unittools.h \
  ../../server/advisors/advtools.h ../../server/advisors/autosettlers.h \
  raiunit.h
 
@@ -482,6 +483,8 @@ raiunit.lo: raiunit.c /usr/include/stdc-predef.h ../../fc_config.h \
 ../../ai/default/aicity.h:
 
 ../../ai/default/aiunit.h:
+
+../../utility/genlist.h:
 
 ../../server/advisors/autoexplorer.h:
 

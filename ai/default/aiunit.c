@@ -78,6 +78,8 @@
 
 #include "aiunit.h"
 
+/* ai/mcts */
+#include "mcts.h"
 
 #define LOGLEVEL_RECOVERY LOG_DEBUG
 #define LOG_CARAVAN       LOG_DEBUG
@@ -2778,6 +2780,8 @@ void dai_manage_units(struct ai_type *ait, struct player *pplayer)
   dai_set_defenders(ait, pplayer);
 
   //player_available_moves(pplayer);
+  mcts_best_move(pplayer);
+  mcts_best_move(pplayer);
 
   unit_list_iterate_safe(pplayer->units, punit) {
     if ((!unit_transported(punit) || unit_owner(unit_transport_get(punit)) != pplayer)

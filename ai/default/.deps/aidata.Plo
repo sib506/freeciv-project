@@ -90,8 +90,8 @@ aidata.lo: aidata.c /usr/include/stdc-predef.h ../../fc_config.h \
  ../../server/advisors/advdata.h ../../common/fc_types.h \
  ../../common/improvement.h advdiplomacy.h ../../common/ai.h aiferry.h \
  aiplayer.h ../../common/player.h aisettler.h ../../common/city.h \
- aiunit.h ../../common/combat.h ../../common/unittype.h \
- ../../server/advisors/autoexplorer.h aidata.h
+ ../../utility/genlist.h ../../server/advisors/autoexplorer.h aiunit.h \
+ ../../common/combat.h ../../common/unittype.h aidata.h
 
 /usr/include/stdc-predef.h:
 
@@ -409,12 +409,14 @@ aisettler.h:
 
 ../../common/city.h:
 
+../../utility/genlist.h:
+
+../../server/advisors/autoexplorer.h:
+
 aiunit.h:
 
 ../../common/combat.h:
 
 ../../common/unittype.h:
-
-../../server/advisors/autoexplorer.h:
 
 aidata.h:

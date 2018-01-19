@@ -112,9 +112,10 @@ advdiplomacy.lo: advdiplomacy.c /usr/include/stdc-predef.h \
  ../../server/advisors/advtools.h ../../ai/aitraits.h \
  ../../common/traits.h aicity.h ../../common/effects.h aidata.h ailog.h \
  aiplayer.h aiunit.h ../../common/combat.h ../../common/unittype.h \
- ../../server/advisors/autoexplorer.h aitools.h ../../common/unit.h \
- ../../server/advisors/advgoto.h ../../common/aicore/path_finding.h \
- ../../common/tile.h advmilitary.h advdiplomacy.h ../../common/ai.h
+ ../../utility/genlist.h ../../server/advisors/autoexplorer.h aitools.h \
+ ../../common/unit.h ../../server/advisors/advgoto.h \
+ ../../common/aicore/path_finding.h ../../common/tile.h advmilitary.h \
+ advdiplomacy.h ../../common/ai.h
 
 /usr/include/stdc-predef.h:
 
@@ -513,6 +514,8 @@ aiunit.h:
 ../../common/combat.h:
 
 ../../common/unittype.h:
+
+../../utility/genlist.h:
 
 ../../server/advisors/autoexplorer.h:
 

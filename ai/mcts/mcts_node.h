@@ -1,7 +1,17 @@
 #ifndef FC__MCTS_NODE_H__
 #define FC__MCTS_NODE_H__
 
+#ifdef HAVE_CONFIG_H
+#include <fc_config.h>
+#endif
+
+/* utility */
+#include "fcintl.h"
 #include "genlist.h"
+#include "log.h"
+#include "mem.h"
+#include "support.h"
+
 #include "fc_types.h"
 #include "stdbool.h"
 #include "aiunit.h"
@@ -32,8 +42,8 @@ typedef struct mcts_node {
  * @return a pointer to a new MctsNode_s
  * @pre newLplayer is 0 or 1
  */
-mcts_node* create_node(int player, struct genlist *possible_moves,
-		void * move, mcts_node parent);
+mcts_node* create_node(char *username, struct genlist *all_possible_moves,
+		void * move, mcts_node *parent);
 
 /**
  * Creates a new root node. parent and move set to NULL.
@@ -43,7 +53,7 @@ mcts_node* create_node(int player, struct genlist *possible_moves,
  * @return a pointer to a new MctsNode_s root
  * @pre newLplayer is 0 or 1
  */
-mcts_node* create_root_node(int player, struct genlist *possible_moves);
+mcts_node* create_root_node(char *username, struct genlist *all_possible_moves);
 
 
 /**
@@ -57,7 +67,7 @@ mcts_node* create_root_node(int player, struct genlist *possible_moves);
  * @return the child that was created and added to the parent's child list
  * @pre there are remaining moves in the parent node
  */
-mcts_node* add_child_node(mcts_node* parent, fc_game_state* state);
+mcts_node* add_child_node(mcts_node* parent);
 
 
 /**

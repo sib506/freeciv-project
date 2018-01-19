@@ -98,12 +98,13 @@ aiunit.lo: aiunit.c /usr/include/stdc-predef.h ../../fc_config.h \
  ../../common/improvement.h aidata.h aidiplomat.h aiferry.h aiguard.h \
  aihand.h aihunt.h ailog.h aiparatrooper.h aiplayer.h aitools.h \
  ../../server/advisors/advgoto.h ../../common/aicore/path_finding.h \
- aiunit.h ../../server/advisors/autoexplorer.h aisettler.h \
- ../../server/barbarian.h ../../server/citytools.h ../../common/events.h \
- ../../server/cityturn.h ../../server/diplomats.h ../../server/maphand.h \
- ../../common/terrain.h ../../common/vision.h ../../server/hand_gen.h \
- ../../server/srv_log.h ../../server/unithand.h ../../server/unittools.h \
- ../../server/advisors/advtools.h ../../server/advisors/autosettlers.h
+ aiunit.h ../../utility/genlist.h ../../server/advisors/autoexplorer.h \
+ aisettler.h ../../server/barbarian.h ../../server/citytools.h \
+ ../../common/events.h ../../server/cityturn.h ../../server/diplomats.h \
+ ../../server/maphand.h ../../common/terrain.h ../../common/vision.h \
+ ../../server/hand_gen.h ../../server/srv_log.h ../../server/unithand.h \
+ ../../server/unittools.h ../../server/advisors/advtools.h \
+ ../../server/advisors/autosettlers.h ../../ai/mcts/mcts.h
 
 /usr/include/stdc-predef.h:
 
@@ -475,6 +476,8 @@ aitools.h:
 
 aiunit.h:
 
+../../utility/genlist.h:
+
 ../../server/advisors/autoexplorer.h:
 
 aisettler.h:
@@ -506,3 +509,5 @@ aisettler.h:
 ../../server/advisors/advtools.h:
 
 ../../server/advisors/autosettlers.h:
+
+../../ai/mcts/mcts.h:

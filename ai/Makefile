@@ -216,7 +216,7 @@ am__define_uniq_tagged_files = \
   done | $(am__uniquify_input)`
 ETAGS = etags
 CTAGS = ctags
-DIST_SUBDIRS = random default classic threaded stub
+DIST_SUBDIRS = random default classic threaded stub mcts
 am__DIST_COMMON = $(srcdir)/Makefile.in \
 	$(top_srcdir)/bootstrap/depcomp
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -604,9 +604,9 @@ top_builddir = ..
 top_srcdir = ..
 module_dirs = random $(am__append_1) $(am__append_2) $(am__append_3) \
 	$(am__append_4) $(am__append_5) $(am__append_6)
-AM_CPPFLAGS = -I$(top_srcdir)/utility -I$(top_srcdir)/common
+AM_CPPFLAGS = -I$(top_srcdir)/utility -I$(top_srcdir)/common -I$(srcdir)/mcts
 # AI module loading supported, but experimental modules not built
-SUBDIRS = $(module_dirs)
+SUBDIRS = $(module_dirs) mcts
 noinst_LTLIBRARIES = libaicommon.la
 libaicommon_la_SOURCES = \
 	aitraits.c	\

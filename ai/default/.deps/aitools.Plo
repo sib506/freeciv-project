@@ -100,7 +100,7 @@ aitools.lo: aitools.c /usr/include/stdc-predef.h ../../fc_config.h \
  ../../server/advisors/advgoto.h ../../common/aicore/path_finding.h \
  ../../server/advisors/advtools.h ../../server/advisors/autosettlers.h \
  ../../server/advisors/infracache.h advmilitary.h aidata.h aiferry.h \
- aiguard.h ailog.h aiplayer.h aitech.h aiunit.h \
+ aiguard.h ailog.h aiplayer.h aitech.h aiunit.h ../../utility/genlist.h \
  ../../server/advisors/autoexplorer.h aitools.h aicity.h \
  ../../common/effects.h
 
@@ -485,6 +485,8 @@ aiplayer.h:
 aitech.h:
 
 aiunit.h:
+
+../../utility/genlist.h:
 
 ../../server/advisors/autoexplorer.h:
 

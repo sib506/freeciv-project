@@ -213,7 +213,6 @@ void rai_settler_run(struct ai_type *ait, struct player *pplayer,
 
 	struct tile *init_tile = unit_tile(punit);
 	struct potentialImprovement *action;
-	struct worker_task *chosenTask;
 
 	struct genlist* actionList = genlist_new();
 

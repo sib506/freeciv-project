@@ -160,5 +160,7 @@ struct rgbcolor *playercolor_get(int id);
 void player_set_to_ai_mode(struct player *pplayer,
                            enum ai_level skill_level);
 void player_set_under_human_control(struct player *pplayer);
+void player_set_to_mcts_mode(struct player *pplayer);
+void player_set_to_normal_mode(struct player *pplayer);
 
 #endif  /* FC__PLRHAND_H */

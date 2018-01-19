@@ -95,8 +95,8 @@ aihunt.lo: aihunt.c /usr/include/stdc-predef.h ../../fc_config.h \
  ../../common/improvement.h ../../server/advisors/advgoto.h \
  ../../common/aicore/path_finding.h ../../server/advisors/advtools.h \
  ../../server/advisors/autosettlers.h aicity.h ../../common/effects.h \
- aiplayer.h aitools.h aiunit.h ../../server/advisors/autoexplorer.h \
- aihunt.h
+ aiplayer.h aitools.h aiunit.h ../../utility/genlist.h \
+ ../../server/advisors/autoexplorer.h aihunt.h
 
 /usr/include/stdc-predef.h:
 
@@ -447,6 +447,8 @@ aiplayer.h:
 aitools.h:
 
 aiunit.h:
+
+../../utility/genlist.h:
 
 ../../server/advisors/autoexplorer.h:
 

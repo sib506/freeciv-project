@@ -92,7 +92,7 @@ aiguard.lo: aiguard.c /usr/include/stdc-predef.h ../../fc_config.h \
  ../../common/tile.h ../../common/unittype.h aicity.h \
  ../../common/effects.h ../../server/advisors/advdata.h \
  ../../common/improvement.h aiunit.h ../../common/combat.h \
- ../../server/advisors/autoexplorer.h aiguard.h
+ ../../utility/genlist.h ../../server/advisors/autoexplorer.h aiguard.h
 
 /usr/include/stdc-predef.h:
 
@@ -423,6 +423,8 @@ aicity.h:
 aiunit.h:
 
 ../../common/combat.h:
+
+../../utility/genlist.h:
 
 ../../server/advisors/autoexplorer.h:
 

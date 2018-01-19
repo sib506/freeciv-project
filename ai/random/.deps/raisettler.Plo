@@ -101,7 +101,7 @@ raisettler.lo: raisettler.c /usr/include/stdc-predef.h ../../fc_config.h \
  ../../ai/default/aicity.h ../../common/effects.h \
  ../../ai/default/aiferry.h ../../ai/default/aiplayer.h \
  ../../ai/default/aitools.h ../../ai/default/aicity.h \
- ../../ai/default/aiunit.h ../../common/combat.h \
+ ../../ai/default/aiunit.h ../../common/combat.h ../../utility/genlist.h \
  ../../server/advisors/autoexplorer.h ../../ai/default/aiunit.h \
  ../../common/aicore/citymap.h raisettler.h ../../utility/rand.h
 
@@ -476,6 +476,8 @@ raisettler.lo: raisettler.c /usr/include/stdc-predef.h ../../fc_config.h \
 ../../ai/default/aiunit.h:
 
 ../../common/combat.h:
+
+../../utility/genlist.h:
 
 ../../server/advisors/autoexplorer.h:
 

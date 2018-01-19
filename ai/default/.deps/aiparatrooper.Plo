@@ -95,7 +95,7 @@ aiparatrooper.lo: aiparatrooper.c /usr/include/stdc-predef.h \
  ../../server/unittools.h ../../server/advisors/advdata.h \
  ../../common/improvement.h ../../server/generator/utilities.h aicity.h \
  ../../common/effects.h aiplayer.h aiunit.h ../../common/combat.h \
- ../../server/advisors/autoexplorer.h aitools.h \
+ ../../utility/genlist.h ../../server/advisors/autoexplorer.h aitools.h \
  ../../server/advisors/advgoto.h ../../common/aicore/path_finding.h \
  aiparatrooper.h
 
@@ -446,6 +446,8 @@ aiplayer.h:
 aiunit.h:
 
 ../../common/combat.h:
+
+../../utility/genlist.h:
 
 ../../server/advisors/autoexplorer.h:
 

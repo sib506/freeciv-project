@@ -99,7 +99,8 @@ aihand.lo: aihand.c /usr/include/stdc-predef.h ../../fc_config.h \
  ../../server/advisors/advspace.h aicity.h ../../common/effects.h \
  aiplayer.h aitech.h aitools.h ../../server/advisors/advgoto.h \
  ../../common/aicore/path_finding.h ../../common/tile.h aiunit.h \
- ../../common/combat.h ../../server/advisors/autoexplorer.h aihand.h
+ ../../common/combat.h ../../utility/genlist.h \
+ ../../server/advisors/autoexplorer.h aihand.h
 
 /usr/include/stdc-predef.h:
 
@@ -472,6 +473,8 @@ aitools.h:
 aiunit.h:
 
 ../../common/combat.h:
+
+../../utility/genlist.h:
 
 ../../server/advisors/autoexplorer.h:
 

@@ -110,7 +110,7 @@ advmilitary.lo: advmilitary.c /usr/include/stdc-predef.h \
  aiair.h aicity.h ../../common/effects.h aidata.h aidiplomat.h aiferry.h \
  aihand.h aihunt.h aiparatrooper.h aiplayer.h ../../common/player.h \
  aitech.h aitools.h ../../server/advisors/advgoto.h \
- ../../common/aicore/path_finding.h aiunit.h \
+ ../../common/aicore/path_finding.h aiunit.h ../../utility/genlist.h \
  ../../server/advisors/autoexplorer.h advmilitary.h
 
 /usr/include/stdc-predef.h:
@@ -510,6 +510,8 @@ aitools.h:
 ../../common/aicore/path_finding.h:
 
 aiunit.h:
+
+../../utility/genlist.h:
 
 ../../server/advisors/autoexplorer.h:
 

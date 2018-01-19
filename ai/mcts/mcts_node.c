@@ -2,7 +2,7 @@
 #include <string.h>
 
 mcts_node* create_node(char *username, struct genlist *possible_moves, void * move,
-		mcts_node parent) {
+		mcts_node *parent) {
 
 	mcts_node* node = (mcts_node*) malloc(sizeof(mcts_node));
 	node->parent = parent;
@@ -15,10 +15,11 @@ mcts_node* create_node(char *username, struct genlist *possible_moves, void * mo
 }
 
 mcts_node* create_root_node(char *username, struct genlist *all_possible_moves) {
-	return create_node(username, all_possible_moves, NULL, NULL);
+	return NULL; //create_node(username, all_possible_moves, NULL, NULL);
 }
 
-mcts_node* add_child_node(mcts_node* parent, fc_game_state* state) {
+mcts_node* add_child_node(mcts_node* parent) {
+/*
 	int rand_index = fc_rand(genlist_size(parent->untried_moves));
 	void* rnd_child_move = genlist_get(parent->untried_moves, rand_index);
 	genlist_erase(parent->untried_moves, genlist_link(parent->untried_moves, rand_index));
@@ -29,19 +30,21 @@ mcts_node* add_child_node(mcts_node* parent, fc_game_state* state) {
 	mcts_node *child_node = create_node(parent.player_username, untried_child_moves,
 			rnd_child_move, parent);
 	genlist_append(parent->children, child_node);
+*/
 
-	return child_node;
+	return NULL;
 }
 
 void free_search_tree(mcts_node root_node) {
-	if (root_node == NULL) {
+	/*if (root_node == NULL) {
 		return;
 	}
 
 	mcts_node* child;
 
 	while(genlist_size(root_node.children) != 0){
-		child = genlist_pop_front(root_node.children);
+		child = genlist_front(root_node.children);
+		genlist_pop_front(root_node.children);
 		free_search_tree(child);
 	}
 
@@ -55,7 +58,7 @@ void free_search_tree(mcts_node root_node) {
 
 	if(root_node != NULL){
 		free(root_node);
-	}
+	}*/
 
 }
 

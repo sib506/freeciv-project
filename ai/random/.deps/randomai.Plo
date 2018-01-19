@@ -92,11 +92,12 @@ randomai.lo: randomai.c /usr/include/stdc-predef.h ../../fc_config.h \
  ../../ai/default/aidata.h ../../ai/default/aiferry.h \
  ../../ai/default/aihand.h ../../ai/default/ailog.h \
  ../../ai/default/aiplayer.h ../../ai/default/aisettler.h \
- ../../common/city.h ../../ai/default/aitools.h ../../common/unit.h \
- ../../server/advisors/advgoto.h ../../common/aicore/path_finding.h \
- ../../common/tile.h ../../ai/default/aicity.h ../../ai/default/aiunit.h \
- ../../common/combat.h ../../server/advisors/autoexplorer.h raiunit.h \
- raisettler.h randomai.h
+ ../../common/city.h ../../utility/genlist.h \
+ ../../server/advisors/autoexplorer.h ../../ai/default/aitools.h \
+ ../../common/unit.h ../../server/advisors/advgoto.h \
+ ../../common/aicore/path_finding.h ../../common/tile.h \
+ ../../ai/default/aicity.h ../../ai/default/aiunit.h \
+ ../../common/combat.h raiunit.h raisettler.h randomai.h
 
 /usr/include/stdc-predef.h:
 
@@ -414,6 +415,10 @@ randomai.lo: randomai.c /usr/include/stdc-predef.h ../../fc_config.h \
 
 ../../common/city.h:
 
+../../utility/genlist.h:
+
+../../server/advisors/autoexplorer.h:
+
 ../../ai/default/aitools.h:
 
 ../../common/unit.h:
@@ -429,8 +434,6 @@ randomai.lo: randomai.c /usr/include/stdc-predef.h ../../fc_config.h \
 ../../ai/default/aiunit.h:
 
 ../../common/combat.h:
-
-../../server/advisors/autoexplorer.h:
 
 raiunit.h:
 

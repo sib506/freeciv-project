@@ -19,6 +19,10 @@
 /* common */
 #include "city.h"
 #include "fc_types.h"
+#include "genlist.h"
+
+/* server */
+#include "autoexplorer.h"
 
 struct ai_data;
 struct ai_plr;

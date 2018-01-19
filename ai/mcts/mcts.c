@@ -1,5 +1,6 @@
 #include "mcts.h"
 #include "mcts_node.h"
+#include <math.h>
 
 #define MAXDEPTH 20
 
@@ -15,9 +16,8 @@ void mcts_best_move(struct player *pplayer) {
 	if(mcts_mode != 1){
 		mcts_mode = 1;
 		//Need to get the available moves of that player
-		struct genlist *all_unit_moves;
-
-		mcts_root = create_root_node(pplayer->username,all_unit_moves);
+		struct genlist *all_unit_moves = player_available_moves(pplayer);
+		mcts_root = create_root_node(pplayer->name,all_unit_moves);
 		//Create save point
 	}
 
@@ -29,7 +29,7 @@ void mcts_best_move(struct player *pplayer) {
 		// Traverse Nodes that have all their children generated
 		while((genlist_size(current_node->untried_moves) == 0) &&
 				(genlist_size(current_node->children) != 0)){
-			current_node = UCT_select_child();
+			//current_node = UCT_select_child();
 			//TODO: Now perform the move
 
 		}
@@ -51,7 +51,7 @@ void mcts_best_move(struct player *pplayer) {
 
 
 static mcts_node* UCT_select_child(const mcts_node* const root, const double c){
-	uint32_t t = root->visits;
+	int t = root->visits;
 
 	mcts_node *best_node;
 	mcts_node *tmp;

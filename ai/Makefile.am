@@ -14,7 +14,7 @@ if AI_MOD_STATIC_THREADED
 module_dirs += threaded
 endif
 
-AM_CPPFLAGS = -I$(top_srcdir)/utility -I$(top_srcdir)/common
+AM_CPPFLAGS = -I$(top_srcdir)/utility -I$(top_srcdir)/common -I$(srcdir)/mcts
 
 if AI_MODULES
 if !AI_MOD_STATIC_CLASSIC
@@ -30,7 +30,7 @@ else
 endif
 endif
 
-SUBDIRS = $(module_dirs)
+SUBDIRS = $(module_dirs) mcts
 
 noinst_LTLIBRARIES = libaicommon.la
 
