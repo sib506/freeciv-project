@@ -1,5 +1,5 @@
 ## Process this file with automake to produce Makefile.in
-noinst_LTLIBRARIES = libmcts.la
+noinst_LTLIBRARIES = libmctsai.la
 
 AM_CPPFLAGS = \
 	-I$(top_srcdir)/utility \
@@ -7,9 +7,10 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)/ai/default \
 	-I$(top_srcdir)/server/advisors
 
-libmcts_la_SOURCES = \
+da_sources = \
+	mcts.c \
+	mcts.h \
 	mcts_node.c \
-	mcts_node.h	\
-	mcts.c		\
-	mcts.h
+	mcts_node.h	
 
+libmctsai_la_SOURCES = $(da_sources)
