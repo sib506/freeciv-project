@@ -158,6 +158,14 @@ void dai_unit_load(struct ai_type *ait, const char *aitstr,
 struct unit_type *dai_role_utype_for_move_type(struct city *pcity, int role,
                                                enum unit_move_type mt);
 
+struct unit_moves{
+	int id;
+	struct genlist* moves;
+};
+
 struct genlist* player_available_moves(struct player *pplayer);
+int find_index_of_unit(struct unit punit, struct genlist *player_moves);
+struct potentialMove* return_unit_move(int move_no, int unit_list_index,
+		struct genlist *player_moves);
 
 #endif  /* FC__AIUNIT_H */

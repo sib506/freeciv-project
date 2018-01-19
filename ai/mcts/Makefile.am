@@ -2,7 +2,7 @@
 
 noinst_LTLIBRARIES = libmcts.la
 
-AM_CPPFLAGS = -I$(top_srcdir)/utility -I.. -I$(top_srcdir)/common
+AM_CPPFLAGS = -I$(top_srcdir)/utility -I.. -I$(top_srcdir)/common -I$(top_srcdir)/ai/default
 
 libmcts_la_SOURCES = 		\
 	mcts_node.c \

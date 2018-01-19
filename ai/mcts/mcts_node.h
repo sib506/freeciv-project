@@ -2,6 +2,9 @@
 #define FC__MCTS_NODE_H__
 
 #include "genlist.h"
+#include "fc_types.h"
+#include "stdbool.h"
+#include "aiunit.h"
 
 typedef struct mcts_node {
 	int wins;
@@ -10,7 +13,10 @@ typedef struct mcts_node {
 	struct mcts_node *parent;
 	struct genlist *children;
 
+	struct genlist *all_moves;
+	int total_moves;
 	struct genlist *untried_moves;
+	//bool *untried_moves[];
 	void * move; //The move that caused this node
 
 } mcts_node;
@@ -71,6 +77,6 @@ void free_search_tree(mcts_node root_node);
  */
 void update_node(int32_t result, mcts_node* node);
 
-
+int calc_number_moves(struct genlist* all_moves);
 
 #endif

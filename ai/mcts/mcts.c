@@ -11,11 +11,13 @@ int mcts_mode = 0; // Bool: True/False
 int depth = 0;
 
 void mcts_best_move(struct player *pplayer) {
-
+	// i.e. this is the first time - we need to make the tree
 	if(mcts_mode != 1){
 		mcts_mode = 1;
 		//Need to get the available moves of that player
-		mcts_root = create_root_node(pplayer->username,NULL);
+		struct genlist *all_unit_moves;
+
+		mcts_root = create_root_node(pplayer->username,all_unit_moves);
 		//Create save point
 	}
 

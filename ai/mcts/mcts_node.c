@@ -14,8 +14,8 @@ mcts_node* create_node(char *username, struct genlist *possible_moves, void * mo
 	return node;
 }
 
-mcts_node* create_root_node(char *username, struct genlist *possible_moves) {
-	return create_node(username, possible_moves, NULL, NULL);
+mcts_node* create_root_node(char *username, struct genlist *all_possible_moves) {
+	return create_node(username, all_possible_moves, NULL, NULL);
 }
 
 mcts_node* add_child_node(mcts_node* parent, fc_game_state* state) {
@@ -63,3 +63,14 @@ void update_node(int32_t result, mcts_node* node) {
 	node->visits++;
 	node->wins += result;
 }
+
+int calc_number_moves(struct genlist* all_moves){
+	int no_of_units = genlist_size(all_moves);
+	int no_of_moves = 1 * no_of_units;
+	for(int i = 0; i < no_of_units; i++){
+		struct unit_moves *tmp = genlist_get(all_moves,i);
+		no_of_moves *= genlist_size(tmp->moves);
+	}
+	return no_of_moves;
+}
+

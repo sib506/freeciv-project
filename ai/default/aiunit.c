@@ -58,6 +58,7 @@
 #include "aiparatrooper.h"
 #include "aiplayer.h"
 #include "aitools.h"
+#include "aisettler.h"
 
 /* server */
 #include "barbarian.h"
@@ -2776,7 +2777,7 @@ void dai_manage_units(struct ai_type *ait, struct player *pplayer)
    * allowed to leave home. */
   dai_set_defenders(ait, pplayer);
 
-  player_available_moves(pplayer);
+  //player_available_moves(pplayer);
 
   unit_list_iterate_safe(pplayer->units, punit) {
     if ((!unit_transported(punit) || unit_owner(unit_transport_get(punit)) != pplayer)
@@ -3267,14 +3268,9 @@ struct unit_type *dai_role_utype_for_move_type(struct city *pcity, int role,
 /**************************************************************************
   Calculate all available moves for a player (stored in a genlist)
 **************************************************************************/
-struct unit_moves{
-	int id;
-	struct genlist* moves;
-};
-
 struct genlist* player_available_moves(struct player *pplayer){
 	// Create a list
-	//printf("%s\n", pplayer->name);
+//	printf("%s\n", pplayer->name);
 	struct genlist *player_moves = genlist_new();
 
 	unit_list_iterate_safe(pplayer->units, punit) {
@@ -3298,5 +3294,32 @@ struct genlist* player_available_moves(struct player *pplayer){
 
 //	printf("\t No of Units: %d\n", genlist_size(player_moves));
 	return player_moves;
+}
+
+int find_index_of_unit(struct unit punit, struct genlist *player_moves) {
+	int target_id = punit.id;
+	for (int i = 0; i < genlist_size(player_moves); i++) {
+		struct unit_moves *tmp = genlist_get(player_moves, i);
+
+		fc_assert(tmp != NULL);
+
+		if (tmp->id == target_id) {
+			return i;
+		}
+	}
+	return -1;
+}
+
+struct potentialMove* return_unit_move(int move_no, int unit_list_index,
+		struct genlist *player_moves){
+	int no_of_moves_higher_in_list = 1;
+
+	for(int i=unit_list_index+1; i<genlist_size(player_moves); i++){
+		no_of_moves_higher_in_list *= genlist_size(genlist_get(player_moves,i));
+	}
+
+	int move_index = (move_no/no_of_moves_higher_in_list) % genlist_size(genlist_get(player_moves,unit_list_index));
+
+	return genlist_get(genlist_get(player_moves, unit_list_index), move_index);
 }
 

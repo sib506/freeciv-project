@@ -511,7 +511,7 @@ void collect_explorer_moves(struct unit *punit, struct genlist *moveList) {
 
 	pfm = pf_map_new(&parameter);
 
-	int turns = 0;
+	float turns = 0;
 
 	struct potentialMove *pMove = malloc(sizeof(struct potentialMove));
 	pMove->type = explore;
@@ -527,7 +527,7 @@ void collect_explorer_moves(struct unit *punit, struct genlist *moveList) {
 				fc_assert_action(map_is_known(ptile, pplayer), continue);
 				turns = move_cost / parameter.move_rate;
 
-				if (turns <= 1) {
+				if (turns <= (float)1) {
 					struct potentialMove *pMove = malloc(sizeof(struct potentialMove));
 					pMove->type = explore;
 
