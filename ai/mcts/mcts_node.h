@@ -17,18 +17,18 @@
 #include "aiunit.h"
 
 typedef struct mcts_node {
+	char player_username[MAX_LEN_NAME];
+	void * move; //The move that caused this node
+
 	int wins;
 	int visits;
-	char player_username[MAX_LEN_NAME];
+
 	struct mcts_node *parent;
 	struct genlist *children;
 
 	struct genlist *all_moves;
-	int total_moves;
+	int total_no_moves;
 	struct genlist *untried_moves;
-	//bool *untried_moves[];
-	void * move; //The move that caused this node
-
 } mcts_node;
 
 
@@ -75,7 +75,7 @@ mcts_node* add_child_node(mcts_node* parent);
  *
  * @param root the root node to destruct it's subtree
  */
-void free_search_tree(mcts_node root_node);
+void free_node(mcts_node node);
 
 /**
  * Recursively backpropagates up the tree adding the win value and always

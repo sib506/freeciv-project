@@ -2779,9 +2779,9 @@ void dai_manage_units(struct ai_type *ait, struct player *pplayer)
    * allowed to leave home. */
   dai_set_defenders(ait, pplayer);
 
-  //player_available_moves(pplayer);
-  mcts_best_move(pplayer);
-  mcts_best_move(pplayer);
+  if(pplayer->player_mode == P_MCTS){
+	  mcts_best_move(pplayer);
+  }
 
   unit_list_iterate_safe(pplayer->units, punit) {
     if ((!unit_transported(punit) || unit_owner(unit_transport_get(punit)) != pplayer)
@@ -3300,30 +3300,4 @@ struct genlist* player_available_moves(struct player *pplayer){
 	return player_moves;
 }
 
-int find_index_of_unit(struct unit punit, struct genlist *player_moves) {
-	int target_id = punit.id;
-	for (int i = 0; i < genlist_size(player_moves); i++) {
-		struct unit_moves *tmp = genlist_get(player_moves, i);
-
-		fc_assert(tmp != NULL);
-
-		if (tmp->id == target_id) {
-			return i;
-		}
-	}
-	return -1;
-}
-
-struct potentialMove* return_unit_move(int move_no, int unit_list_index,
-		struct genlist *player_moves){
-	int no_of_moves_higher_in_list = 1;
-
-	for(int i=unit_list_index+1; i<genlist_size(player_moves); i++){
-		no_of_moves_higher_in_list *= genlist_size(genlist_get(player_moves,i));
-	}
-
-	int move_index = (move_no/no_of_moves_higher_in_list) % genlist_size(genlist_get(player_moves,unit_list_index));
-
-	return genlist_get(genlist_get(player_moves, unit_list_index), move_index);
-}
 

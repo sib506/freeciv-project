@@ -3,19 +3,26 @@
 
 mcts_node* create_node(char *username, struct genlist *possible_moves, void * move,
 		mcts_node *parent) {
-
 	mcts_node* node = (mcts_node*) malloc(sizeof(mcts_node));
+
+	strcpy(node->player_username, username);
+	node->move = move;
+
+	node->wins = 0;
+	node->visits = 0;
+
 	node->parent = parent;
 	node->children = genlist_new();
-	node->move = move;
-	node->untried_moves = possible_moves;
-	strcpy(node->player_username, username);
+
+	node->all_moves = possible_moves;
+	node->total_no_moves = calc_number_moves(possible_moves);
+	node->untried_moves = init_untried_moves(node->total_no_moves);
 
 	return node;
 }
 
 mcts_node* create_root_node(char *username, struct genlist *all_possible_moves) {
-	return NULL; //create_node(username, all_possible_moves, NULL, NULL);
+	return create_node(username, all_possible_moves, NULL, NULL);
 }
 
 mcts_node* add_child_node(mcts_node* parent) {
@@ -35,7 +42,7 @@ mcts_node* add_child_node(mcts_node* parent) {
 	return NULL;
 }
 
-void free_search_tree(mcts_node root_node) {
+void free_node(mcts_node node) {
 	/*if (root_node == NULL) {
 		return;
 	}
@@ -76,4 +83,18 @@ int calc_number_moves(struct genlist* all_moves){
 	}
 	return no_of_moves;
 }
+
+struct genlist* init_untried_moves(int total_no_moves){
+	struct genlist* available_moves = genlist_new();
+	for(int i=0; i<total_no_moves; i++){
+		genlist_append(available_moves, i);
+	}
+
+	return available_moves;
+}
+
+
+
+
+
 

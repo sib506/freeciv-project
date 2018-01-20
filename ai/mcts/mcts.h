@@ -9,5 +9,8 @@
 #include "player.h"
 
 void mcts_best_move(struct player *pplayer);
+int find_index_of_unit(struct unit punit, struct genlist *player_moves);
+struct potentialMove* return_unit_move(int move_no, int unit_list_index,
+		struct genlist *player_moves);
 
 #endif
