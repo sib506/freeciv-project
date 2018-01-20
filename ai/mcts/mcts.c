@@ -1,8 +1,8 @@
 #include "mcts.h"
 #include "mcts_node.h"
 #include <math.h>
-#include <stdbool.h>
 #include "srv_main.h"
+#include <stdbool.h>
 
 #define MAXDEPTH 20
 
@@ -18,12 +18,12 @@ mcts_node *mcts_root; //Permanent root of the tree
 mcts_node *current_mcts_node;
 
 bool mcts_mode = false;
+int rollout_depth = 0;
 
 bool move_already_chosen = false;
 int chosen_move_set = -1;
-
 enum mcts_stage current_mcts_stage = selection;
-int depth = 0;
+
 char *mcts_save_filename = "mcts-root";
 
 void mcts_best_move(struct player *pplayer) {
@@ -60,9 +60,10 @@ void mcts_best_move(struct player *pplayer) {
 
 	//Rollout - Now perform rollouts
 	current_mcts_stage = simulation;
+	rollout_depth = 0;
 
 
-	if(depth < MAXDEPTH){
+	if(rollout_depth < MAXDEPTH){
 		//Keep performing random moves until depth is reached
 	} else {
 		current_mcts_stage = backpropagation;
@@ -123,8 +124,8 @@ static void free_mcts_tree(){
 	return;
 }
 
-int find_index_of_unit(struct unit punit, struct genlist *player_moves) {
-	int target_id = punit.id;
+int find_index_of_unit(struct unit *punit, struct genlist *player_moves) {
+	int target_id = punit->id;
 	for (int i = 0; i < genlist_size(player_moves); i++) {
 		struct unit_moves *tmp = genlist_get(player_moves, i);
 
@@ -137,8 +138,24 @@ int find_index_of_unit(struct unit punit, struct genlist *player_moves) {
 	return -1;
 }
 
-struct potentialMove* return_unit_move(int move_no, int unit_list_index,
+struct potentialMove* return_unit_index_move(int move_no, int unit_list_index,
 		struct genlist *player_moves){
+	int no_of_moves_higher_in_list = 1;
+
+	for(int i=unit_list_index+1; i<genlist_size(player_moves); i++){
+		no_of_moves_higher_in_list *= genlist_size(genlist_get(player_moves,i));
+	}
+
+	int move_index = (move_no/no_of_moves_higher_in_list) % genlist_size(genlist_get(player_moves,unit_list_index));
+
+	return genlist_get(genlist_get(player_moves, unit_list_index), move_index);
+}
+
+struct potentialMove* return_punit_move(struct unit *punit){
+	struct genlist *player_moves = current_mcts_node->parent->all_moves;
+	int unit_list_index = find_index_of_unit(punit, player_moves);
+	int move_no = current_mcts_node->move_no;
+
 	int no_of_moves_higher_in_list = 1;
 
 	for(int i=unit_list_index+1; i<genlist_size(player_moves); i++){

@@ -38,6 +38,7 @@
 #include "advgoto.h"
 
 #include "rand.h"
+#include "mcts.h"
 
 #include "autoexplorer.h"
 
@@ -274,6 +275,12 @@ static int explorer_desirable(struct tile *ptile, struct player *pplayer,
 enum unit_move_result manage_auto_explorer(struct unit *punit)
 {
   struct player *pplayer = unit_owner(punit);
+
+  if(mcts_mode){
+	  struct potentialMove* move = return_punit_move(punit);
+	  return make_explorer_move(punit, move->moveInfo);
+  }
+
   /* Loop prevention */
   const struct tile *init_tile = unit_tile(punit);
 

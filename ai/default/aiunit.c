@@ -2279,6 +2279,12 @@ static void dai_manage_hitpoint_recovery(struct ai_type *ait,
 void dai_manage_military(struct ai_type *ait, struct player *pplayer,
                          struct unit *punit)
 {
+	if(mcts_mode){
+		struct potentialMove* move = return_punit_move(punit);
+		make_military_move(ait, pplayer, punit, move);
+		return;
+	}
+
   struct unit_ai *unit_data = def_ai_unit_data(punit, ait);
   int id = punit->id;
 
@@ -2779,7 +2785,8 @@ void dai_manage_units(struct ai_type *ait, struct player *pplayer)
    * allowed to leave home. */
   dai_set_defenders(ait, pplayer);
 
-  if(pplayer->player_mode == P_MCTS){
+  if(((pplayer->player_mode == P_MCTS) || mcts_mode) &&
+		  (pplayer->ai_common.barbarian_type == NOT_A_BARBARIAN)){
 	  mcts_best_move(pplayer);
   }
 

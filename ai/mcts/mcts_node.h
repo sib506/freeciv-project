@@ -18,7 +18,7 @@
 
 typedef struct mcts_node {
 	char player_username[MAX_LEN_NAME];
-	void * move; //The move that caused this node
+	int move_no; //The move that caused this node
 
 	int wins;
 	int visits;
@@ -43,7 +43,7 @@ typedef struct mcts_node {
  * @pre newLplayer is 0 or 1
  */
 mcts_node* create_node(char *username, struct genlist *all_possible_moves,
-		void * move, mcts_node *parent);
+		int move, mcts_node *parent);
 
 /**
  * Creates a new root node. parent and move set to NULL.
@@ -88,5 +88,6 @@ void free_node(mcts_node node);
 void update_node(int32_t result, mcts_node* node);
 
 int calc_number_moves(struct genlist* all_moves);
+struct genlist* init_untried_moves(int total_no_moves);
 
 #endif

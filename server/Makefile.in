@@ -665,6 +665,7 @@ lib_LTLIBRARIES = libfreeciv-srv.la
 AM_CPPFLAGS = \
 	-I$(top_srcdir)/ai \
 	-I$(top_srcdir)/ai/classic \
+	-I$(top_srcdir)/ai/mcts \
 	-I$(top_srcdir)/common \
 	-I$(top_srcdir)/common/aicore \
 	-I$(top_srcdir)/common/scriptcore \

@@ -133,6 +133,8 @@
 #include "advspace.h"
 #include "infracache.h"
 
+#include "mcts.h"
+
 #include "srv_main.h"
 
 static void end_turn(void);
@@ -885,6 +887,8 @@ static void kill_dying_players(void)
 static void ai_start_phase(void)
 {
   phase_players_iterate(pplayer) {
+	//TODO: Remove this printf
+	//printf("%s\n", pplayer->name);
     if (pplayer->ai_controlled) {
       CALL_PLR_AI_FUNC(first_activities, pplayer, pplayer);
     }
@@ -1040,6 +1044,7 @@ static void begin_phase(bool is_new_phase)
   } alive_phase_players_iterate_end;
 
   if (is_new_phase) {
+	rollout_depth += 1;
     /* Try to avoid hiding events under a diplomacy dialog */
     phase_players_iterate(pplayer) {
       if (pplayer->ai_controlled) {

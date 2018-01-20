@@ -1959,7 +1959,7 @@ void shuffle_players(void)
   }
 
   /* randomize it */
-  array_shuffle(shuffled_order, n);
+  //array_shuffle(shuffled_order, n);
 
 #ifdef DEBUG
   for (i = 0; i < n; i++) {

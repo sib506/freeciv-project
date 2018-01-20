@@ -1,12 +1,12 @@
 #include "mcts_node.h"
 #include <string.h>
 
-mcts_node* create_node(char *username, struct genlist *possible_moves, void * move,
+mcts_node* create_node(char *username, struct genlist *possible_moves, int move,
 		mcts_node *parent) {
 	mcts_node* node = (mcts_node*) malloc(sizeof(mcts_node));
 
 	strcpy(node->player_username, username);
-	node->move = move;
+	node->move_no = move;
 
 	node->wins = 0;
 	node->visits = 0;
@@ -87,7 +87,7 @@ int calc_number_moves(struct genlist* all_moves){
 struct genlist* init_untried_moves(int total_no_moves){
 	struct genlist* available_moves = genlist_new();
 	for(int i=0; i<total_no_moves; i++){
-		genlist_append(available_moves, i);
+		genlist_append(available_moves, (void*)i);
 	}
 
 	return available_moves;

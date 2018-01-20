@@ -64,6 +64,7 @@
 
 #include "rand.h"
 #include "player.h"
+#include "mcts.h"
 
 
 /* COMMENTS */
@@ -1022,6 +1023,13 @@ void dai_auto_settler_init(struct ai_plr *ai)
 void dai_auto_settler_run(struct ai_type *ait, struct player *pplayer,
                           struct unit *punit, struct settlermap *state)
 {
+  if(mcts_mode){
+	  struct potentialMove* move = return_punit_move(punit);
+	  make_settler_move(ait, pplayer, punit, state, move);
+	  return;
+  }
+
+
   int best_impr = 0;            /* best terrain improvement we can do */
   enum unit_activity best_act;
   struct act_tgt best_target;
