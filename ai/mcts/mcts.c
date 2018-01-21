@@ -3,11 +3,13 @@
 #include <math.h>
 #include "srv_main.h"
 #include <stdbool.h>
+#include "stdinhand.h"
 
 #define MAXDEPTH 20
+#define UCT_CONST 1.41421356237 //sqrt(2)
 
-static mcts_node* UCT_select_child(const mcts_node* const root, const double c);
-static double UCT(const mcts_node* const node, const int rootPlays, const double c);
+static mcts_node* UCT_select_child(mcts_node* root);
+static double UCT(mcts_node* child_node, int rootPlays);
 static void free_mcts_tree();
 
 enum mcts_stage{
@@ -35,24 +37,21 @@ void mcts_best_move(struct player *pplayer) {
 		// Collect all available moves for player
 		struct genlist *all_unit_moves = player_available_moves(pplayer);
 		mcts_root = create_root_node(player_index(pplayer),all_unit_moves);
-
 		current_mcts_node = mcts_root;
 	}
 
 	if((current_mcts_stage == simulation)){
-		if(rollout_depth >= MAXDEPTH){
+		if(rollout_depth >= MAXDEPTH)
 			backpropagate(TRUE);
-		}
 	} else {
 		//Selection - no untried moves, need to navigate to children
 		if((genlist_size(current_mcts_node->untried_moves) == 0) &&
 				(genlist_size(current_mcts_node->children) != 0)){
 			current_mcts_stage = selection;
-			current_mcts_node = UCT_select_child(current_mcts_node, 0.9);
-			// Need to perform move associated with travelling to this node
+			current_mcts_node = UCT_select_child(current_mcts_node);
 		}
 
-		//Expansion - If we can expand then we need to
+		//Expansion - If we have untried moves then need to expand
 		if(genlist_size(current_mcts_node->untried_moves) != 0){
 			current_mcts_stage = expansion;
 			// Make a random choice of the untried moves
@@ -84,19 +83,19 @@ void mcts_best_move(struct player *pplayer) {
 }
 
 
-static mcts_node* UCT_select_child(const mcts_node* const root, const double c){
-	int t = root->visits;
+static mcts_node* UCT_select_child(mcts_node* root){
+	int self_visits = root->visits;
 
-	mcts_node *best_node;
-	mcts_node *tmp;
-	double best_weight;
-	double tmp_weight;
+	mcts_node *best_node = NULL;
+	mcts_node *tmp = NULL;
+	double best_weight = 0;
+	double tmp_weight = 0;
 
 	int no_children = genlist_size(root->children);
 
 	for(int i = 0; i < no_children; i++){
 		tmp = genlist_get(root->children, i);
-		tmp_weight = UCT(tmp, t, c);
+		tmp_weight = UCT(tmp, self_visits);
 		if (tmp_weight > best_weight){
 			best_node = tmp;
 			best_weight = tmp_weight;
@@ -107,9 +106,9 @@ static mcts_node* UCT_select_child(const mcts_node* const root, const double c){
 }
 
 
-static double UCT(const mcts_node *node, const int rootPlays, const double c){
-	double left = (node->wins / (double) node->visits);
-	double right = c * pow(log((double) rootPlays) / (double) node->visits, 0.5);
+static double UCT(mcts_node *child_node, int rootPlays){
+	double left = (child_node->wins / (double) child_node->visits);
+	double right = UCT_CONST * pow(log((double) rootPlays) / (double) child_node->visits, 0.5);
 
 	return left + right;
 }
