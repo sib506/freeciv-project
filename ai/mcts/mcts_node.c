@@ -5,6 +5,7 @@ mcts_node* create_node(int p_index, struct genlist *possible_moves, int move,
 		mcts_node *parent) {
 	mcts_node* node = (mcts_node*) malloc(sizeof(mcts_node));
 
+	node->uninitialised = TRUE;
 	node->player_index = p_index;
 	node->move_no = move;
 
@@ -25,21 +26,14 @@ mcts_node* create_root_node(int p_index, struct genlist *all_possible_moves) {
 	return create_node(p_index, all_possible_moves, NULL, NULL);
 }
 
-mcts_node* add_child_node(mcts_node* parent) {
-/*
-	int rand_index = fc_rand(genlist_size(parent->untried_moves));
-	void* rnd_child_move = genlist_get(parent->untried_moves, rand_index);
-	genlist_erase(parent->untried_moves, genlist_link(parent->untried_moves, rand_index));
+mcts_node* add_child_node(mcts_node* parent, int move_no) {
+	// How do we know what the next player will be?
+	struct player *pplayer = (parent->player_index + 1);
+	struct genlist *all_unit_moves = player_available_moves(pplayer);
 
-	//TODO: *** Perform chosen move ***
+	mcts_node *child_node = create_node(-1, NULL,move_no, parent);
 
-	struct genlist untried_child_moves = genlist_new();
-	mcts_node *child_node = create_node(parent.player_username, untried_child_moves,
-			rnd_child_move, parent);
-	genlist_append(parent->children, child_node);
-*/
-
-	return NULL;
+	return child_node;
 }
 
 void free_node(mcts_node node) {
@@ -75,13 +69,18 @@ void update_node(int32_t result, mcts_node* node) {
 }
 
 int calc_number_moves(struct genlist* all_moves){
-	int no_of_units = genlist_size(all_moves);
-	int no_of_moves = 1 * no_of_units;
-	for(int i = 0; i < no_of_units; i++){
-		struct unit_moves *tmp = genlist_get(all_moves,i);
-		no_of_moves *= genlist_size(tmp->moves);
+	if(all_moves == NULL){
+		return 0;
+	} else {
+		int no_of_units = genlist_size(all_moves);
+		int no_of_moves = 1 * no_of_units;
+		for(int i = 0; i < no_of_units; i++){
+			struct unit_moves *tmp = genlist_get(all_moves,i);
+			no_of_moves *= genlist_size(tmp->moves);
+		}
+		return no_of_moves;
 	}
-	return no_of_moves;
+
 }
 
 struct genlist* init_untried_moves(int total_no_moves){

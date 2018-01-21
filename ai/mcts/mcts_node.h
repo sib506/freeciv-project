@@ -17,6 +17,7 @@
 #include "aiunit.h"
 
 typedef struct mcts_node {
+	bool uninitialised;
 	int player_index;
 	int move_no; //The move that caused this node
 
@@ -67,7 +68,7 @@ mcts_node* create_root_node(int p_index, struct genlist *all_possible_moves);
  * @return the child that was created and added to the parent's child list
  * @pre there are remaining moves in the parent node
  */
-mcts_node* add_child_node(mcts_node* parent);
+mcts_node* add_child_node(mcts_node* parent, int move_no);
 
 
 /**

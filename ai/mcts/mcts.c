@@ -6,6 +6,7 @@
 #include "stdinhand.h"
 
 #define MAXDEPTH 20
+#define MAX_ITER_DEPTH 100
 #define UCT_CONST 1.41421356237 //sqrt(2)
 
 static mcts_node* UCT_select_child(mcts_node* root);
@@ -19,10 +20,11 @@ enum mcts_stage{
 mcts_node *mcts_root; //Permanent root of the tree
 mcts_node *current_mcts_node;
 
-bool mcts_mode = false;
+bool mcts_mode = FALSE;
 int rollout_depth = 0;
+int iterations = 0;
 
-bool move_already_chosen = false;
+bool move_already_chosen = FALSE;
 int chosen_move_set = -1;
 enum mcts_stage current_mcts_stage = selection;
 
@@ -37,6 +39,7 @@ void mcts_best_move(struct player *pplayer) {
 		// Collect all available moves for player
 		struct genlist *all_unit_moves = player_available_moves(pplayer);
 		mcts_root = create_root_node(player_index(pplayer),all_unit_moves);
+		mcts_root->uninitialised = FALSE;
 		current_mcts_node = mcts_root;
 	}
 
@@ -45,18 +48,55 @@ void mcts_best_move(struct player *pplayer) {
 			backpropagate(TRUE);
 	} else {
 		//Selection - no untried moves, need to navigate to children
-		if((genlist_size(current_mcts_node->untried_moves) == 0) &&
-				(genlist_size(current_mcts_node->children) != 0)){
+		if(((genlist_size(current_mcts_node->untried_moves) == 0) &&
+				(genlist_size(current_mcts_node->children) != 0)) || current_mcts_node->uninitialised){
 			current_mcts_stage = selection;
-			current_mcts_node = UCT_select_child(current_mcts_node);
+
+			// If need to return an actual move now i.e. time-out
+			if(iterations >= MAX_ITER_DEPTH){
+				//Choose best move
+				chosen_move_set = 0;
+				//Turn mcts mode off
+				mcts_mode = FALSE;
+				//Free MCTS Tree
+				free_mcts_tree();
+				//Continue game with other players as normal
+				load_command(NULL, mcts_save_filename, FALSE, TRUE);
+			}
+
+			if(current_mcts_node == mcts_root){
+				iterations++;
+			}
+
+			if(current_mcts_node->uninitialised){
+				struct genlist *all_unit_moves = player_available_moves(pplayer);
+				current_mcts_node->player_index = player_index(pplayer);
+				current_mcts_node->all_moves = all_unit_moves;
+				current_mcts_node->total_no_moves = calc_number_moves(all_unit_moves);
+				current_mcts_node->untried_moves = init_untried_moves(current_mcts_node->total_no_moves);
+				current_mcts_node->uninitialised = FALSE;
+			} else {
+				current_mcts_node = UCT_select_child(current_mcts_node);
+				return;
+			}
 		}
 
 		//Expansion - If we have untried moves then need to expand
 		if(genlist_size(current_mcts_node->untried_moves) != 0){
+
 			current_mcts_stage = expansion;
-			// Make a random choice of the untried moves
-			// + store as selected move
-			// Add a new node for that move + descend the tree
+
+			// Lookup size of untried moves list
+			int untried_size = genlist_size(current_mcts_node->untried_moves);
+
+			// Retrieve move number + remove from untried list
+			int move_no = (int) genlist_get(current_mcts_node->untried_moves,
+					fc_rand(untried_size));
+			genlist_remove(current_mcts_node->untried_moves,
+					(void *)move_no);
+
+			// Create a new node for that move + set as current node
+			current_mcts_node = add_child_node(current_mcts_node, move_no);
 		}
 
 		//Rollout - Now perform rollouts
@@ -65,18 +105,6 @@ void mcts_best_move(struct player *pplayer) {
 			rollout_depth = 0;
 		}
 
-	}
-
-	// If need to return an actual move now i.e. time-out
-	if(0){
-		//Choose best move + return or make it
-		chosen_move_set = 0;
-		//Turn mcts mode off
-		mcts_mode = false;
-		//Free MCTS Tree
-		free_mcts_tree();
-		//Continue game with other players as normal
-		load_command(NULL, mcts_save_filename, FALSE, TRUE);
 	}
 
 	return;
@@ -180,8 +208,8 @@ void backpropagate(bool interrupt){
 		update_node(0, node);
 	}
 
-	while(current_mcts_node->parent != NULL){
-		node = current_mcts_node->parent;
+	while(node->parent != NULL){
+		node = node->parent;
 		if(plr_state[node->player_index] == VS_WINNER){
 			update_node(1, node);
 		} else if(plr_state[node->player_index] == VS_LOSER){
@@ -191,6 +219,7 @@ void backpropagate(bool interrupt){
 		}
 	}
 	current_mcts_stage = selection;
+	current_mcts_node = mcts_root;
 	load_command(NULL, mcts_save_filename, FALSE, TRUE);
 	return;
 }
