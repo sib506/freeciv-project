@@ -1,11 +1,11 @@
 #include "mcts_node.h"
 #include <string.h>
 
-mcts_node* create_node(char *username, struct genlist *possible_moves, int move,
+mcts_node* create_node(int p_index, struct genlist *possible_moves, int move,
 		mcts_node *parent) {
 	mcts_node* node = (mcts_node*) malloc(sizeof(mcts_node));
 
-	strcpy(node->player_username, username);
+	node->player_index = p_index;
 	node->move_no = move;
 
 	node->wins = 0;
@@ -21,8 +21,8 @@ mcts_node* create_node(char *username, struct genlist *possible_moves, int move,
 	return node;
 }
 
-mcts_node* create_root_node(char *username, struct genlist *all_possible_moves) {
-	return create_node(username, all_possible_moves, NULL, NULL);
+mcts_node* create_root_node(int p_index, struct genlist *all_possible_moves) {
+	return create_node(p_index, all_possible_moves, NULL, NULL);
 }
 
 mcts_node* add_child_node(mcts_node* parent) {

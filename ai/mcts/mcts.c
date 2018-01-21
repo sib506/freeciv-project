@@ -34,42 +34,38 @@ void mcts_best_move(struct player *pplayer) {
 
 		// Collect all available moves for player
 		struct genlist *all_unit_moves = player_available_moves(pplayer);
-		mcts_root = create_root_node(pplayer->name,all_unit_moves);
+		mcts_root = create_root_node(player_index(pplayer),all_unit_moves);
 
 		current_mcts_node = mcts_root;
 	}
 
-	// Now tree has been created, we need to get an action for player units
-	// Via - Selection, Expansion, Simulation
-
-	//Selection - no untried moves, need to navigate to children
-	if((genlist_size(current_mcts_node->untried_moves) == 0) &&
-			(genlist_size(current_mcts_node->children) != 0)){
-		current_mcts_stage = selection;
-		current_mcts_node = UCT_select_child(current_mcts_node, 0.9);
-		// Need to perform move associated with travelling to this node
-	}
-
-	//Expansion - If we can expand then we need to
-	if(genlist_size(current_mcts_node->untried_moves) != 0){
-		current_mcts_stage = expansion;
-		// Make a random choice of the untried moves
-		// + store as selected move
-		// Add a new node for that move + descend the tree
-	}
-
-	//Rollout - Now perform rollouts
-	current_mcts_stage = simulation;
-	rollout_depth = 0;
-
-
-	if(rollout_depth < MAXDEPTH){
-		//Keep performing random moves until depth is reached
+	if((current_mcts_stage == simulation)){
+		if(rollout_depth >= MAXDEPTH){
+			backpropagate(TRUE);
+		}
 	} else {
-		current_mcts_stage = backpropagation;
-		// Update all nodes above current node
-		// restore game back to root of tree + start process again
-		load_command(NULL, mcts_save_filename, FALSE, TRUE);
+		//Selection - no untried moves, need to navigate to children
+		if((genlist_size(current_mcts_node->untried_moves) == 0) &&
+				(genlist_size(current_mcts_node->children) != 0)){
+			current_mcts_stage = selection;
+			current_mcts_node = UCT_select_child(current_mcts_node, 0.9);
+			// Need to perform move associated with travelling to this node
+		}
+
+		//Expansion - If we can expand then we need to
+		if(genlist_size(current_mcts_node->untried_moves) != 0){
+			current_mcts_stage = expansion;
+			// Make a random choice of the untried moves
+			// + store as selected move
+			// Add a new node for that move + descend the tree
+		}
+
+		//Rollout - Now perform rollouts
+		if(current_mcts_stage == expansion){
+			current_mcts_stage = simulation;
+			rollout_depth = 0;
+		}
+
 	}
 
 	// If need to return an actual move now i.e. time-out
@@ -165,4 +161,37 @@ struct potentialMove* return_punit_move(struct unit *punit){
 	int move_index = (move_no/no_of_moves_higher_in_list) % genlist_size(genlist_get(player_moves,unit_list_index));
 
 	return genlist_get(genlist_get(player_moves, unit_list_index), move_index);
+}
+
+void backpropagate(bool interrupt){
+	if(current_mcts_stage != simulation){
+		return;
+	}
+	current_mcts_stage = backpropagation;
+
+	mcts_node *node = current_mcts_node;
+	enum victory_state plr_state[player_slot_count()];
+	rank_mcts_users(interrupt, plr_state);
+
+	if(plr_state[node->player_index] == VS_WINNER){
+		update_node(1, node);
+	} else if(plr_state[node->player_index] == VS_LOSER){
+		update_node(-1, node);
+	} else {
+		update_node(0, node);
+	}
+
+	while(current_mcts_node->parent != NULL){
+		node = current_mcts_node->parent;
+		if(plr_state[node->player_index] == VS_WINNER){
+			update_node(1, node);
+		} else if(plr_state[node->player_index] == VS_LOSER){
+			update_node(-1, node);
+		} else {
+			update_node(0, node);
+		}
+	}
+	current_mcts_stage = selection;
+	load_command(NULL, mcts_save_filename, FALSE, TRUE);
+	return;
 }

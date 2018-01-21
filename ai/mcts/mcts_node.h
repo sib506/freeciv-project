@@ -17,7 +17,7 @@
 #include "aiunit.h"
 
 typedef struct mcts_node {
-	char player_username[MAX_LEN_NAME];
+	int player_index;
 	int move_no; //The move that caused this node
 
 	int wins;
@@ -42,7 +42,7 @@ typedef struct mcts_node {
  * @return a pointer to a new MctsNode_s
  * @pre newLplayer is 0 or 1
  */
-mcts_node* create_node(char *username, struct genlist *all_possible_moves,
+mcts_node* create_node(int p_index, struct genlist *all_possible_moves,
 		int move, mcts_node *parent);
 
 /**
@@ -53,7 +53,7 @@ mcts_node* create_node(char *username, struct genlist *all_possible_moves,
  * @return a pointer to a new MctsNode_s root
  * @pre newLplayer is 0 or 1
  */
-mcts_node* create_root_node(char *username, struct genlist *all_possible_moves);
+mcts_node* create_root_node(int p_index, struct genlist *all_possible_moves);
 
 
 /**

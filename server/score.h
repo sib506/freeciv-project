@@ -15,6 +15,8 @@
 
 #include "fc_types.h"
 
+enum victory_state { VS_NONE, VS_LOSER, VS_WINNER };
+
 void calc_civ_score(struct player *pplayer);
 
 int get_civ_score(const struct player *pplayer);
@@ -22,5 +24,6 @@ int get_civ_score(const struct player *pplayer);
 int total_player_citizens(const struct player *pplayer);
 
 void rank_users(bool);
+void rank_mcts_users(bool interrupt, enum victory_state plr_state[]);
 
 #endif /* FC__SCORE_H */

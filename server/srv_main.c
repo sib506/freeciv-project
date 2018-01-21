@@ -2612,18 +2612,27 @@ static void srv_running(void)
     (void) send_server_info_to_metaserver(META_REFRESH);
 
     if (S_S_OVER != server_state() && check_for_game_over()) {
-      set_server_state(S_S_OVER);
-      if (game.info.turn > game.server.end_turn) {
-	/* endturn was reached - rank users based on team scores */
-	rank_users(TRUE);
-      } else { 
-	/* game ended for victory conditions - rank users based on survival */
-	rank_users(FALSE);
-      }
+    	set_server_state(S_S_OVER);
+    	if (game.info.turn > game.server.end_turn) {
+    		/* endturn was reached - rank users based on team scores */
+    		rank_users(TRUE);
+
+    		//SB: Need to inform MCTS if simulating
+    		if(mcts_mode){
+    		    backpropagate(TRUE);
+    		}
+    	} else {
+    		/* game ended for victory conditions - rank users based on survival */
+    		rank_users(FALSE);
+    		//SB: Need to inform MCTS if simulating
+    		if(mcts_mode){
+    			backpropagate(FALSE);
+    		}
+    	}
     } else if ((check_for_game_over() && game.info.turn > game.server.end_turn)
-	       || S_S_OVER == server_state()) {
-      /* game terminated by /endgame command - calculate team scores */
-      rank_users(TRUE);
+    		|| S_S_OVER == server_state()) {
+    	/* game terminated by /endgame command - calculate team scores */
+    	rank_users(TRUE);
     }
   }
 

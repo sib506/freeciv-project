@@ -9,6 +9,7 @@
 #include "player.h"
 
 #include <stdbool.h>
+#include "score.h"
 
 extern bool mcts_mode;
 extern int rollout_depth;
@@ -18,5 +19,6 @@ int find_index_of_unit(struct unit *punit, struct genlist *player_moves);
 struct potentialMove* return_unit_index_move(int move_no, int unit_list_index,
 		struct genlist *player_moves);
 struct potentialMove* return_punit_move(struct unit *punit);
+void backpropagate(bool interrupt);
 
 #endif
