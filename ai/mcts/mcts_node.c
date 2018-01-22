@@ -33,30 +33,37 @@ mcts_node* add_child_node(mcts_node* parent, int move_no) {
 	return child_node;
 }
 
-void free_node(mcts_node node) {
-	/*if (root_node == NULL) {
-		return;
+void free_node(mcts_node *node) {
+	// Can assume that all child nodes have already been removed
+	// Need to clear: children, all_moves, untried_moves
+	// Then clear yourself
+
+	//Child nodes:
+	genlist_destroy(node->children);
+
+	//All_Moves
+	int no_of_units = genlist_size(node->all_moves);
+	for(int i = 0; i < no_of_units; i++){
+		struct unit_moves *tmp = genlist_get(node->all_moves,i);
+		struct unit *punit = idex_lookup_unit(tmp->id);
+		if(unit_has_type_flag(punit, UTYF_SETTLERS) ||
+				unit_has_type_flag(punit, UTYF_CITIES)){
+			free_settler_moves(tmp->moves);
+		} else if (is_military_unit(punit)){
+			free_military_moves(tmp->moves);
+		} else if (unit_has_type_role(punit, L_EXPLORER)){
+			free_explorer_moves(tmp->moves);
+		}
+		free(tmp);
 	}
 
-	mcts_node* child;
+	genlist_destroy(node->all_moves);
 
-	while(genlist_size(root_node.children) != 0){
-		child = genlist_front(root_node.children);
-		genlist_pop_front(root_node.children);
-		free_search_tree(child);
-	}
+	// Untried moves
+	genlist_destroy(node->untried_moves);
 
-	// free + destroy move lists data
-	for(int i = 0; i < genlist_size(root_node.untried_moves); i++){
-		free(genlist_pop_front(root_node.untried_moves));
-	}
-	genlist_destroy(root_node.untried_moves);
-
-	genlist_destroy(root_node.children);
-
-	if(root_node != NULL){
-		free(root_node);
-	}*/
+	//This node
+	free(node);
 
 }
 

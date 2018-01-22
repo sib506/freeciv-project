@@ -12,7 +12,7 @@
 
 static mcts_node* UCT_select_child(mcts_node* root);
 static double UCT(mcts_node* child_node, int rootPlays);
-static void free_mcts_tree();
+static void free_mcts_tree(mcts_node* node);
 static int mcts_choose_final_move();
 
 mcts_node *mcts_root = NULL; //Permanent root of the tree
@@ -38,7 +38,7 @@ void mcts_best_move(struct player *pplayer) {
 
 		// Free the previous tree
 		if(mcts_root != NULL){
-			free_mcts_tree();
+			free_mcts_tree(mcts_root);
 		}
 
 		// Collect all available moves for player
@@ -66,8 +66,6 @@ void mcts_best_move(struct player *pplayer) {
 				move_chosen = TRUE;
 				//Turn mcts mode off
 				mcts_mode = FALSE;
-				//Free MCTS Tree
-				free_mcts_tree();
 				printf("Final move has been chosen. Now returning to game.\n");
 				//Continue game with other players as normal
 				load_command(NULL, mcts_save_filename, FALSE, TRUE);
@@ -155,8 +153,17 @@ static double UCT(mcts_node *child_node, int rootPlays){
 	return left + right;
 }
 
-static void free_mcts_tree(){
-	//TODO: Need to implement
+static void free_mcts_tree(mcts_node *node){
+	int no_children = genlist_size(node->children);
+
+	// Free all child nodes recursively
+	for(int i = 0; i < no_children; i++){
+		mcts_node *child = genlist_get(node->children, i);
+		free_mcts_tree(child);
+	}
+
+	//Free yourself now
+	free_node(node);
 
 	return;
 }

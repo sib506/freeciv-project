@@ -76,7 +76,7 @@ mcts_node* add_child_node(mcts_node* parent, int move_no);
  *
  * @param root the root node to destruct it's subtree
  */
-void free_node(mcts_node node);
+void free_node(mcts_node *node);
 
 /**
  * Recursively backpropagates up the tree adding the win value and always
