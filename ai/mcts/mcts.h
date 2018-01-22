@@ -13,6 +13,12 @@
 
 extern bool mcts_mode;
 extern int rollout_depth;
+extern bool move_chosen;
+extern enum mcts_stage current_mcts_stage;
+
+enum mcts_stage{
+	selection, expansion, simulation, backpropagation
+};
 
 void mcts_best_move(struct player *pplayer);
 int find_index_of_unit(struct unit *punit, struct genlist *player_moves);

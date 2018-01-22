@@ -2279,9 +2279,18 @@ static void dai_manage_hitpoint_recovery(struct ai_type *ait,
 void dai_manage_military(struct ai_type *ait, struct player *pplayer,
                          struct unit *punit)
 {
-	if(mcts_mode){
-		struct potentialMove* move = return_punit_move(punit);
-		make_military_move(ait, pplayer, punit, move);
+	if(mcts_mode || (pplayer->player_mode == P_MCTS && move_chosen)){
+		if(current_mcts_stage == simulation){
+			struct genlist* actionList = genlist_new();
+			collect_military_moves(punit, actionList);
+			struct potentialMove *chosen_action = genlist_get(actionList, fc_rand(genlist_size(actionList)));
+			make_military_move(ait, pplayer, punit, chosen_action);
+			// Clear the genlist
+			free_military_moves(actionList);
+		} else {
+			struct potentialMove* move = return_punit_move(punit);
+			make_military_move(ait, pplayer, punit, move);
+		}
 		return;
 	}
 

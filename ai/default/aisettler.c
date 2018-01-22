@@ -1023,11 +1023,20 @@ void dai_auto_settler_init(struct ai_plr *ai)
 void dai_auto_settler_run(struct ai_type *ait, struct player *pplayer,
                           struct unit *punit, struct settlermap *state)
 {
-  if(mcts_mode){
-	  struct potentialMove* move = return_punit_move(punit);
-	  make_settler_move(ait, pplayer, punit, state, move);
-	  return;
-  }
+	if(mcts_mode || (pplayer->player_mode == P_MCTS && move_chosen)){
+		if(current_mcts_stage == simulation){
+			struct genlist* actionList = genlist_new();
+			collect_settler_moves(punit, actionList, pplayer);
+			struct potentialMove *chosen_action = genlist_get(actionList, fc_rand(genlist_size(actionList)));
+			make_settler_move(ait, pplayer, punit, state, chosen_action);
+			// Clear the genlist
+			free_settler_moves(actionList);
+		} else {
+			struct potentialMove* move = return_punit_move(punit);
+			make_settler_move(ait, pplayer, punit, state, move);
+		}
+		return;
+	}
 
 
   int best_impr = 0;            /* best terrain improvement we can do */

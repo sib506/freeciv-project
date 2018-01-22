@@ -276,9 +276,19 @@ enum unit_move_result manage_auto_explorer(struct unit *punit)
 {
   struct player *pplayer = unit_owner(punit);
 
-  if(mcts_mode){
-	  struct potentialMove* move = return_punit_move(punit);
-	  return make_explorer_move(punit, move->moveInfo);
+  if(mcts_mode || (pplayer->player_mode == P_MCTS && move_chosen)){
+	  if(current_mcts_stage == simulation){
+		  struct genlist* actionList = genlist_new();
+		  collect_explorer_moves(punit, actionList);
+		  struct potentialMove *chosen_action = genlist_get(actionList, fc_rand(genlist_size(actionList)));
+		  enum unit_move_result result = make_explorer_move(punit, chosen_action->moveInfo);
+		  // Clear the genlist
+		  free_explorer_moves(actionList);
+		  return result;
+	  } else {
+		  struct potentialMove* move = return_punit_move(punit);
+		  return make_explorer_move(punit, move->moveInfo);
+	  }
   }
 
   /* Loop prevention */

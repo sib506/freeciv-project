@@ -4,6 +4,7 @@
 #include "srv_main.h"
 #include <stdbool.h>
 #include "stdinhand.h"
+#include "rand.h"
 
 #define MAXDEPTH 20
 #define MAX_ITER_DEPTH 100
@@ -12,19 +13,16 @@
 static mcts_node* UCT_select_child(mcts_node* root);
 static double UCT(mcts_node* child_node, int rootPlays);
 static void free_mcts_tree();
+static int mcts_choose_final_move();
 
-enum mcts_stage{
-	selection, expansion, simulation, backpropagation
-};
-
-mcts_node *mcts_root; //Permanent root of the tree
-mcts_node *current_mcts_node;
+mcts_node *mcts_root = NULL; //Permanent root of the tree
+mcts_node *current_mcts_node = NULL;
 
 bool mcts_mode = FALSE;
 int rollout_depth = 0;
 int iterations = 0;
 
-bool move_already_chosen = FALSE;
+bool move_chosen = FALSE;
 int chosen_move_set = -1;
 enum mcts_stage current_mcts_stage = selection;
 
@@ -35,6 +33,11 @@ void mcts_best_move(struct player *pplayer) {
 	if(!mcts_mode){
 		mcts_mode = true;
 		save_game(mcts_save_filename, "Root of MCTS tree", FALSE);
+
+		// Free the previous tree
+		if(mcts_root != NULL){
+			free_mcts_tree();
+		}
 
 		// Collect all available moves for player
 		struct genlist *all_unit_moves = player_available_moves(pplayer);
@@ -54,12 +57,14 @@ void mcts_best_move(struct player *pplayer) {
 
 			// If need to return an actual move now i.e. time-out
 			if(iterations >= MAX_ITER_DEPTH){
-				//Choose best move
-				chosen_move_set = 0;
+				//Choose best move i.e. most visited
+				chosen_move_set = mcts_choose_final_move();
+				move_chosen = TRUE;
 				//Turn mcts mode off
 				mcts_mode = FALSE;
 				//Free MCTS Tree
 				free_mcts_tree();
+				printf("Final move has been chosen. Now returning to game.\n");
 				//Continue game with other players as normal
 				load_command(NULL, mcts_save_filename, FALSE, TRUE);
 			}
@@ -175,9 +180,19 @@ struct potentialMove* return_unit_index_move(int move_no, int unit_list_index,
 }
 
 struct potentialMove* return_punit_move(struct unit *punit){
-	struct genlist *player_moves = current_mcts_node->parent->all_moves;
-	int unit_list_index = find_index_of_unit(punit, player_moves);
-	int move_no = current_mcts_node->move_no;
+	struct genlist *player_moves;
+	int unit_list_index;
+	int move_no;
+
+	if(move_chosen){
+		player_moves = mcts_root->all_moves;
+		unit_list_index = find_index_of_unit(punit, player_moves);
+		move_no = chosen_move_set;
+	} else {
+		player_moves = current_mcts_node->parent->all_moves;
+		unit_list_index = find_index_of_unit(punit, player_moves);
+		move_no = current_mcts_node->move_no;
+	}
 
 	int no_of_moves_higher_in_list = 1;
 
@@ -222,4 +237,19 @@ void backpropagate(bool interrupt){
 	current_mcts_node = mcts_root;
 	load_command(NULL, mcts_save_filename, FALSE, TRUE);
 	return;
+}
+
+static int mcts_choose_final_move(){
+	int most_visits = 0;
+	int chosen_move;
+
+	for(int i = 0; i < genlist_size(mcts_root->children); i++){
+		mcts_node *child_node = genlist_get(mcts_root->children, i);
+		if (child_node->visits > most_visits){
+			most_visits = child_node->visits;
+			chosen_move = child_node->move_no;
+		}
+	}
+
+	return chosen_move;
 }
