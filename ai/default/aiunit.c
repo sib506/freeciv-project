@@ -3309,6 +3309,7 @@ struct genlist* player_available_moves(struct player *pplayer){
 //			printf("\tCheck explorer possible moves: %d\n", genlist_size(moves));
 		}
 		// Add list to main list, along with this units ID
+		umoves->moves = moves;
 		genlist_append(player_moves, umoves);
 	} unit_list_iterate_safe_end;
 

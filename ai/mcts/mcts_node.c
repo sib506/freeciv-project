@@ -17,6 +17,7 @@ mcts_node* create_node(int p_index, struct genlist *possible_moves, int move,
 
 	node->all_moves = possible_moves;
 	node->total_no_moves = calc_number_moves(possible_moves);
+	printf("\t\tUntriedMove: %d\n", node->total_no_moves);
 	node->untried_moves = init_untried_moves(node->total_no_moves);
 
 	return node;
@@ -28,9 +29,6 @@ mcts_node* create_root_node(int p_index, struct genlist *all_possible_moves) {
 
 mcts_node* add_child_node(mcts_node* parent, int move_no) {
 	// How do we know what the next player will be?
-	struct player *pplayer = (parent->player_index + 1);
-	struct genlist *all_unit_moves = player_available_moves(pplayer);
-
 	mcts_node *child_node = create_node(-1, NULL,move_no, parent);
 
 	return child_node;
@@ -73,7 +71,7 @@ int calc_number_moves(struct genlist* all_moves){
 		return 0;
 	} else {
 		int no_of_units = genlist_size(all_moves);
-		int no_of_moves = 1 * no_of_units;
+		int no_of_moves = 1;
 		for(int i = 0; i < no_of_units; i++){
 			struct unit_moves *tmp = genlist_get(all_moves,i);
 			no_of_moves *= genlist_size(tmp->moves);

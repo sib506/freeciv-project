@@ -31,6 +31,7 @@ char *mcts_save_filename = "mcts-root";
 void mcts_best_move(struct player *pplayer) {
 	// i.e. this is the first time - we need actually create the tree
 	if(!mcts_mode){
+		printf("MCTS MODE ON\n");
 		mcts_mode = true;
 		save_game(mcts_save_filename, "Root of MCTS tree", FALSE);
 
@@ -47,6 +48,7 @@ void mcts_best_move(struct player *pplayer) {
 	}
 
 	if((current_mcts_stage == simulation)){
+		printf("CONTINUE SIMULATION\n");
 		if(rollout_depth >= MAXDEPTH)
 			backpropagate(TRUE);
 	} else {
@@ -54,6 +56,7 @@ void mcts_best_move(struct player *pplayer) {
 		if(((genlist_size(current_mcts_node->untried_moves) == 0) &&
 				(genlist_size(current_mcts_node->children) != 0)) || current_mcts_node->uninitialised){
 			current_mcts_stage = selection;
+			printf("SELECTION\n");
 
 			// If need to return an actual move now i.e. time-out
 			if(iterations >= MAX_ITER_DEPTH){
@@ -86,9 +89,10 @@ void mcts_best_move(struct player *pplayer) {
 			}
 		}
 
+		printf("\t\t%d\n", genlist_size(current_mcts_node->untried_moves));
 		//Expansion - If we have untried moves then need to expand
 		if(genlist_size(current_mcts_node->untried_moves) != 0){
-
+			printf("EXPANSION\n");
 			current_mcts_stage = expansion;
 
 			// Lookup size of untried moves list
@@ -106,6 +110,7 @@ void mcts_best_move(struct player *pplayer) {
 
 		//Rollout - Now perform rollouts
 		if(current_mcts_stage == expansion){
+			printf("SIMULATION\n");
 			current_mcts_stage = simulation;
 			rollout_depth = 0;
 		}
@@ -210,6 +215,7 @@ void backpropagate(bool interrupt){
 		return;
 	}
 	current_mcts_stage = backpropagation;
+	printf("BACKPROP\n");
 
 	mcts_node *node = current_mcts_node;
 	enum victory_state plr_state[player_slot_count()];
