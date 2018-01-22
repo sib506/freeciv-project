@@ -15,6 +15,7 @@ extern bool mcts_mode;
 extern int rollout_depth;
 extern bool move_chosen;
 extern enum mcts_stage current_mcts_stage;
+extern bool end_of_turn;
 
 enum mcts_stage{
 	selection, expansion, simulation, backpropagation

@@ -17,7 +17,6 @@ mcts_node* create_node(int p_index, struct genlist *possible_moves, int move,
 
 	node->all_moves = possible_moves;
 	node->total_no_moves = calc_number_moves(possible_moves);
-	printf("\t\tUntriedMove: %d\n", node->total_no_moves);
 	node->untried_moves = init_untried_moves(node->total_no_moves);
 
 	return node;

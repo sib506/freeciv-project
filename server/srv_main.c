@@ -1078,6 +1078,7 @@ static void begin_phase(bool is_new_phase)
 **************************************************************************/
 static void end_phase(void)
 {
+	end_of_turn = TRUE;
   log_debug("Endphase");
 
   /* 
@@ -1178,6 +1179,7 @@ static void end_phase(void)
        is initialized for human players also. */
     adv_data_phase_done(pplayer);
   } phase_players_iterate_end;
+  end_of_turn = FALSE;
 }
 
 /**************************************************************************

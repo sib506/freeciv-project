@@ -21,6 +21,7 @@ mcts_node *current_mcts_node = NULL;
 bool mcts_mode = FALSE;
 int rollout_depth = 0;
 int iterations = 0;
+bool end_of_turn = FALSE;
 
 bool move_chosen = FALSE;
 int chosen_move_set = -1;
@@ -97,12 +98,15 @@ void mcts_best_move(struct player *pplayer) {
 
 			// Lookup size of untried moves list
 			int untried_size = genlist_size(current_mcts_node->untried_moves);
+			printf("\tuntried_size: %d", untried_size);
 
 			// Retrieve move number + remove from untried list
 			int move_no = (int) genlist_get(current_mcts_node->untried_moves,
 					fc_rand(untried_size));
 			genlist_remove(current_mcts_node->untried_moves,
 					(void *)move_no);
+
+			printf("\tMoveNo: %d\n", move_no);
 
 			// Create a new node for that move + set as current node
 			current_mcts_node = add_child_node(current_mcts_node, move_no);

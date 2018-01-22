@@ -276,7 +276,7 @@ enum unit_move_result manage_auto_explorer(struct unit *punit)
 {
   struct player *pplayer = unit_owner(punit);
 
-  if(mcts_mode || (pplayer->player_mode == P_MCTS && move_chosen)){
+  if((mcts_mode || (pplayer->player_mode == P_MCTS && move_chosen)) && !end_of_turn){
 	  if(current_mcts_stage == simulation){
 		  struct genlist* actionList = genlist_new();
 		  collect_explorer_moves(punit, actionList);
