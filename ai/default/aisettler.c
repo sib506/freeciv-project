@@ -1205,154 +1205,166 @@ void collect_settler_moves(struct unit *punit, struct genlist *moveList,
 
 	struct tile *init_tile = unit_tile(punit);
 
-	if (unit_has_type_flag(punit, UTYF_CITIES)) {
-		if (city_can_be_built_here(init_tile, punit)) {
-			struct potentialMove *pMove = malloc(sizeof(struct potentialMove));
-			pMove->type = build_city;
-			pMove->moveInfo = NULL;
-			genlist_append(moveList, pMove);
+	// Need to check whether unit is currently performing a move that
+	// spans more than 1 turn. If so, they continue, assuming that this is a safe
+	// place to work still
+	if ((punit->activity != ACTIVITY_IDLE) && (adv_settler_safe_tile(pplayer, punit, unit_tile(punit)))){
+		struct potentialMove *pMove = malloc(sizeof(struct potentialMove));
+		pMove->type = continue_move;
+		pMove->moveInfo = NULL;
+		genlist_append(moveList, pMove);
+
+	} else {
+
+		if (unit_has_type_flag(punit, UTYF_CITIES)) {
+			if (city_can_be_built_here(init_tile, punit)) {
+				struct potentialMove *pMove = malloc(sizeof(struct potentialMove));
+				pMove->type = build_city;
+				pMove->moveInfo = NULL;
+				genlist_append(moveList, pMove);
+			}
 		}
-	}
 
-	collect_explorer_moves(punit, moveList);
+		collect_explorer_moves(punit, moveList);
 
-	bool consider = TRUE;
-	// Improving the tile currently standing on
-	if (!adv_settler_safe_tile(pplayer, punit, init_tile)) {
-		/* Too dangerous place */
-		consider = FALSE;
-	}
-	/* Do not work on tiles that already have workers there. */
-	unit_list_iterate(init_tile->units, aunit) {
-		if (unit_owner(aunit) == pplayer
-				&& aunit->id != punit->id
-				&& unit_has_type_flag(aunit, UTYF_SETTLERS)) {
+		bool consider = TRUE;
+		// Improving the tile currently standing on
+		if (!adv_settler_safe_tile(pplayer, punit, init_tile)) {
+			/* Too dangerous place */
 			consider = FALSE;
 		}
-	} unit_list_iterate_end;
+		/* Do not work on tiles that already have workers there. */
+		unit_list_iterate(init_tile->units, aunit) {
+			if (unit_owner(aunit) == pplayer
+					&& aunit->id != punit->id
+					&& unit_has_type_flag(aunit, UTYF_SETTLERS)) {
+				consider = FALSE;
+			}
+		} unit_list_iterate_end;
 
-	if (consider) {
-		activity_type_iterate(act) {
-			struct act_tgt target = { .type = ATT_SPECIAL, .obj.spe = S_LAST };
+		if (consider) {
+			activity_type_iterate(act) {
+				struct act_tgt target = { .type = ATT_SPECIAL, .obj.spe = S_LAST };
 
-			if (act != ACTIVITY_BASE
-					&& act != ACTIVITY_GEN_ROAD
-					&& can_unit_do_activity_targeted_at(punit, act, &target,
-							init_tile)){
-				if(act != ACTIVITY_EXPLORE){
-					//Add the action to a list to choose from
+				if (act != ACTIVITY_BASE
+						&& act != ACTIVITY_GEN_ROAD
+						&& can_unit_do_activity_targeted_at(punit, act, &target,
+								init_tile)){
+					if(act != ACTIVITY_EXPLORE){
+						//Add the action to a list to choose from
+						struct potentialMove *pMove = malloc(sizeof(struct potentialMove));
+						pMove->type = improvement;
+
+						struct potentialImprovement *action = malloc(sizeof(struct potentialImprovement));
+						action->activity = act;
+						action->target = target;
+
+						pMove->moveInfo = action;
+						genlist_append(moveList, pMove);
+					}
+				}
+			} activity_type_iterate_end;
+
+			road_type_iterate(proad) {
+				struct act_tgt target = { .type = ATT_ROAD, .obj.road = road_number(proad) };
+
+				if (can_unit_do_activity_targeted_at(punit, ACTIVITY_GEN_ROAD, &target, init_tile)) {
 					struct potentialMove *pMove = malloc(sizeof(struct potentialMove));
 					pMove->type = improvement;
 
-					struct potentialImprovement *action = malloc(sizeof(struct potentialImprovement));
-					action->activity = act;
+					struct potentialImprovement *action=malloc(sizeof(struct potentialImprovement));
+					action->activity = ACTIVITY_GEN_ROAD;
 					action->target = target;
 
 					pMove->moveInfo = action;
 					genlist_append(moveList, pMove);
 				}
-			}
-		} activity_type_iterate_end;
+				else {
+					road_deps_iterate(&(proad->reqs), pdep) {
+						struct act_tgt dep_tgt = { .type = ATT_ROAD, .obj.road = road_number(pdep) };
+						if (can_unit_do_activity_targeted_at(punit, ACTIVITY_GEN_ROAD,
+								&dep_tgt, init_tile)) {
+							//Add the action to a list to choose from
+							struct potentialMove *pMove = malloc(sizeof(struct potentialMove));
+							pMove->type = improvement;
 
-		road_type_iterate(proad) {
-			struct act_tgt target = { .type = ATT_ROAD, .obj.road = road_number(proad) };
+							struct potentialImprovement *action=malloc(sizeof(struct potentialImprovement));
+							action->activity = ACTIVITY_GEN_ROAD;
+							action->target = target;
 
-			if (can_unit_do_activity_targeted_at(punit, ACTIVITY_GEN_ROAD, &target, init_tile)) {
-				struct potentialMove *pMove = malloc(sizeof(struct potentialMove));
-				pMove->type = improvement;
-
-				struct potentialImprovement *action=malloc(sizeof(struct potentialImprovement));
-				action->activity = ACTIVITY_GEN_ROAD;
-				action->target = target;
-
-				pMove->moveInfo = action;
-				genlist_append(moveList, pMove);
-			}
-			else {
-				road_deps_iterate(&(proad->reqs), pdep) {
-					struct act_tgt dep_tgt = { .type = ATT_ROAD, .obj.road = road_number(pdep) };
-					if (can_unit_do_activity_targeted_at(punit, ACTIVITY_GEN_ROAD,
-							&dep_tgt, init_tile)) {
-						//Add the action to a list to choose from
-						struct potentialMove *pMove = malloc(sizeof(struct potentialMove));
-						pMove->type = improvement;
-
-						struct potentialImprovement *action=malloc(sizeof(struct potentialImprovement));
-						action->activity = ACTIVITY_GEN_ROAD;
-						action->target = target;
-
-						pMove->moveInfo = action;
-						genlist_append(moveList, pMove);
-					}
-				} road_deps_iterate_end;
-			}
-		} road_type_iterate_end;
-
-
-		base_type_iterate(pbase) {
-			struct act_tgt target = { .type = ATT_BASE, .obj.base = base_number(pbase) };
-			if (can_unit_do_activity_targeted_at(punit, ACTIVITY_BASE, &target,
-					init_tile)) {
-				//Add the action to a list to choose from
-				struct potentialMove *pMove = malloc(sizeof(struct potentialMove));
-				pMove->type = improvement;
-
-				struct potentialImprovement *action=malloc(sizeof(struct potentialImprovement));
-				action->activity = ACTIVITY_BASE;
-				action->target = target;
-
-				pMove->moveInfo = action;
-				genlist_append(moveList, pMove);
-			} else {
-				base_deps_iterate(&(pbase->reqs), pdep) {
-					struct act_tgt dep_tgt = { .type = ATT_BASE, .obj.base = base_number(pdep) };
-					if (can_unit_do_activity_targeted_at(punit, ACTIVITY_BASE,
-							&dep_tgt, init_tile)) {
-						//Add the action to a list to choose from
-						struct potentialMove *pMove = malloc(sizeof(struct potentialMove));
-						pMove->type = improvement;
-
-						struct potentialImprovement *action=malloc(sizeof(struct potentialImprovement));
-						action->activity = ACTIVITY_BASE;
-						action->target = target;
-
-						pMove->moveInfo = action;
-						genlist_append(moveList, pMove);
-					}
-				} base_deps_iterate_end;
-			}
-		} base_type_iterate_end;
-	}
-
-	city_list_iterate(pplayer->cities, pcity) {
-		struct worker_task *ptask = &pcity->server.task_req;
-		if (ptask->ptile != NULL) {
-			bool consider = TRUE;
-
-			/* Do not go to tiles that already have workers there. */
-			unit_list_iterate(ptask->ptile->units, aunit) {
-				if (unit_owner(aunit) == pplayer
-						&& aunit->id != punit->id
-						&& unit_has_type_flag(aunit, UTYF_SETTLERS)) {
-					consider = FALSE;
+							pMove->moveInfo = action;
+							genlist_append(moveList, pMove);
+						}
+					} road_deps_iterate_end;
 				}
-			} unit_list_iterate_end;
+			} road_type_iterate_end;
 
-			if (consider
-					&& can_unit_do_activity_targeted_at(punit, ptask->act, &ptask->tgt,
-							ptask->ptile)) {
-				struct potentialMove *pMove = malloc(sizeof(struct potentialMove));
-				pMove->type = request;
 
-				struct worker_task_load_compatible *ptask_save = malloc(sizeof(struct worker_task_load_compatible));
-				ptask_save->act = ptask->act;
-				ptask_save->tgt = ptask->tgt;
-				index_to_native_pos(&ptask_save->ptile_x,&ptask_save->ptile_y, tile_index(ptask->ptile));
-				pMove->moveInfo = ptask_save;
-				genlist_append(moveList, pMove);
-			}
+			base_type_iterate(pbase) {
+				struct act_tgt target = { .type = ATT_BASE, .obj.base = base_number(pbase) };
+				if (can_unit_do_activity_targeted_at(punit, ACTIVITY_BASE, &target,
+						init_tile)) {
+					//Add the action to a list to choose from
+					struct potentialMove *pMove = malloc(sizeof(struct potentialMove));
+					pMove->type = improvement;
+
+					struct potentialImprovement *action=malloc(sizeof(struct potentialImprovement));
+					action->activity = ACTIVITY_BASE;
+					action->target = target;
+
+					pMove->moveInfo = action;
+					genlist_append(moveList, pMove);
+				} else {
+					base_deps_iterate(&(pbase->reqs), pdep) {
+						struct act_tgt dep_tgt = { .type = ATT_BASE, .obj.base = base_number(pdep) };
+						if (can_unit_do_activity_targeted_at(punit, ACTIVITY_BASE,
+								&dep_tgt, init_tile)) {
+							//Add the action to a list to choose from
+							struct potentialMove *pMove = malloc(sizeof(struct potentialMove));
+							pMove->type = improvement;
+
+							struct potentialImprovement *action=malloc(sizeof(struct potentialImprovement));
+							action->activity = ACTIVITY_BASE;
+							action->target = target;
+
+							pMove->moveInfo = action;
+							genlist_append(moveList, pMove);
+						}
+					} base_deps_iterate_end;
+				}
+			} base_type_iterate_end;
 		}
-	} city_list_iterate_end;
+
+		city_list_iterate(pplayer->cities, pcity) {
+			struct worker_task *ptask = &pcity->server.task_req;
+			if (ptask->ptile != NULL) {
+				bool consider = TRUE;
+
+				/* Do not go to tiles that already have workers there. */
+				unit_list_iterate(ptask->ptile->units, aunit) {
+					if (unit_owner(aunit) == pplayer
+							&& aunit->id != punit->id
+							&& unit_has_type_flag(aunit, UTYF_SETTLERS)) {
+						consider = FALSE;
+					}
+				} unit_list_iterate_end;
+
+				if (consider
+						&& can_unit_do_activity_targeted_at(punit, ptask->act, &ptask->tgt,
+								ptask->ptile)) {
+					struct potentialMove *pMove = malloc(sizeof(struct potentialMove));
+					pMove->type = request;
+
+					struct worker_task_load_compatible *ptask_save = malloc(sizeof(struct worker_task_load_compatible));
+					ptask_save->act = ptask->act;
+					ptask_save->tgt = ptask->tgt;
+					index_to_native_pos(&ptask_save->ptile_x,&ptask_save->ptile_y, tile_index(ptask->ptile));
+					pMove->moveInfo = ptask_save;
+					genlist_append(moveList, pMove);
+				}
+			}
+		} city_list_iterate_end;
+	}
 
 	return;
 }

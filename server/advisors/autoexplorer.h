@@ -16,7 +16,7 @@
 struct unit;
 
 enum moveType{
-	explore, sentry, fortify, pillage, rage, build_city, improvement, request
+	explore, sentry, fortify, pillage, rage, build_city, improvement, request, continue_move
 };
 
 struct potentialMove {
