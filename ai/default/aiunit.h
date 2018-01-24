@@ -168,5 +168,6 @@ struct unit_moves{
 };
 
 struct genlist* player_available_moves(struct player *pplayer);
+void attach_chosen_move(struct player *pplayer);
 
 #endif  /* FC__AIUNIT_H */

@@ -48,6 +48,13 @@ void mcts_best_move(struct player *pplayer) {
 		current_mcts_node = mcts_root;
 	}
 
+	//Rollout - Now perform rollouts
+	if(current_mcts_stage == expansion){
+		printf("SIMULATION\n");
+		current_mcts_stage = simulation;
+		rollout_depth = 0;
+	}
+
 	if((current_mcts_stage == simulation)){
 		printf("CONTINUE SIMULATION\n");
 		if(rollout_depth >= MAXDEPTH)
@@ -109,13 +116,8 @@ void mcts_best_move(struct player *pplayer) {
 
 			// Create a new node for that move + set as current node
 			current_mcts_node = add_child_node(current_mcts_node, move_no);
-		}
 
-		//Rollout - Now perform rollouts
-		if(current_mcts_stage == expansion){
-			printf("SIMULATION\n");
-			current_mcts_stage = simulation;
-			rollout_depth = 0;
+			attach_chosen_move(pplayer);
 		}
 
 	}
@@ -201,7 +203,9 @@ struct potentialMove* return_punit_move(struct unit *punit){
 	int unit_list_index;
 	int move_no;
 
-	if(move_chosen){
+//	printf("------------\n");
+
+	if(move_chosen){ //Should this also check that it is the MCTS player?
 		player_moves = mcts_root->all_moves;
 		unit_list_index = find_index_of_unit(punit, player_moves);
 		move_no = chosen_move_set;
@@ -214,12 +218,22 @@ struct potentialMove* return_punit_move(struct unit *punit){
 	int no_of_moves_higher_in_list = 1;
 
 	for(int i=unit_list_index+1; i<genlist_size(player_moves); i++){
-		no_of_moves_higher_in_list *= genlist_size(genlist_get(player_moves,i));
+		struct unit_moves * tmp_unit = genlist_get(player_moves,i);
+//		printf("Unit moves:%d \n", genlist_size(tmp_unit->moves));
+		no_of_moves_higher_in_list *= genlist_size(tmp_unit->moves);
 	}
 
 	int move_index = (move_no/no_of_moves_higher_in_list) % genlist_size(genlist_get(player_moves,unit_list_index));
 
-	return genlist_get(genlist_get(player_moves, unit_list_index), move_index);
+//	printf("unit index: %d\n", unit_list_index);
+//	printf("move_number: %d\n", move_no);
+//	printf("higher_moves: %d\n", no_of_moves_higher_in_list);
+//	printf("move_index: %d\n", move_index);
+//	printf("modulo: %d\n", genlist_size(genlist_get(player_moves,unit_list_index)));
+
+	struct unit_moves * unit = genlist_get(player_moves, unit_list_index);
+
+	return genlist_get(unit->moves, move_index);
 }
 
 void backpropagate(bool interrupt){

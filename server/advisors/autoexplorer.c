@@ -287,8 +287,7 @@ enum unit_move_result manage_auto_explorer(struct unit *punit)
 		  free_explorer_moves(actionList);
 		  return result;
 	  } else {
-		  struct potentialMove* move = return_punit_move(punit);
-		  return make_explorer_move(punit, move->moveInfo);
+		  return make_explorer_move(punit, punit->chosen_action->moveInfo);
 	  }
   }
 

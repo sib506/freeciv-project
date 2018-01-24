@@ -2288,8 +2288,7 @@ void dai_manage_military(struct ai_type *ait, struct player *pplayer,
 			// Clear the genlist
 			free_military_moves(actionList);
 		} else {
-			struct potentialMove* move = return_punit_move(punit);
-			make_military_move(ait, pplayer, punit, move);
+			make_military_move(ait, pplayer, punit, punit->chosen_action);
 		}
 		return;
 	}
@@ -3317,4 +3316,16 @@ struct genlist* player_available_moves(struct player *pplayer){
 	return player_moves;
 }
 
-
+/**************************************************************************
+  Attach chosen move to units for a player
+**************************************************************************/
+void attach_chosen_move(struct player *pplayer){
+	unit_list_iterate_safe(pplayer->units, punit) {
+		if (unit_has_type_flag(punit, UTYF_SETTLERS) ||
+				unit_has_type_flag(punit, UTYF_CITIES) ||
+				is_military_unit(punit) ||
+				unit_has_type_role(punit, L_EXPLORER)){
+			punit->chosen_action = return_punit_move(punit);
+		}
+	} unit_list_iterate_safe_end;
+}

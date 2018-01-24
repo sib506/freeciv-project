@@ -1036,8 +1036,7 @@ void dai_auto_settler_run(struct ai_type *ait, struct player *pplayer,
 			// Clear the genlist
 			free_settler_moves(actionList);
 		} else {
-			struct potentialMove* move = return_punit_move(punit);
-			make_settler_move(ait, pplayer, punit, state, move);
+			make_settler_move(ait, pplayer, punit, state, punit->chosen_action);
 		}
 		return;
 	}
