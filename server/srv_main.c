@@ -201,6 +201,7 @@ void init_game_seed(void)
  
   if (!fc_rand_is_init()) {
     fc_srand(game.server.seed);
+    srand(time(NULL));
   }
 }
 

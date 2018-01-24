@@ -1029,7 +1029,7 @@ void dai_auto_settler_run(struct ai_type *ait, struct player *pplayer,
 		if(current_mcts_stage == simulation){
 			struct genlist* actionList = genlist_new();
 			collect_settler_moves(punit, actionList, pplayer);
-			int rand_no = fc_rand(genlist_size(actionList));
+			int rand_no = rand() % genlist_size(actionList);
 //			printf("RandNo:%d \n", rand_no);
 			struct potentialMove *chosen_action = genlist_get(actionList, rand_no);
 			make_settler_move(ait, pplayer, punit, state, chosen_action);

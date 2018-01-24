@@ -280,7 +280,8 @@ enum unit_move_result manage_auto_explorer(struct unit *punit)
 	  if(current_mcts_stage == simulation){
 		  struct genlist* actionList = genlist_new();
 		  collect_explorer_moves(punit, actionList);
-		  int rand_no = fc_rand(genlist_size(actionList));
+
+		  int rand_no = rand() % genlist_size(actionList);
 		  struct potentialMove *chosen_action = genlist_get(actionList, rand_no);
 		  enum unit_move_result result = make_explorer_move(punit, chosen_action->moveInfo);
 		  // Clear the genlist

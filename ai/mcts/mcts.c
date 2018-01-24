@@ -106,7 +106,7 @@ void mcts_best_move(struct player *pplayer) {
 			printf("\tuntried_size: %d", untried_size);
 
 			// Retrieve move number + remove from untried list
-			int random_index = fc_rand(untried_size);
+			int random_index = rand() % untried_size;
 			int move_no = (int) genlist_get(current_mcts_node->untried_moves,
 					random_index);
 			genlist_remove(current_mcts_node->untried_moves,

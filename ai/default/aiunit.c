@@ -2283,7 +2283,8 @@ void dai_manage_military(struct ai_type *ait, struct player *pplayer,
 		if(current_mcts_stage == simulation){
 			struct genlist* actionList = genlist_new();
 			collect_military_moves(punit, actionList);
-			struct potentialMove *chosen_action = genlist_get(actionList, fc_rand(genlist_size(actionList)));
+			int rand_index = rand() % genlist_size(actionList);
+			struct potentialMove *chosen_action = genlist_get(actionList, rand_index);
 			make_military_move(ait, pplayer, punit, chosen_action);
 			// Clear the genlist
 			free_military_moves(actionList);
@@ -3299,13 +3300,13 @@ struct genlist* player_available_moves(struct player *pplayer){
 		struct genlist *moves = genlist_new();
 		if (unit_has_type_flag(punit, UTYF_SETTLERS) || unit_has_type_flag(punit, UTYF_CITIES)){
 			collect_settler_moves(punit,moves,pplayer);
-//			printf("\tCheck settler possible moves: %d\n", genlist_size(moves));
+			printf("\tCheck settler possible moves: %d\n", genlist_size(moves));
 		} else if (is_military_unit(punit)){
 			collect_military_moves(punit,moves);
-//			printf("\tCheck military possible moves: %d\n", genlist_size(moves));
+			printf("\tCheck military possible moves: %d\n", genlist_size(moves));
 		} else if (unit_has_type_role(punit, L_EXPLORER)){
 			collect_explorer_moves(punit, moves);
-//			printf("\tCheck explorer possible moves: %d\n", genlist_size(moves));
+			printf("\tCheck explorer possible moves: %d\n", genlist_size(moves));
 		}
 		// Add list to main list, along with this units ID
 		umoves->moves = moves;
