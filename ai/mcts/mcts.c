@@ -21,7 +21,7 @@ mcts_node *current_mcts_node = NULL;
 bool mcts_mode = FALSE;
 int rollout_depth = 0;
 int iterations = 0;
-bool end_of_turn = FALSE;
+bool reset = FALSE;
 
 bool move_chosen = FALSE;
 int chosen_move_set = -1;
@@ -99,12 +99,13 @@ void mcts_best_move(struct player *pplayer) {
 			printf("\tuntried_size: %d", untried_size);
 
 			// Retrieve move number + remove from untried list
+			int random_index = fc_rand(untried_size);
 			int move_no = (int) genlist_get(current_mcts_node->untried_moves,
-					fc_rand(untried_size));
+					random_index);
 			genlist_remove(current_mcts_node->untried_moves,
 					(void *)move_no);
 
-			printf("\tMoveNo: %d\n", move_no);
+			printf("\tRandNo: %d\n", random_index);
 
 			// Create a new node for that move + set as current node
 			current_mcts_node = add_child_node(current_mcts_node, move_no);
@@ -269,4 +270,8 @@ static int mcts_choose_final_move(){
 	}
 
 	return chosen_move;
+}
+
+bool at_root_of_tree(){
+	return current_mcts_node == mcts_root;
 }

@@ -15,7 +15,7 @@ extern bool mcts_mode;
 extern int rollout_depth;
 extern bool move_chosen;
 extern enum mcts_stage current_mcts_stage;
-extern bool end_of_turn;
+extern bool reset;
 
 enum mcts_stage{
 	selection, expansion, simulation, backpropagation
@@ -27,5 +27,6 @@ struct potentialMove* return_unit_index_move(int move_no, int unit_list_index,
 		struct genlist *player_moves);
 struct potentialMove* return_punit_move(struct unit *punit);
 void backpropagate(bool interrupt);
+bool at_root_of_tree();
 
 #endif
