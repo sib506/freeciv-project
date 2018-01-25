@@ -7,7 +7,7 @@
 #include "rand.h"
 
 #define MAXDEPTH 20
-#define MAX_ITER_DEPTH 100
+#define MAX_ITER_DEPTH 1000
 #define UCT_CONST 1.41421356237 //sqrt(2)
 
 static mcts_node* UCT_select_child(mcts_node* root);
@@ -48,12 +48,40 @@ void mcts_best_move(struct player *pplayer) {
 		current_mcts_node = mcts_root;
 	}
 
+	if(current_mcts_node->uninitialised){
+		struct genlist *all_unit_moves = player_available_moves(pplayer);
+		current_mcts_node->player_index = player_index(pplayer);
+		current_mcts_node->all_moves = all_unit_moves;
+		current_mcts_node->total_no_moves = calc_number_moves(all_unit_moves);
+		current_mcts_node->untried_moves = init_untried_moves(current_mcts_node->total_no_moves);
+		current_mcts_node->uninitialised = FALSE;
+	}
+
 	//Rollout - Now perform rollouts
 	if(current_mcts_stage == expansion){
 		printf("SIMULATION\n");
 		current_mcts_stage = simulation;
 		rollout_depth = 0;
 	}
+
+	if(current_mcts_node == mcts_root){
+		iterations++;
+		// If need to return an actual move now i.e. time-out
+		if(iterations >= MAX_ITER_DEPTH){
+			//Choose best move i.e. most visited
+			move_chosen = TRUE;
+			chosen_move_set = mcts_choose_final_move();
+			attach_chosen_move(pplayer);
+			//Turn mcts mode off
+			mcts_mode = FALSE;
+			current_mcts_node = NULL; //So settler doesn't detect the root note
+			printf("Final move has been chosen. Now returning to game.\n");
+			//Continue game with other players as normal
+			load_command(NULL, mcts_save_filename, FALSE, TRUE);
+		}
+		printf("Current MCTS Iterations: %d\n", iterations);
+	}
+
 
 	if((current_mcts_stage == simulation)){
 		printf("CONTINUE SIMULATION\n");
@@ -66,33 +94,9 @@ void mcts_best_move(struct player *pplayer) {
 			current_mcts_stage = selection;
 			printf("SELECTION\n");
 
-			// If need to return an actual move now i.e. time-out
-			if(iterations >= MAX_ITER_DEPTH){
-				//Choose best move i.e. most visited
-				chosen_move_set = mcts_choose_final_move();
-				move_chosen = TRUE;
-				//Turn mcts mode off
-				mcts_mode = FALSE;
-				printf("Final move has been chosen. Now returning to game.\n");
-				//Continue game with other players as normal
-				load_command(NULL, mcts_save_filename, FALSE, TRUE);
-			}
-
-			if(current_mcts_node == mcts_root){
-				iterations++;
-			}
-
-			if(current_mcts_node->uninitialised){
-				struct genlist *all_unit_moves = player_available_moves(pplayer);
-				current_mcts_node->player_index = player_index(pplayer);
-				current_mcts_node->all_moves = all_unit_moves;
-				current_mcts_node->total_no_moves = calc_number_moves(all_unit_moves);
-				current_mcts_node->untried_moves = init_untried_moves(current_mcts_node->total_no_moves);
-				current_mcts_node->uninitialised = FALSE;
-			} else {
-				current_mcts_node = UCT_select_child(current_mcts_node);
-				return;
-			}
+			current_mcts_node = UCT_select_child(current_mcts_node);
+			attach_chosen_move(pplayer);
+			return;
 		}
 
 		printf("\t\t%d\n", genlist_size(current_mcts_node->untried_moves));
