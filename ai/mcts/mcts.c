@@ -14,6 +14,7 @@ static mcts_node* UCT_select_child(mcts_node* root);
 static double UCT(mcts_node* child_node, int rootPlays);
 static void free_mcts_tree(mcts_node* node);
 static int mcts_choose_final_move();
+void print_mcts_tree_layer1();
 
 mcts_node *mcts_root = NULL; //Permanent root of the tree
 mcts_node *current_mcts_node = NULL;
@@ -65,6 +66,7 @@ void mcts_best_move(struct player *pplayer) {
 	}
 
 	if(current_mcts_node == mcts_root){
+		print_mcts_tree_layer1();
 		iterations++;
 		// If need to return an actual move now i.e. time-out
 		if(iterations >= MAX_ITER_DEPTH){
@@ -293,3 +295,15 @@ static int mcts_choose_final_move(){
 bool at_root_of_tree(){
 	return current_mcts_node == mcts_root;
 }
+
+void print_mcts_tree_layer1(){
+	printf("-------------------------\n");
+	printf("# Visits: %d \t Score: %d\n", mcts_root->visits, mcts_root->wins);
+	for(int i=0; i < genlist_size(mcts_root->children); i++){
+		mcts_node *child_node = genlist_get(mcts_root->children, i);
+		printf("\t# Visits: %d \t Score: %d\n", child_node->visits, child_node->wins);
+	}
+	printf("-------------------------\n");
+}
+
+

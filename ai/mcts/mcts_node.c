@@ -1,4 +1,6 @@
 #include "mcts_node.h"
+#include "aisettler.h"
+#include "idex.h"
 #include <string.h>
 
 mcts_node* create_node(int p_index, struct genlist *possible_moves, int move,
@@ -23,13 +25,13 @@ mcts_node* create_node(int p_index, struct genlist *possible_moves, int move,
 }
 
 mcts_node* create_root_node(int p_index, struct genlist *all_possible_moves) {
-	return create_node(p_index, all_possible_moves, NULL, NULL);
+	return create_node(p_index, all_possible_moves, 0, NULL);
 }
 
 mcts_node* add_child_node(mcts_node* parent, int move_no) {
 	// How do we know what the next player will be?
 	mcts_node *child_node = create_node(-1, NULL,move_no, parent);
-
+	genlist_append(parent->children, child_node);
 	return child_node;
 }
 
