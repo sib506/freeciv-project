@@ -1530,7 +1530,6 @@ AC_CONFIG_FILES([Makefile
 	  ai/Makefile
           ai/default/Makefile
           ai/classic/Makefile
-          ai/random/Makefile
           ai/mcts/Makefile
           ai/stub/Makefile
           ai/threaded/Makefile

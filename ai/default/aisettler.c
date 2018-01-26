@@ -1028,7 +1028,7 @@ void dai_auto_settler_run(struct ai_type *ait, struct player *pplayer,
 			&& !at_root_of_tree()){
 		if(current_mcts_stage == simulation){
 			struct genlist* actionList = genlist_new();
-			collect_settler_moves(punit, actionList, pplayer);
+			collect_settler_moves(punit, actionList, pplayer, 0);
 			int rand_no = rand() % genlist_size(actionList);
 //			printf("RandNo:%d \n", rand_no);
 			struct potentialMove *chosen_action = genlist_get(actionList, rand_no);
@@ -1200,7 +1200,7 @@ struct potentialImprovement{
   Settler collect all possible moves/actions.
 **************************************************************************/
 void collect_settler_moves(struct unit *punit, struct genlist *moveList,
-		struct player *pplayer){
+		struct player *pplayer, int pruning_level){
 	CHECK_UNIT(punit);
 
 	struct tile *init_tile = unit_tile(punit);
@@ -1225,7 +1225,7 @@ void collect_settler_moves(struct unit *punit, struct genlist *moveList,
 			}
 		}
 
-		collect_explorer_moves(punit, moveList);
+		collect_explorer_moves(punit, moveList, pruning_level);
 
 		bool consider = TRUE;
 		// Improving the tile currently standing on

@@ -279,7 +279,7 @@ enum unit_move_result manage_auto_explorer(struct unit *punit)
   if((mcts_mode || (pplayer->player_mode == P_MCTS && move_chosen)) && unit_has_type_role(punit, L_EXPLORER)){
 	  if(current_mcts_stage == simulation){
 		  struct genlist* actionList = genlist_new();
-		  collect_explorer_moves(punit, actionList);
+		  collect_explorer_moves(punit, actionList, 0);
 
 		  int rand_no = rand() % genlist_size(actionList);
 		  struct potentialMove *chosen_action = genlist_get(actionList, rand_no);
@@ -505,7 +505,7 @@ enum unit_move_result manage_random_auto_explorer(struct unit *punit)
 #undef DIST_FACTOR
 }
 
-void collect_explorer_moves(struct unit *punit, struct genlist *moveList) {
+void collect_explorer_moves(struct unit *punit, struct genlist *moveList, int pruning_level) {
 	struct player *pplayer = unit_owner(punit);
 	/* Loop prevention */
 	struct tile *init_tile = unit_tile(punit);

@@ -36,7 +36,7 @@ void dai_auto_settler_run(struct ai_type *ait, struct player *pplayer,
                           struct unit *punit, struct settlermap *state);
 
 void collect_settler_moves(struct unit *punit, struct genlist *moveList,
-		struct player *pplayer);
+		struct player *pplayer, int pruning_level);
 void make_settler_move(struct ai_type *ait, struct player *pplayer,
         struct unit *punit, struct settlermap *state, struct potentialMove *chosen_action);
 void free_settler_moves(struct genlist *moveList);
