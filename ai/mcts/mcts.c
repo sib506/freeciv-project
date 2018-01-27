@@ -230,15 +230,17 @@ struct potentialMove* return_punit_move(struct unit *punit){
 		no_of_moves_higher_in_list *= genlist_size(tmp_unit->moves);
 	}
 
-	int move_index = (move_no/no_of_moves_higher_in_list) % genlist_size(genlist_get(player_moves,unit_list_index));
-
-//	printf("unit index: %d\n", unit_list_index);
-//	printf("move_number: %d\n", move_no);
-//	printf("higher_moves: %d\n", no_of_moves_higher_in_list);
-//	printf("move_index: %d\n", move_index);
-//	printf("modulo: %d\n", genlist_size(genlist_get(player_moves,unit_list_index)));
-
 	struct unit_moves * unit = genlist_get(player_moves, unit_list_index);
+	int no_unit_moves = genlist_size(unit->moves);
+
+	int move_index = (move_no/no_of_moves_higher_in_list) % no_unit_moves;
+
+/*	printf("unit index: %d\n", unit_list_index);
+	printf("\tmove_number: %d\n", move_no);
+	printf("\thigher_moves: %d\n", no_of_moves_higher_in_list);
+	printf("\tmove_index: %d\n", move_index);
+	printf("\tmodulo: %d\n", genlist_size(genlist_get(player_moves,unit_list_index)));
+	printf("\tMove mem: %d\n", genlist_get(unit->moves, move_index));*/
 
 	return genlist_get(unit->moves, move_index);
 }

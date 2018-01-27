@@ -3,6 +3,9 @@
 #include "idex.h"
 #include <string.h>
 
+#define BRANCH_LIMITED	1
+#define BRANCH_LIMIT	30
+
 mcts_node* create_node(int p_index, struct genlist *possible_moves, int move,
 		mcts_node *parent) {
 	mcts_node* node = (mcts_node*) malloc(sizeof(mcts_node));
@@ -91,8 +94,27 @@ int calc_number_moves(struct genlist* all_moves){
 
 struct genlist* init_untried_moves(int total_no_moves){
 	struct genlist* available_moves = genlist_new();
-	for(int i=0; i<total_no_moves; i++){
-		genlist_append(available_moves, (void*)i);
+
+	if(BRANCH_LIMITED && (total_no_moves != 0)){
+		for(int i=0; i<BRANCH_LIMIT; i++){
+			bool seen = FALSE;
+			int rand_move_no = rand() % total_no_moves;
+
+			for(int j = 0; j < genlist_size(available_moves); j++){
+				if(rand_move_no == (int) genlist_get(available_moves, j)){
+					seen = TRUE;
+					i--;
+					break;
+				}
+			}
+			if(seen == FALSE){
+				genlist_append(available_moves, (void*) rand_move_no);
+			}
+		}
+	} else {
+		for(int i=0; i<total_no_moves; i++){
+			genlist_append(available_moves, (void*)i);
+		}
 	}
 
 	return available_moves;
