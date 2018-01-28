@@ -2581,6 +2581,10 @@ static void srv_running(void)
         }
       }
 
+      if(reset){
+    	  mcts_end_command();
+      }
+
       log_debug("sniffingpackets");
       check_for_full_turn_done(); /* HACK: don't wait during AI phases */
       while (server_sniff_all_input() == S_E_OTHERWISE) {
@@ -3122,6 +3126,13 @@ void srv_main(void)
 
     log_normal(_("Now accepting new client connections on port %d."),
                srvarg.port);
+
+    if(reset){
+        	reset = FALSE;
+        	load_command(NULL, "mcts-root", FALSE, TRUE);
+        	force_end_of_sniff = TRUE;
+    }
+
     /* Remain in S_S_INITIAL until all players are ready. */
     while (S_E_FORCE_END_OF_SNIFF != server_sniff_all_input()) {
       /* When force_end_of_sniff is used in pregame, it means that the server
@@ -3141,7 +3152,7 @@ void srv_main(void)
       server_sniff_all_input();
     }
 
-    if (game.info.timeout == -1 || srvarg.exit_on_end) {
+    if ((game.info.timeout == -1 && !reset) || srvarg.exit_on_end) {
       /* For autogames or if the -e option is specified, exit the server. */
       server_quit();
     }
@@ -3152,6 +3163,7 @@ void srv_main(void)
     mapimg_reset();
     load_rulesets(NULL, TRUE);
     game.info.is_new_game = TRUE;
+
   } while (TRUE);
 
   /* Technically, we won't ever get here. We exit via server_quit. */

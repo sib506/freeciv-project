@@ -2279,7 +2279,8 @@ static void dai_manage_hitpoint_recovery(struct ai_type *ait,
 void dai_manage_military(struct ai_type *ait, struct player *pplayer,
                          struct unit *punit)
 {
-	if((mcts_mode || (pplayer->player_mode == P_MCTS && move_chosen)) && is_military_unit(punit)){
+	if((mcts_mode || (pplayer->player_mode == P_MCTS && move_chosen && !pending_game_move))
+			&& is_military_unit(punit) && !reset){
 		if(current_mcts_stage == simulation){
 			struct genlist* actionList = genlist_new();
 			collect_military_moves(punit, actionList, 0);
@@ -2796,7 +2797,8 @@ void dai_manage_units(struct ai_type *ait, struct player *pplayer)
   dai_set_defenders(ait, pplayer);
 
   if(((pplayer->player_mode == P_MCTS) || mcts_mode) &&
-		  (pplayer->ai_common.barbarian_type == NOT_A_BARBARIAN)){
+		  (pplayer->ai_common.barbarian_type == NOT_A_BARBARIAN) &&
+		  !reset){
 	  mcts_best_move(pplayer);
   }
 
@@ -3300,12 +3302,15 @@ struct genlist* player_available_moves(struct player *pplayer, int pruning_level
 
 		struct genlist *moves = genlist_new();
 		if (unit_has_type_flag(punit, UTYF_SETTLERS) || unit_has_type_flag(punit, UTYF_CITIES)){
+			umoves->type = settler;
 			collect_settler_moves(punit,moves,pplayer, pruning_level);
 			printf("\tCheck settler possible moves: %d\n", genlist_size(moves));
 		} else if (is_military_unit(punit)){
+			umoves->type = military;
 			collect_military_moves(punit,moves, pruning_level);
 			printf("\tCheck military possible moves: %d\n", genlist_size(moves));
 		} else if (unit_has_type_role(punit, L_EXPLORER)){
+			umoves->type = explorer;
 			collect_explorer_moves(punit, moves, pruning_level);
 			printf("\tCheck explorer possible moves: %d\n", genlist_size(moves));
 		}
@@ -3314,7 +3319,7 @@ struct genlist* player_available_moves(struct player *pplayer, int pruning_level
 		genlist_append(player_moves, umoves);
 	} unit_list_iterate_safe_end;
 
-//	printf("\t No of Units: %d\n", genlist_size(player_moves));
+	printf("\t No of Units: %d\n", genlist_size(player_moves));
 	return player_moves;
 }
 

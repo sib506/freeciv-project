@@ -5,9 +5,11 @@
 #include <stdbool.h>
 #include "stdinhand.h"
 #include "rand.h"
+#include "featured_text.h"
+#include "notify.h"
 
 #define MAXDEPTH 20
-#define MAX_ITER_DEPTH 1000
+#define MAX_ITER_DEPTH 100
 #define UCT_CONST 1.41421356237 //sqrt(2)
 #define PRUNING_LEVEL 0
 
@@ -17,6 +19,7 @@ static void free_mcts_tree(mcts_node* node);
 static int mcts_choose_final_move();
 void print_mcts_tree_layer1();
 
+
 mcts_node *mcts_root = NULL; //Permanent root of the tree
 mcts_node *current_mcts_node = NULL;
 
@@ -24,6 +27,7 @@ bool mcts_mode = FALSE;
 int rollout_depth = 0;
 int iterations = 0;
 bool reset = FALSE;
+bool pending_game_move = FALSE;
 
 bool move_chosen = FALSE;
 int chosen_move_set = -1;
@@ -33,9 +37,16 @@ char *mcts_save_filename = "mcts-root";
 
 void mcts_best_move(struct player *pplayer) {
 	// i.e. this is the first time - we need actually create the tree
-	if(!mcts_mode){
+	if(!mcts_mode & !pending_game_move){
 		printf("MCTS MODE ON\n");
-		mcts_mode = true;
+
+		mcts_mode = TRUE;
+
+		//Reset some variables
+		move_chosen = FALSE;
+		iterations = 0;
+		chosen_move_set = -1;
+
 		save_game(mcts_save_filename, "Root of MCTS tree", FALSE);
 
 		// Free the previous tree
@@ -49,6 +60,13 @@ void mcts_best_move(struct player *pplayer) {
 		mcts_root->uninitialised = FALSE;
 		current_mcts_node = mcts_root;
 	}
+
+	if(move_chosen){
+			printf("Final moves are being attached\n");
+			attach_chosen_move(pplayer);
+			pending_game_move = FALSE;
+			return;
+		}
 
 	if(current_mcts_node->uninitialised){
 		struct genlist *all_unit_moves = player_available_moves(pplayer, PRUNING_LEVEL);
@@ -74,13 +92,17 @@ void mcts_best_move(struct player *pplayer) {
 			//Choose best move i.e. most visited
 			move_chosen = TRUE;
 			chosen_move_set = mcts_choose_final_move();
-			attach_chosen_move(pplayer);
 			//Turn mcts mode off
 			mcts_mode = FALSE;
+			pending_game_move = TRUE;
 			current_mcts_node = NULL; //So settler doesn't detect the root note
 			printf("Final move has been chosen. Now returning to game.\n");
 			//Continue game with other players as normal
-			load_command(NULL, mcts_save_filename, FALSE, TRUE);
+			reset = TRUE;
+			printf("Reset\n");
+			return;
+			//mcts_end_command();
+			//load_command(NULL, mcts_save_filename, FALSE, TRUE);
 		}
 		printf("Current MCTS Iterations: %d\n", iterations);
 	}
@@ -235,7 +257,7 @@ struct potentialMove* return_punit_move(struct unit *punit){
 
 	int move_index = (move_no/no_of_moves_higher_in_list) % no_unit_moves;
 
-/*	printf("unit index: %d\n", unit_list_index);
+	/*printf("unit index: %d\n", unit_list_index);
 	printf("\tmove_number: %d\n", move_no);
 	printf("\thigher_moves: %d\n", no_of_moves_higher_in_list);
 	printf("\tmove_index: %d\n", move_index);
@@ -276,7 +298,10 @@ void backpropagate(bool interrupt){
 	}
 	current_mcts_stage = selection;
 	current_mcts_node = mcts_root;
-	load_command(NULL, mcts_save_filename, FALSE, TRUE);
+	reset = TRUE;
+	printf("Reset\n");
+//	mcts_end_command();
+	//load_command(NULL, mcts_save_filename, FALSE, TRUE);
 	return;
 }
 

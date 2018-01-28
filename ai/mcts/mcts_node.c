@@ -51,12 +51,11 @@ void free_node(mcts_node *node) {
 	for(int i = 0; i < no_of_units; i++){
 		struct unit_moves *tmp = genlist_get(node->all_moves,i);
 		struct unit *punit = idex_lookup_unit(tmp->id);
-		if(unit_has_type_flag(punit, UTYF_SETTLERS) ||
-				unit_has_type_flag(punit, UTYF_CITIES)){
+		if(tmp->type == settler){
 			free_settler_moves(tmp->moves);
-		} else if (is_military_unit(punit)){
+		} else if (tmp->type == military){
 			free_military_moves(tmp->moves);
-		} else if (unit_has_type_role(punit, L_EXPLORER)){
+		} else if (tmp->type == explorer){
 			free_explorer_moves(tmp->moves);
 		}
 		free(tmp);
@@ -96,7 +95,15 @@ struct genlist* init_untried_moves(int total_no_moves){
 	struct genlist* available_moves = genlist_new();
 
 	if(BRANCH_LIMITED && (total_no_moves != 0)){
-		for(int i=0; i<BRANCH_LIMIT; i++){
+		int limit = 0;
+
+		if(total_no_moves < BRANCH_LIMIT){
+			limit = total_no_moves;
+		} else {
+			limit = BRANCH_LIMIT;
+		}
+
+		for(int i=0; i<limit; i++){
 			bool seen = FALSE;
 			int rand_move_no = rand() % total_no_moves;
 

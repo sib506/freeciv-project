@@ -3711,7 +3711,9 @@ bool load_command(struct connection *caller, const char *filename, bool check,
     cmd_reply(CMD_LOAD, caller, C_FAIL, _("Usage:\n%s"),
               command_synopsis(command_by_number(CMD_LOAD)));
     return FALSE;
-  } if (S_S_INITIAL != server_state()){
+  }
+
+  /*if (S_S_INITIAL != server_state()){
 	//SB Code
 	server_clear();
 	srv_reload_setup();
@@ -3736,9 +3738,9 @@ bool load_command(struct connection *caller, const char *filename, bool check,
 	game.info.is_new_game = TRUE;
 	firstLoad= 0;
 
-	set_server_state(S_S_INITIAL);
-
-  } if (S_S_INITIAL != server_state()){
+	set_server_state(S_S_INITIAL);}
+*/
+  if (S_S_INITIAL != server_state()){
     cmd_reply(CMD_LOAD, caller, C_FAIL,
               _("Cannot load a game while another is running."));
     dlsend_packet_game_load(game.est_connections, TRUE, filename);
@@ -4517,6 +4519,13 @@ static bool handle_stdin_input_real(struct connection *caller, char *str,
   /* should NEVER happen! */
   log_error("Unknown command variant: %d.", cmd);
   return FALSE;
+}
+
+/**************************************************************************
+  End the game immediately in a draw. (Global)
+**************************************************************************/
+bool mcts_end_command(){
+	return end_command(NULL,"MCTS Reset Game",FALSE);
 }
 
 /**************************************************************************

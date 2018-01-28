@@ -1023,9 +1023,9 @@ void dai_auto_settler_init(struct ai_plr *ai)
 void dai_auto_settler_run(struct ai_type *ait, struct player *pplayer,
                           struct unit *punit, struct settlermap *state)
 {
-	if((mcts_mode || (pplayer->player_mode == P_MCTS && move_chosen)) &&
+	if((mcts_mode || (pplayer->player_mode == P_MCTS && move_chosen && !pending_game_move)) &&
 			(unit_has_type_flag(punit, UTYF_SETTLERS) || unit_has_type_flag(punit, UTYF_CITIES))
-			&& !at_root_of_tree()){
+			&& !at_root_of_tree() &&!reset){
 		if(current_mcts_stage == simulation){
 			struct genlist* actionList = genlist_new();
 			collect_settler_moves(punit, actionList, pplayer, 0);
