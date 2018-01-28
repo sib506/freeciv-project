@@ -2280,7 +2280,7 @@ void dai_manage_military(struct ai_type *ait, struct player *pplayer,
                          struct unit *punit)
 {
 	if((mcts_mode || (pplayer->player_mode == P_MCTS && move_chosen && !pending_game_move))
-			&& is_military_unit(punit) && !reset){
+			&& is_military_unit(punit) && !reset && (pplayer->ai_common.barbarian_type == NOT_A_BARBARIAN)){
 		if(current_mcts_stage == simulation){
 			struct genlist* actionList = genlist_new();
 			collect_military_moves(punit, actionList, 0);

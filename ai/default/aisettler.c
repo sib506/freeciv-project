@@ -1025,7 +1025,7 @@ void dai_auto_settler_run(struct ai_type *ait, struct player *pplayer,
 {
 	if((mcts_mode || (pplayer->player_mode == P_MCTS && move_chosen && !pending_game_move)) &&
 			(unit_has_type_flag(punit, UTYF_SETTLERS) || unit_has_type_flag(punit, UTYF_CITIES))
-			&& !at_root_of_tree() &&!reset){
+			&& !at_root_of_tree() &&!reset && (pplayer->ai_common.barbarian_type == NOT_A_BARBARIAN)){
 		if(current_mcts_stage == simulation){
 			struct genlist* actionList = genlist_new();
 			collect_settler_moves(punit, actionList, pplayer, 0);

@@ -277,7 +277,7 @@ enum unit_move_result manage_auto_explorer(struct unit *punit)
   struct player *pplayer = unit_owner(punit);
 
   if((mcts_mode || (pplayer->player_mode == P_MCTS && move_chosen && !pending_game_move))
-		  && unit_has_type_role(punit, L_EXPLORER) && !reset){
+		  && unit_has_type_role(punit, L_EXPLORER) && !reset && (pplayer->ai_common.barbarian_type == NOT_A_BARBARIAN)){
 	  if(current_mcts_stage == simulation){
 		  struct genlist* actionList = genlist_new();
 		  collect_explorer_moves(punit, actionList, 0);
