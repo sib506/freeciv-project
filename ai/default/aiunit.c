@@ -2466,7 +2466,7 @@ void make_military_move(struct ai_type *ait, struct player *pplayer,
 		switch (make_explorer_move(punit, chosen_action->moveInfo)) {
 		case MR_DEATH:
 			//don't use punit!
-			break;
+			return;
 		case MR_OK:
 			UNIT_LOG(LOG_DEBUG, punit, "more exploring");
 			break;
@@ -2474,23 +2474,23 @@ void make_military_move(struct ai_type *ait, struct player *pplayer,
 			UNIT_LOG(LOG_DEBUG, punit, "no more exploring either");
 			break;
 		};
+		def_ai_unit_data(punit, ait)->done = TRUE;
 		break;
-		case sentry:
-			unit_activity_handling(punit, ACTIVITY_SENTRY);
-			break;
-		case fortify:
-			unit_activity_handling(punit, ACTIVITY_FORTIFYING);
-			break;
-		case pillage:
-			unit_activity_handling(punit, ACTIVITY_PILLAGE);
-			break;
-		case rage:
-			break;
-		default:
-			break;
+	case sentry:
+		unit_activity_handling(punit, ACTIVITY_SENTRY);
+		break;
+	case fortify:
+		unit_activity_handling(punit, ACTIVITY_FORTIFYING);
+		break;
+	case pillage:
+		unit_activity_handling(punit, ACTIVITY_PILLAGE);
+		break;
+	case rage:
+		break;
+	default:
+		break;
 	}
 
-	def_ai_unit_data(punit, ait)->done = TRUE;
 	return;
 }
 
@@ -3297,26 +3297,38 @@ struct genlist* player_available_moves(struct player *pplayer, int pruning_level
 	struct genlist *player_moves = genlist_new();
 
 	unit_list_iterate_safe(pplayer->units, punit) {
-		struct unit_moves *umoves = malloc(sizeof(struct unit_moves));
-		umoves->id = punit->id;
-
-		struct genlist *moves = genlist_new();
 		if (unit_has_type_flag(punit, UTYF_SETTLERS) || unit_has_type_flag(punit, UTYF_CITIES)){
+			struct unit_moves *umoves = malloc(sizeof(struct unit_moves));
+			umoves->id = punit->id;
+			struct genlist *moves = genlist_new();
 			umoves->type = settler;
 			collect_settler_moves(punit,moves,pplayer, pruning_level);
 			printf("\tCheck settler possible moves: %d\n", genlist_size(moves));
+			// Add list to main list, along with this units ID
+			umoves->moves = moves;
+			genlist_append(player_moves, umoves);
 		} else if (is_military_unit(punit)){
+			struct unit_moves *umoves = malloc(sizeof(struct unit_moves));
+			umoves->id = punit->id;
+			struct genlist *moves = genlist_new();
 			umoves->type = military;
 			collect_military_moves(punit,moves, pruning_level);
 			printf("\tCheck military possible moves: %d\n", genlist_size(moves));
+			// Add list to main list, along with this units ID
+			umoves->moves = moves;
+			genlist_append(player_moves, umoves);
 		} else if (unit_has_type_role(punit, L_EXPLORER)){
+			struct unit_moves *umoves = malloc(sizeof(struct unit_moves));
+			umoves->id = punit->id;
+			struct genlist *moves = genlist_new();
 			umoves->type = explorer;
 			collect_explorer_moves(punit, moves, pruning_level);
 			printf("\tCheck explorer possible moves: %d\n", genlist_size(moves));
+			// Add list to main list, along with this units ID
+			umoves->moves = moves;
+			genlist_append(player_moves, umoves);
 		}
-		// Add list to main list, along with this units ID
-		umoves->moves = moves;
-		genlist_append(player_moves, umoves);
+
 	} unit_list_iterate_safe_end;
 
 	printf("\t No of Units: %d\n", genlist_size(player_moves));

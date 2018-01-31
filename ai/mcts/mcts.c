@@ -7,6 +7,7 @@
 #include "rand.h"
 #include "featured_text.h"
 #include "notify.h"
+#include "idex.c"
 
 #define MAXDEPTH 20
 #define MAX_ITER_DEPTH 100
@@ -245,12 +246,27 @@ struct potentialMove* return_punit_move(struct unit *punit){
 	}
 
 	int no_of_moves_higher_in_list = 1;
+	//printf("Higher moves before: %d\n", no_of_moves_higher_in_list);
 
 	for(int i=unit_list_index+1; i<genlist_size(player_moves); i++){
 		struct unit_moves * tmp_unit = genlist_get(player_moves,i);
-//		printf("Unit moves:%d \n", genlist_size(tmp_unit->moves));
 		no_of_moves_higher_in_list *= genlist_size(tmp_unit->moves);
+		printf("Unit moves:%d -- %d\n", genlist_size(tmp_unit->moves), no_of_moves_higher_in_list);
+		/*if(genlist_size(tmp_unit->moves) == 0){
+			struct unit * abc = idex_lookup_unit(tmp_unit->id);
+			printf("Name: %s\n", abc->utype->name._private_rulename_);
+			printf("Unit has settler flag ... %d\n", unit_has_type_flag(abc, UTYF_SETTLERS));
+			printf("Unit has city settler flag ... %d\n", unit_has_type_flag(abc, UTYF_CITIES));
+			printf("Unit is millitary ... %d\n", is_military_unit(abc));
+			printf("Unit is explorer ... %d\n", unit_has_type_role(punit, L_EXPLORER));
+			printf("--------");
+			int loop = 1;
+			while(loop){
+				//DO STUFF
+			}
+		}*/
 	}
+	//printf("Higher moves after: %d\n", no_of_moves_higher_in_list);
 
 	struct unit_moves * unit = genlist_get(player_moves, unit_list_index);
 	int no_unit_moves = genlist_size(unit->moves);
@@ -261,7 +277,7 @@ struct potentialMove* return_punit_move(struct unit *punit){
 	printf("\tmove_number: %d\n", move_no);
 	printf("\thigher_moves: %d\n", no_of_moves_higher_in_list);
 	printf("\tmove_index: %d\n", move_index);
-	printf("\tmodulo: %d\n", genlist_size(genlist_get(player_moves,unit_list_index)));
+	printf("\tmodulo: %d\n", no_unit_moves);
 	printf("\tMove mem: %d\n", genlist_get(unit->moves, move_index));*/
 
 	return genlist_get(unit->moves, move_index);

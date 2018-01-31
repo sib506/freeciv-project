@@ -94,7 +94,7 @@ int calc_number_moves(struct genlist* all_moves){
 struct genlist* init_untried_moves(int total_no_moves){
 	struct genlist* available_moves = genlist_new();
 
-	if(BRANCH_LIMITED && (total_no_moves != 0)){
+/*	if(BRANCH_LIMITED && (total_no_moves != 0)){
 		int limit = 0;
 
 		if(total_no_moves < BRANCH_LIMIT){
@@ -118,11 +118,11 @@ struct genlist* init_untried_moves(int total_no_moves){
 				genlist_append(available_moves, (void*) rand_move_no);
 			}
 		}
-	} else {
-		for(int i=0; i<total_no_moves; i++){
+	} else {*/
+		for(int i=0; i<30; i++){
 			genlist_append(available_moves, (void*)i);
 		}
-	}
+	/*}*/
 
 	return available_moves;
 }

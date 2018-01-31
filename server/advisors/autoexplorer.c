@@ -525,7 +525,7 @@ void collect_explorer_moves(struct unit *punit, struct genlist *moveList, int pr
 	TIMING_LOG(AIT_EXPLORER, TIMER_START);
 
 	pft_fill_unit_parameter(&parameter, punit);
-	parameter.get_TB = no_fights_or_unknown;
+	parameter.get_TB = NULL; //no_fights_or_unknown;
 	parameter.omniscience = FALSE;
 
 	pfm = pf_map_new(&parameter);
@@ -543,8 +543,8 @@ void collect_explorer_moves(struct unit *punit, struct genlist *moveList, int pr
 
 	pf_map_move_costs_iterate(pfm, ptile, move_cost, FALSE)
 			{
-				fc_assert_action(map_is_known(ptile, pplayer), continue);
-				turns = move_cost / parameter.move_rate;
+				//fc_assert_action(map_is_known(ptile, pplayer), continue);
+				turns = (float) move_cost / parameter.move_rate;
 
 				if (turns <= (float)1) {
 					struct potentialMove *pMove = malloc(sizeof(struct potentialMove));
