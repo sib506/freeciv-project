@@ -2945,6 +2945,14 @@ void player_set_to_ai_mode(struct player *pplayer, enum ai_level skill_level)
 }
 
 /****************************************************************************
+  Toggle player to random mode.
+****************************************************************************/
+void player_set_to_random_mode(struct player *pplayer)
+{
+  pplayer->player_mode = P_RANDOM;
+}
+
+/****************************************************************************
   Toggle player to MCTS mode.
 ****************************************************************************/
 void player_set_to_mcts_mode(struct player *pplayer)

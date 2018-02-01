@@ -43,6 +43,8 @@
 #include "autoexplorer.h"
 
 
+enum unit_move_result random_auto_explorer(struct unit *punit);
+
 /**************************************************************************
   Determine if a tile is likely to be water, given information that
   the player actually has. Return the % certainty that it's water
@@ -263,6 +265,19 @@ static int explorer_desirable(struct tile *ptile, struct player *pplayer,
   return desirable;
 }
 
+enum unit_move_result random_auto_explorer(struct unit *punit) {
+	struct genlist* actionList = genlist_new();
+	collect_explorer_moves(punit, actionList, 0);
+
+	int rand_no = rand() % genlist_size(actionList);
+	struct potentialMove *chosen_action = genlist_get(actionList, rand_no);
+	enum unit_move_result result = make_explorer_move(punit,
+			chosen_action->moveInfo);
+	// Clear the genlist
+	free_explorer_moves(actionList);
+	return result;
+}
+
 /**************************************************************************
   Handle eXplore mode of a unit (explorers are always in eXplore mode 
   for AI) - explores unknown territory, finds huts.
@@ -279,18 +294,12 @@ enum unit_move_result manage_auto_explorer(struct unit *punit)
   if((mcts_mode || (pplayer->player_mode == P_MCTS && move_chosen && !pending_game_move))
 		  && unit_has_type_role(punit, L_EXPLORER) && !reset && (pplayer->ai_common.barbarian_type == NOT_A_BARBARIAN)){
 	  if(current_mcts_stage == simulation){
-		  struct genlist* actionList = genlist_new();
-		  collect_explorer_moves(punit, actionList, 0);
-
-		  int rand_no = rand() % genlist_size(actionList);
-		  struct potentialMove *chosen_action = genlist_get(actionList, rand_no);
-		  enum unit_move_result result = make_explorer_move(punit, chosen_action->moveInfo);
-		  // Clear the genlist
-		  free_explorer_moves(actionList);
-		  return result;
+		  return random_auto_explorer(punit);
 	  } else {
 		  return make_explorer_move(punit, punit->chosen_action->moveInfo);
 	  }
+  } else if (pplayer->player_mode == P_RANDOM){
+	  return random_auto_explorer(punit);
   }
 
   /* Loop prevention */
@@ -564,7 +573,7 @@ void collect_explorer_moves(struct unit *punit, struct genlist *moveList, int pr
 
 enum unit_move_result make_explorer_move(struct unit *punit,
 		struct move_tile_natcoord *move_coord) {
-
+	punit->chosen_action = NULL;
 	if (move_coord != NULL) {
 		struct tile *move_tile= native_pos_to_tile(move_coord->x, move_coord->y);
 		/* TODO: read the path off the map we made.  Then we can make a path

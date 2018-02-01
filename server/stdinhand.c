@@ -803,7 +803,7 @@ void toggle_ai_player_direct(struct connection *caller, struct player *pplayer)
 }
 
 /**************************************************************************
-  Handle ai player ai toggling.
+  Handle ai player mcts toggling.
 **************************************************************************/
 void toggle_mcts_player_direct(struct connection *caller, struct player *pplayer)
 {
@@ -817,6 +817,28 @@ void toggle_mcts_player_direct(struct connection *caller, struct player *pplayer
     fc_assert(pplayer->player_mode == P_MCTS);
   } else {
     cmd_reply(CMD_MCTSTOGGLE, caller, C_OK,
+	      _("%s is now a normal player."),
+	      player_name(pplayer));
+    player_set_to_normal_mode(pplayer);
+    fc_assert(pplayer->player_mode == P_NORMAL);
+  }
+}
+
+/**************************************************************************
+  Handle ai player random mode toggling.
+**************************************************************************/
+void toggle_random_player_direct(struct connection *caller, struct player *pplayer)
+{
+  fc_assert_ret(pplayer != NULL);
+
+  if (!(pplayer->player_mode == P_RANDOM)) {
+    cmd_reply(CMD_RANDOMTOGGLE, caller, C_OK,
+	      _("%s is now a random player."),
+	      player_name(pplayer));
+    player_set_to_random_mode(pplayer);
+    fc_assert(pplayer->player_mode == P_RANDOM);
+  } else {
+    cmd_reply(CMD_RANDOMTOGGLE, caller, C_OK,
 	      _("%s is now a normal player."),
 	      player_name(pplayer));
     player_set_to_normal_mode(pplayer);
@@ -859,6 +881,26 @@ static bool toggle_mcts_command(struct connection *caller, char *arg, bool check
     return FALSE;
   } else if (!check) {
     toggle_mcts_player_direct(caller, pplayer);
+    send_player_info_c(pplayer, game.est_connections);
+  }
+  return TRUE;
+}
+
+/**************************************************************************
+  Handle Random toggle command.
+**************************************************************************/
+static bool toggle_random_command(struct connection *caller, char *arg, bool check)
+{
+  enum m_pre_result match_result;
+  struct player *pplayer;
+
+  pplayer = player_by_name_prefix(arg, &match_result);
+
+  if (!pplayer) {
+    cmd_reply_no_such_player(CMD_RANDOMTOGGLE, caller, arg, match_result);
+    return FALSE;
+  } else if (!check) {
+    toggle_random_player_direct(caller, pplayer);
     send_player_info_c(pplayer, game.est_connections);
   }
   return TRUE;
@@ -4431,6 +4473,8 @@ static bool handle_stdin_input_real(struct connection *caller, char *str,
     return toggle_ai_command(caller, arg, check);
   case CMD_MCTSTOGGLE:
 	  return toggle_mcts_command(caller, arg, check);
+  case CMD_RANDOMTOGGLE:
+  	  return toggle_random_command(caller, arg, check);
   case CMD_TAKE:
     return take_command(caller, arg, check);
   case CMD_OBSERVE:
@@ -7052,6 +7096,7 @@ Commands that may be followed by a player name
 static const int player_cmd[] = {
   CMD_AITOGGLE,
   CMD_MCTSTOGGLE,
+  CMD_RANDOMTOGGLE,
   CMD_NOVICE,
   CMD_EASY,
   CMD_NORMAL,

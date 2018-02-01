@@ -273,12 +273,12 @@ struct potentialMove* return_punit_move(struct unit *punit){
 
 	int move_index = (move_no/no_of_moves_higher_in_list) % no_unit_moves;
 
-	/*printf("unit index: %d\n", unit_list_index);
+	printf("unit index: %d\n", unit_list_index);
 	printf("\tmove_number: %d\n", move_no);
 	printf("\thigher_moves: %d\n", no_of_moves_higher_in_list);
 	printf("\tmove_index: %d\n", move_index);
 	printf("\tmodulo: %d\n", no_unit_moves);
-	printf("\tMove mem: %d\n", genlist_get(unit->moves, move_index));*/
+	printf("\tMove mem: %d\n", genlist_get(unit->moves, move_index));
 
 	return genlist_get(unit->moves, move_index);
 }

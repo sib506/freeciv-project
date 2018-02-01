@@ -105,6 +105,8 @@ static void dai_military_attack(struct ai_type *ait, struct player *pplayer,
 static bool unit_role_defender(const struct unit_type *punittype);
 static int unit_def_rating_sq(const struct unit *punit,
                               const struct unit *pdef);
+void random_military(struct ai_type *ait, struct player *pplayer,
+                         struct unit *punit);
 
 /*
  * Cached values. Updated by update_simple_ai_types.
@@ -2272,6 +2274,20 @@ static void dai_manage_hitpoint_recovery(struct ai_type *ait,
   }
 }
 
+
+void random_military(struct ai_type *ait, struct player *pplayer,
+                         struct unit *punit){
+	struct genlist* actionList = genlist_new();
+	collect_military_moves(punit, actionList, 0);
+	int rand_index = rand() % genlist_size(actionList);
+	struct potentialMove *chosen_action = genlist_get(actionList, rand_index);
+	make_military_move(ait, pplayer, punit, chosen_action);
+	// Clear the genlist
+	free_military_moves(actionList);
+	return;
+}
+
+
 /**************************************************************************
   Decide what to do with a military unit. It will be managed once only.
   It is up to the caller to try again if it has moves left.
@@ -2282,16 +2298,13 @@ void dai_manage_military(struct ai_type *ait, struct player *pplayer,
 	if((mcts_mode || (pplayer->player_mode == P_MCTS && move_chosen && !pending_game_move))
 			&& is_military_unit(punit) && !reset && (pplayer->ai_common.barbarian_type == NOT_A_BARBARIAN)){
 		if(current_mcts_stage == simulation){
-			struct genlist* actionList = genlist_new();
-			collect_military_moves(punit, actionList, 0);
-			int rand_index = rand() % genlist_size(actionList);
-			struct potentialMove *chosen_action = genlist_get(actionList, rand_index);
-			make_military_move(ait, pplayer, punit, chosen_action);
-			// Clear the genlist
-			free_military_moves(actionList);
+			random_military(ait, pplayer, punit);
 		} else {
 			make_military_move(ait, pplayer, punit, punit->chosen_action);
 		}
+		return;
+	} else if (pplayer->player_mode == P_RANDOM){
+		random_military(ait, pplayer, punit);
 		return;
 	}
 
@@ -2461,6 +2474,8 @@ void collect_military_moves(struct unit *punit, struct genlist *moveList,
 **************************************************************************/
 void make_military_move(struct ai_type *ait, struct player *pplayer,
 		struct unit *punit, struct potentialMove *chosen_action){
+	punit->chosen_action = NULL;
+
 	switch(chosen_action->type){
 	case explore:
 		switch (make_explorer_move(punit, chosen_action->moveInfo)) {

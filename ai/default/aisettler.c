@@ -218,6 +218,8 @@ static struct cityresult *find_best_city_placement(struct ai_type *ait,
                                                    bool use_virt_boat);
 static bool dai_do_build_city(struct ai_type *ait, struct player *pplayer,
                               struct unit *punit);
+void random_settler(struct ai_type *ait, struct player *pplayer,
+                          struct unit *punit, struct settlermap *state);
 
 /*****************************************************************************
   Allocated a city result.
@@ -1017,41 +1019,58 @@ void dai_auto_settler_init(struct ai_plr *ai)
 #endif /* DEBUG */
 }
 
+void random_settler(struct ai_type *ait, struct player *pplayer,
+                          struct unit *punit, struct settlermap *state){
+	struct genlist* actionList = genlist_new();
+	collect_settler_moves(punit, actionList, pplayer, 0);
+	int rand_no = rand() % genlist_size(actionList);
+	// printf("RandNo:%d \n", rand_no);
+	struct potentialMove *chosen_action = genlist_get(actionList, rand_no);
+	make_settler_move(ait, pplayer, punit, state, chosen_action);
+	// Clear the genlist
+	free_settler_moves(actionList);
+	return;
+}
+
+
 /**************************************************************************
   Auto settler that can also build cities.
 **************************************************************************/
 void dai_auto_settler_run(struct ai_type *ait, struct player *pplayer,
                           struct unit *punit, struct settlermap *state)
 {
+	  int best_impr = 0;            /* best terrain improvement we can do */
+	  enum unit_activity best_act;
+	  struct act_tgt best_target;
+	  struct tile *best_tile = NULL;
+	  struct pf_path *path = NULL;
+
+	  /* time it will take worker to complete its given task */
+	  int completion_time = 0;
+
+	  CHECK_UNIT(punit);
+
 	if((mcts_mode || (pplayer->player_mode == P_MCTS && move_chosen && !pending_game_move)) &&
 			(unit_has_type_flag(punit, UTYF_SETTLERS) || unit_has_type_flag(punit, UTYF_CITIES))
 			&& !at_root_of_tree() &&!reset && (pplayer->ai_common.barbarian_type == NOT_A_BARBARIAN)){
 		if(current_mcts_stage == simulation){
-			struct genlist* actionList = genlist_new();
-			collect_settler_moves(punit, actionList, pplayer, 0);
-			int rand_no = rand() % genlist_size(actionList);
-//			printf("RandNo:%d \n", rand_no);
-			struct potentialMove *chosen_action = genlist_get(actionList, rand_no);
-			make_settler_move(ait, pplayer, punit, state, chosen_action);
-			// Clear the genlist
-			free_settler_moves(actionList);
+			random_settler(ait, pplayer, punit, state);
 		} else {
-			make_settler_move(ait, pplayer, punit, state, punit->chosen_action);
+			// If the move is NULL then must have either not found our move
+			// OR the MCTS player isn't playing first so we need an actual move
+			if(punit->chosen_action != NULL){
+				make_settler_move(ait, pplayer, punit, state, punit->chosen_action);
+			} else {
+				if(pplayer->player_mode == P_RANDOM)
+					random_settler(ait, pplayer, punit, state);
+				else goto BUILD_CITY;
+			}
 		}
 		return;
+	} else if (pplayer->player_mode == P_RANDOM){
+		random_settler(ait, pplayer, punit, state);
+		return;
 	}
-
-
-  int best_impr = 0;            /* best terrain improvement we can do */
-  enum unit_activity best_act;
-  struct act_tgt best_target;
-  struct tile *best_tile = NULL;
-  struct pf_path *path = NULL;
-
-  /* time it will take worker to complete its given task */
-  int completion_time = 0;
-
-  CHECK_UNIT(punit);
 
   /*** If we are on a city mission: Go where we should ***/
 
@@ -1377,6 +1396,8 @@ void make_settler_move(struct ai_type *ait, struct player *pplayer,
 	struct worker_task_load_compatible *chosen_req_task;
 	struct tile *init_tile = unit_tile(punit);
 	struct potentialImprovement *action;
+
+	punit->chosen_action = NULL;
 
 	switch(chosen_action->type){
 	case explore:
