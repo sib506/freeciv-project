@@ -88,6 +88,7 @@ void mcts_best_move(struct player *pplayer) {
 	if(current_mcts_node == mcts_root){
 		print_mcts_tree_layer1();
 		iterations++;
+		//save_game("test-restore", "Testing the restore point", FALSE);
 		// If need to return an actual move now i.e. time-out
 		if(iterations >= MAX_ITER_DEPTH){
 			//Choose best move i.e. most visited
@@ -203,15 +204,34 @@ static void free_mcts_tree(mcts_node *node){
 
 int find_index_of_unit(struct unit *punit, struct genlist *player_moves) {
 	int target_id = punit->id;
+	//printf("Target ID: %d\n", tmp_punit->id);
 	for (int i = 0; i < genlist_size(player_moves); i++) {
 		struct unit_moves *tmp = genlist_get(player_moves, i);
 
 		fc_assert(tmp != NULL);
-
+		//printf("List ID: %d\n", tmp->id);
 		if (tmp->id == target_id) {
 			return i;
 		}
 	}
+
+	printf("No ID found %d :(\n");
+
+	/*printf("Player has units with ID: ");
+	unit_list_iterate_safe(punit->owner->units, tmp_punit2) {
+		if (unit_has_type_flag(punit, UTYF_SETTLERS) ||
+					unit_has_type_flag(punit, UTYF_CITIES) ||
+					is_military_unit(punit) ||
+					unit_has_type_role(punit, L_EXPLORER)){
+			printf("%d \t", tmp_punit2->id);
+		}
+	} unit_list_iterate_safe_end;
+
+	printf("\nNo ID found %d :(\n", tmp_punit->hp);
+
+	while(1){
+		// Breakpoint here
+	}*/
 	return -1;
 }
 

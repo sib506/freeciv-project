@@ -2507,6 +2507,11 @@ static void srv_running(void)
    */
   lsend_packet_freeze_client(game.est_connections);
 
+  if(reset){
+	  is_new_turn = TRUE;
+	  reset = FALSE;
+  }
+
   fc_assert(S_S_RUNNING == server_state());
   while (S_S_RUNNING == server_state()) {
     /* The beginning of a turn.
@@ -3128,7 +3133,6 @@ void srv_main(void)
                srvarg.port);
 
     if(reset){
-        	reset = FALSE;
         	load_command(NULL, "mcts-root", FALSE, TRUE);
         	force_end_of_sniff = TRUE;
     }
