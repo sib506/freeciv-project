@@ -1,0 +1,273 @@
+#FREECIV SCORELOG2 2.5.9
+
+# For a specification of the format of this see doc/README.scorelog or 
+# <https://raw.githubusercontent.com/freeciv/freeciv/master/doc/README.scorelog>.
+
+id OHQjath-EqFsteoHO6uSKtp7C-aXG6e3
+tag 0 pop
+tag 1 bnp
+tag 2 mfg
+tag 3 cities
+tag 4 techs
+tag 5 munits
+tag 6 settlers
+tag 7 wonders
+tag 8 techout
+tag 9 landarea
+tag 10 settledarea
+tag 11 pollution
+tag 12 literacy
+tag 13 spaceship
+tag 14 gold
+tag 15 taxrate
+tag 16 scirate
+tag 17 luxrate
+tag 18 riots
+tag 19 happypop
+tag 20 contentpop
+tag 21 unhappypop
+tag 22 specialists
+tag 23 gov
+tag 24 corruption
+tag 25 score
+tag 26 unitsbuilt
+tag 27 unitskilled
+tag 28 unitslost
+turn 0 -4000 4000 BCE
+addplayer 0 0 Mauricius I
+addplayer 0 1 Marco Minghetti
+data 0 0 0 0
+data 0 0 1 0
+data 0 1 0 0
+data 0 1 1 0
+data 0 2 0 0
+data 0 2 1 0
+data 0 3 0 0
+data 0 3 1 0
+data 0 4 0 0
+data 0 4 1 0
+data 0 5 0 0
+data 0 5 1 0
+data 0 6 0 2
+data 0 6 1 2
+data 0 7 0 0
+data 0 7 1 0
+data 0 8 0 0
+data 0 8 1 0
+data 0 9 0 0
+data 0 9 1 0
+data 0 10 0 0
+data 0 10 1 0
+data 0 11 0 0
+data 0 11 1 0
+data 0 12 0 0
+data 0 12 1 0
+data 0 13 0 0
+data 0 13 1 0
+data 0 14 0 50
+data 0 14 1 50
+data 0 15 0 0
+data 0 15 1 0
+data 0 16 0 100
+data 0 16 1 100
+data 0 17 0 0
+data 0 17 1 0
+data 0 18 0 0
+data 0 18 1 0
+data 0 19 0 0
+data 0 19 1 0
+data 0 20 0 0
+data 0 20 1 0
+data 0 21 0 0
+data 0 21 1 0
+data 0 22 0 0
+data 0 22 1 0
+data 0 23 0 1
+data 0 23 1 1
+data 0 24 0 0
+data 0 24 1 0
+data 0 25 0 0
+data 0 25 1 0
+data 0 26 0 0
+data 0 26 1 0
+data 0 27 0 0
+data 0 27 1 0
+data 0 28 0 0
+data 0 28 1 0
+turn 1 -3950 3950 BCE
+data 1 0 0 0
+data 1 0 1 0
+data 1 1 0 0
+data 1 1 1 0
+data 1 2 0 0
+data 1 2 1 0
+data 1 3 0 0
+data 1 3 1 0
+data 1 4 0 0
+data 1 4 1 0
+data 1 5 0 0
+data 1 5 1 0
+data 1 6 0 1
+data 1 6 1 2
+data 1 7 0 0
+data 1 7 1 0
+data 1 8 0 0
+data 1 8 1 0
+data 1 9 0 0
+data 1 9 1 0
+data 1 10 0 0
+data 1 10 1 0
+data 1 11 0 0
+data 1 11 1 0
+data 1 12 0 0
+data 1 12 1 0
+data 1 13 0 0
+data 1 13 1 0
+data 1 14 0 50
+data 1 14 1 75
+data 1 15 0 40
+data 1 15 1 40
+data 1 16 0 60
+data 1 16 1 60
+data 1 17 0 0
+data 1 17 1 0
+data 1 18 0 0
+data 1 18 1 0
+data 1 19 0 0
+data 1 19 1 0
+data 1 20 0 0
+data 1 20 1 0
+data 1 21 0 0
+data 1 21 1 0
+data 1 22 0 0
+data 1 22 1 0
+data 1 23 0 1
+data 1 23 1 1
+data 1 24 0 0
+data 1 24 1 0
+data 1 25 0 0
+data 1 25 1 0
+data 1 26 0 0
+data 1 26 1 0
+data 1 27 0 0
+data 1 27 1 0
+data 1 28 0 1
+data 1 28 1 0
+turn 2 -3900 3900 BCE
+data 2 0 0 0
+data 2 0 1 0
+data 2 1 0 0
+data 2 1 1 0
+data 2 2 0 0
+data 2 2 1 0
+data 2 3 0 0
+data 2 3 1 0
+data 2 4 0 0
+data 2 4 1 0
+data 2 5 0 0
+data 2 5 1 0
+data 2 6 0 1
+data 2 6 1 2
+data 2 7 0 0
+data 2 7 1 0
+data 2 8 0 0
+data 2 8 1 0
+data 2 9 0 0
+data 2 9 1 0
+data 2 10 0 0
+data 2 10 1 0
+data 2 11 0 0
+data 2 11 1 0
+data 2 12 0 0
+data 2 12 1 0
+data 2 13 0 0
+data 2 13 1 0
+data 2 14 0 50
+data 2 14 1 75
+data 2 15 0 40
+data 2 15 1 40
+data 2 16 0 60
+data 2 16 1 60
+data 2 17 0 0
+data 2 17 1 0
+data 2 18 0 0
+data 2 18 1 0
+data 2 19 0 0
+data 2 19 1 0
+data 2 20 0 0
+data 2 20 1 0
+data 2 21 0 0
+data 2 21 1 0
+data 2 22 0 0
+data 2 22 1 0
+data 2 23 0 1
+data 2 23 1 1
+data 2 24 0 0
+data 2 24 1 0
+data 2 25 0 0
+data 2 25 1 0
+data 2 26 0 0
+data 2 26 1 0
+data 2 27 0 0
+data 2 27 1 0
+data 2 28 0 1
+data 2 28 1 0
+turn 3 -3850 3850 BCE
+data 3 0 0 0
+data 3 0 1 0
+data 3 1 0 0
+data 3 1 1 0
+data 3 2 0 0
+data 3 2 1 0
+data 3 3 0 0
+data 3 3 1 0
+data 3 4 0 0
+data 3 4 1 0
+data 3 5 0 0
+data 3 5 1 0
+data 3 6 0 1
+data 3 6 1 2
+data 3 7 0 0
+data 3 7 1 0
+data 3 8 0 0
+data 3 8 1 0
+data 3 9 0 0
+data 3 9 1 0
+data 3 10 0 0
+data 3 10 1 0
+data 3 11 0 0
+data 3 11 1 0
+data 3 12 0 0
+data 3 12 1 0
+data 3 13 0 0
+data 3 13 1 0
+data 3 14 0 50
+data 3 14 1 75
+data 3 15 0 40
+data 3 15 1 40
+data 3 16 0 60
+data 3 16 1 60
+data 3 17 0 0
+data 3 17 1 0
+data 3 18 0 0
+data 3 18 1 0
+data 3 19 0 0
+data 3 19 1 0
+data 3 20 0 0
+data 3 20 1 0
+data 3 21 0 0
+data 3 21 1 0
+data 3 22 0 0
+data 3 22 1 0
+data 3 23 0 1
+data 3 23 1 1
+data 3 24 0 0
+data 3 24 1 0
+data 3 25 0 0
+data 3 25 1 0
+data 3 26 0 0
+data 3 26 1 0
+data 3 27 0 0
+data 3 27 1 0
+data 3 28 0 1
+data 3 28 1 0

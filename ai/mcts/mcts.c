@@ -24,6 +24,7 @@ void print_mcts_tree_layer1();
 mcts_node *mcts_root = NULL; //Permanent root of the tree
 mcts_node *current_mcts_node = NULL;
 
+bool game_over = TRUE;
 bool mcts_mode = FALSE;
 int rollout_depth = 0;
 int iterations = 0;
@@ -42,6 +43,7 @@ void mcts_best_move(struct player *pplayer) {
 		printf("MCTS MODE ON\n");
 
 		mcts_mode = TRUE;
+		game_over = FALSE;
 
 		//Reset some variables
 		move_chosen = FALSE;
@@ -86,6 +88,7 @@ void mcts_best_move(struct player *pplayer) {
 	}
 
 	if(current_mcts_node == mcts_root){
+		printf("Game Turn: %d\n", game.info.turn);
 		print_mcts_tree_layer1();
 		iterations++;
 		//save_game("test-restore", "Testing the restore point", FALSE);
@@ -304,38 +307,39 @@ struct potentialMove* return_punit_move(struct unit *punit){
 }
 
 void backpropagate(bool interrupt){
-	if(current_mcts_stage != simulation){
-		return;
-	}
-	current_mcts_stage = backpropagation;
-	printf("BACKPROP\n");
+	if ((current_mcts_stage == simulation)
+			|| (game.info.turn >= game.server.end_turn)) {
 
-	mcts_node *node = current_mcts_node;
-	enum victory_state plr_state[player_slot_count()];
-	rank_mcts_users(interrupt, plr_state);
+		current_mcts_stage = backpropagation;
+		printf("BACKPROP\n");
 
-	if(plr_state[node->player_index] == VS_WINNER){
-		update_node(1, node);
-	} else if(plr_state[node->player_index] == VS_LOSER){
-		update_node(-1, node);
-	} else {
-		update_node(0, node);
-	}
+		mcts_node *node = current_mcts_node;
+		enum victory_state plr_state[player_slot_count()];
+		rank_mcts_users(interrupt, plr_state);
 
-	while(node->parent != NULL){
-		node = node->parent;
-		if(plr_state[node->player_index] == VS_WINNER){
+		if (plr_state[node->player_index] == VS_WINNER) {
 			update_node(1, node);
-		} else if(plr_state[node->player_index] == VS_LOSER){
+		} else if (plr_state[node->player_index] == VS_LOSER) {
 			update_node(-1, node);
 		} else {
 			update_node(0, node);
 		}
+
+		while (node->parent != NULL) {
+			node = node->parent;
+			if (plr_state[node->player_index] == VS_WINNER) {
+				update_node(1, node);
+			} else if (plr_state[node->player_index] == VS_LOSER) {
+				update_node(-1, node);
+			} else {
+				update_node(0, node);
+			}
+		}
+		current_mcts_stage = selection;
+		current_mcts_node = mcts_root;
+		reset = TRUE;
+		printf("Reset\n");
 	}
-	current_mcts_stage = selection;
-	current_mcts_node = mcts_root;
-	reset = TRUE;
-	printf("Reset\n");
 //	mcts_end_command();
 	//load_command(NULL, mcts_save_filename, FALSE, TRUE);
 	return;

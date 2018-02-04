@@ -11,6 +11,7 @@
 #include <stdbool.h>
 #include "score.h"
 
+extern bool game_over;
 extern bool mcts_mode;
 extern int rollout_depth;
 extern bool move_chosen;

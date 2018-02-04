@@ -514,18 +514,20 @@ void rank_users(bool interrupt)
   fprintf(fp, "winners: ");
   players_iterate(pplayer) {
     if (plr_state[player_index(pplayer)] == VS_WINNER) {
-      fprintf(fp, "%s,%s,%s,%i,, ", pplayer->ranked_username,
+      fprintf(fp, "%s,%s,%s,%d,%i,, ", pplayer->ranked_username,
                                     player_name(pplayer),
 	                            pplayer->username,
+								pplayer->player_mode,
 	                            get_civ_score(pplayer));
     }
   } players_iterate_end;
   fprintf(fp, "\nlosers: ");
   players_iterate(pplayer) {
     if (plr_state[player_index(pplayer)] == VS_LOSER) {
-      fprintf(fp, "%s,%s,%s,%i,, ", pplayer->ranked_username,
+      fprintf(fp, "%s,%s,%s,%d,%i,, ", pplayer->ranked_username,
                                     player_name(pplayer),
 	                            pplayer->username,
+								pplayer->player_mode,
 	                            get_civ_score(pplayer));
     }
   } players_iterate_end;
