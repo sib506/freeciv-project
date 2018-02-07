@@ -267,7 +267,7 @@ static int explorer_desirable(struct tile *ptile, struct player *pplayer,
 
 enum unit_move_result random_auto_explorer(struct unit *punit) {
 	struct genlist* actionList = genlist_new();
-	collect_explorer_moves(punit, actionList, 0);
+	collect_explorer_moves(punit, actionList);
 
 	int rand_no = rand() % genlist_size(actionList);
 	struct potentialMove *chosen_action = genlist_get(actionList, rand_no);
@@ -515,7 +515,7 @@ enum unit_move_result manage_random_auto_explorer(struct unit *punit)
 #undef DIST_FACTOR
 }
 
-void collect_explorer_moves(struct unit *punit, struct genlist *moveList, int pruning_level) {
+void collect_explorer_moves(struct unit *punit, struct genlist *move_list) {
 	struct player *pplayer = unit_owner(punit);
 	/* Loop prevention */
 	struct tile *init_tile = unit_tile(punit);
@@ -548,7 +548,7 @@ void collect_explorer_moves(struct unit *punit, struct genlist *moveList, int pr
 	index_to_native_pos(&move_tile->x, &move_tile->y, tile_index(init_tile));
 
 	pMove->moveInfo = move_tile;
-	genlist_append(moveList, pMove);
+	genlist_append(move_list, pMove);
 
 	pf_map_move_costs_iterate(pfm, ptile, move_cost, FALSE)
 			{
@@ -562,7 +562,7 @@ void collect_explorer_moves(struct unit *punit, struct genlist *moveList, int pr
 					struct move_tile_natcoord *move_tile = malloc(sizeof(struct move_tile_natcoord));
 					index_to_native_pos(&move_tile->x, &move_tile->y, tile_index(ptile));
 					pMove->moveInfo = move_tile;
-					genlist_append(moveList, pMove);
+					genlist_append(move_list, pMove);
 				}
 
 			}pf_map_move_costs_iterate_end;

@@ -80,6 +80,7 @@
 
 /* ai/mcts */
 #include "mcts.h"
+#include "mcts_pruning.h"
 
 #define LOGLEVEL_RECOVERY LOG_DEBUG
 #define LOG_CARAVAN       LOG_DEBUG
@@ -2441,7 +2442,7 @@ void dai_manage_military(struct ai_type *ait, struct player *pplayer,
 void collect_military_moves(struct unit *punit, struct genlist *moveList,
 		int pruning_level){
 	CHECK_UNIT(punit);
-	collect_explorer_moves(punit, moveList, pruning_level);
+	collect_explorer_moves(punit, moveList);
 
 	if(punit->activity!=ACTIVITY_FORTIFYING &&
 			can_unit_do_activity(punit, ACTIVITY_FORTIFYING)){
@@ -3319,8 +3320,27 @@ struct genlist* player_available_moves(struct player *pplayer, int pruning_level
 			umoves->type = settler;
 			collect_settler_moves(punit,moves,pplayer, pruning_level);
 			printf("\tCheck settler possible moves: %d\n", genlist_size(moves));
-			// Add list to main list, along with this units ID
 			umoves->moves = moves;
+
+			bool free = TRUE;
+			// Pruning
+			switch (PRU_LEVEL) {
+				case no_pruning:
+					break;
+				case random_pruning:
+					// Pick N random moves and remove from the N from move list
+					// Change the move pointer
+					umoves->moves = random_mcts_pruning(moves, &free);
+					// free the old list
+					if(free){
+						free_settler_moves(moves);
+					}
+					break;
+				default:
+					break;
+			}
+			// Add list to main list, along with this units ID
+			printf("\tAfter pruning ... %d\n", genlist_size(umoves->moves));
 			genlist_append(player_moves, umoves);
 		} else if (is_military_unit(punit)){
 			struct unit_moves *umoves = malloc(sizeof(struct unit_moves));
@@ -3329,18 +3349,56 @@ struct genlist* player_available_moves(struct player *pplayer, int pruning_level
 			umoves->type = military;
 			collect_military_moves(punit,moves, pruning_level);
 			printf("\tCheck military possible moves: %d\n", genlist_size(moves));
-			// Add list to main list, along with this units ID
 			umoves->moves = moves;
+
+			bool free = TRUE;
+			// Pruning
+			switch (PRU_LEVEL) {
+				case no_pruning:
+					break;
+				case random_pruning:
+					// Pick N random moves and remove from the N from move list
+					// Change the move pointer
+					umoves->moves = random_mcts_pruning(moves, &free);
+					// free the old list
+					if(free){
+						free_military_moves(moves);
+					}
+					break;
+				default:
+					break;
+			}
+			printf("\After pruning ... %d\n", genlist_size(umoves->moves));
+			// Add list to main list, along with this units ID
 			genlist_append(player_moves, umoves);
 		} else if (unit_has_type_role(punit, L_EXPLORER)){
 			struct unit_moves *umoves = malloc(sizeof(struct unit_moves));
 			umoves->id = punit->id;
 			struct genlist *moves = genlist_new();
 			umoves->type = explorer;
-			collect_explorer_moves(punit, moves, pruning_level);
+			collect_explorer_moves(punit, moves);
 			printf("\tCheck explorer possible moves: %d\n", genlist_size(moves));
-			// Add list to main list, along with this units ID
 			umoves->moves = moves;
+
+			bool free = TRUE;
+			// Pruning
+			switch (PRU_LEVEL) {
+				case no_pruning:
+					break;
+				case random_pruning:
+					// Pick N random moves and remove from the N from move list
+					// Change the move pointer
+					umoves->moves = random_mcts_pruning(moves, &free);
+					// free the old list
+					if(free){
+						free_explorer_moves(moves);
+					}
+					break;
+				default:
+					break;
+			}
+			printf("\tAfter pruning ... %d\n", genlist_size(umoves->moves));
+			// Add list to main list, along with this units ID
 			genlist_append(player_moves, umoves);
 		}
 

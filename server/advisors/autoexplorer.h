@@ -33,7 +33,7 @@ enum unit_move_result manage_auto_explorer(struct unit *punit);
 enum unit_move_result manage_random_auto_explorer(struct unit *punit);
 enum unit_move_result manage_random_auto_explorer2(struct unit *punit);
 
-void collect_explorer_moves(struct unit *punit, struct genlist *moveList, int pruning_level);
+void collect_explorer_moves(struct unit *punit, struct genlist *moveList);
 enum unit_move_result make_explorer_move(struct unit *punit, struct move_tile_natcoord *move_coord);
 void free_explorer_moves(struct genlist *moveList);
 

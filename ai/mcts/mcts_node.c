@@ -93,36 +93,10 @@ int calc_number_moves(struct genlist* all_moves){
 
 struct genlist* init_untried_moves(int total_no_moves){
 	struct genlist* available_moves = genlist_new();
-
-/*	if(BRANCH_LIMITED && (total_no_moves != 0)){
-		int limit = 0;
-
-		if(total_no_moves < BRANCH_LIMIT){
-			limit = total_no_moves;
-		} else {
-			limit = BRANCH_LIMIT;
-		}
-
-		for(int i=0; i<limit; i++){
-			bool seen = FALSE;
-			int rand_move_no = rand() % total_no_moves;
-
-			for(int j = 0; j < genlist_size(available_moves); j++){
-				if(rand_move_no == (int) genlist_get(available_moves, j)){
-					seen = TRUE;
-					i--;
-					break;
-				}
-			}
-			if(seen == FALSE){
-				genlist_append(available_moves, (void*) rand_move_no);
-			}
-		}
-	} else {*/
-		for(int i=0; i<30; i++){
-			genlist_append(available_moves, (void*)i);
-		}
-	/*}*/
+	//for(int i=0; i<30; i++){
+	for (int i = 0; i < total_no_moves; i++) {
+		genlist_append(available_moves, (void*) i);
+	}
 
 	return available_moves;
 }

@@ -12,6 +12,8 @@ da_sources = \
 	mcts.c \
 	mcts.h \
 	mcts_node.c \
-	mcts_node.h	
+	mcts_node.h	\
+	mcts_pruning.c \
+	mcts_pruning.h
 
 libmctsai_la_SOURCES = $(da_sources)

@@ -128,7 +128,7 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 LTLIBRARIES = $(noinst_LTLIBRARIES)
 libmctsai_la_LIBADD =
-am__objects_1 = mcts.lo mcts_node.lo
+am__objects_1 = mcts.lo mcts_node.lo mcts_pruning.lo
 am_libmctsai_la_OBJECTS = $(am__objects_1)
 libmctsai_la_OBJECTS = $(am_libmctsai_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
@@ -567,7 +567,9 @@ da_sources = \
 	mcts.c \
 	mcts.h \
 	mcts_node.c \
-	mcts_node.h	
+	mcts_node.h	\
+	mcts_pruning.c \
+	mcts_pruning.h
 
 libmctsai_la_SOURCES = $(da_sources)
 all: all-am
@@ -626,6 +628,7 @@ distclean-compile:
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mcts.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mcts_node.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mcts_pruning.Plo@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<

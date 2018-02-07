@@ -1244,7 +1244,7 @@ void collect_settler_moves(struct unit *punit, struct genlist *moveList,
 			}
 		}
 
-		collect_explorer_moves(punit, moveList, pruning_level);
+		collect_explorer_moves(punit, moveList);
 
 		bool consider = TRUE;
 		// Improving the tile currently standing on
