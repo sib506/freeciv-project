@@ -2279,7 +2279,7 @@ static void dai_manage_hitpoint_recovery(struct ai_type *ait,
 void random_military(struct ai_type *ait, struct player *pplayer,
                          struct unit *punit){
 	struct genlist* actionList = genlist_new();
-	collect_military_moves(punit, actionList, 0);
+	collect_military_moves(punit, actionList);
 	int rand_index = rand() % genlist_size(actionList);
 	struct potentialMove *chosen_action = genlist_get(actionList, rand_index);
 	make_military_move(ait, pplayer, punit, chosen_action);
@@ -2439,8 +2439,7 @@ void dai_manage_military(struct ai_type *ait, struct player *pplayer,
 /**************************************************************************
 
 **************************************************************************/
-void collect_military_moves(struct unit *punit, struct genlist *moveList,
-		int pruning_level){
+void collect_military_moves(struct unit *punit, struct genlist *moveList){
 	CHECK_UNIT(punit);
 	collect_explorer_moves(punit, moveList);
 
@@ -3307,7 +3306,7 @@ struct unit_type *dai_role_utype_for_move_type(struct city *pcity, int role,
 /**************************************************************************
   Calculate all available moves for a player (stored in a genlist)
 **************************************************************************/
-struct genlist* player_available_moves(struct player *pplayer, int pruning_level){
+struct genlist* player_available_moves(struct player *pplayer){
 	// Create a list
 //	printf("%s\n", pplayer->name);
 	struct genlist *player_moves = genlist_new();
@@ -3318,7 +3317,7 @@ struct genlist* player_available_moves(struct player *pplayer, int pruning_level
 			umoves->id = punit->id;
 			struct genlist *moves = genlist_new();
 			umoves->type = settler;
-			collect_settler_moves(punit,moves,pplayer, pruning_level);
+			collect_settler_moves(punit, moves, pplayer);
 			printf("\tCheck settler possible moves: %d\n", genlist_size(moves));
 			umoves->moves = moves;
 
@@ -3347,7 +3346,7 @@ struct genlist* player_available_moves(struct player *pplayer, int pruning_level
 			umoves->id = punit->id;
 			struct genlist *moves = genlist_new();
 			umoves->type = military;
-			collect_military_moves(punit,moves, pruning_level);
+			collect_military_moves(punit, moves);
 			printf("\tCheck military possible moves: %d\n", genlist_size(moves));
 			umoves->moves = moves;
 
@@ -3368,7 +3367,7 @@ struct genlist* player_available_moves(struct player *pplayer, int pruning_level
 				default:
 					break;
 			}
-			printf("\After pruning ... %d\n", genlist_size(umoves->moves));
+			printf("\tAfter pruning ... %d\n", genlist_size(umoves->moves));
 			// Add list to main list, along with this units ID
 			genlist_append(player_moves, umoves);
 		} else if (unit_has_type_role(punit, L_EXPLORER)){

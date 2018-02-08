@@ -10,9 +10,8 @@
 #include "idex.c"
 
 #define MAXDEPTH 20
-#define MAX_ITER_DEPTH 100
+#define MAX_ITER_DEPTH 1000
 #define UCT_CONST 1.41421356237 //sqrt(2)
-#define PRUNING_LEVEL 0
 
 static mcts_node* UCT_select_child(mcts_node* root);
 static double UCT(mcts_node* child_node, int rootPlays);
@@ -58,7 +57,7 @@ void mcts_best_move(struct player *pplayer) {
 		}
 
 		// Collect all available moves for player
-		struct genlist *all_unit_moves = player_available_moves(pplayer, PRUNING_LEVEL);
+		struct genlist *all_unit_moves = player_available_moves(pplayer);
 		mcts_root = create_root_node(player_index(pplayer),all_unit_moves);
 		mcts_root->uninitialised = FALSE;
 		current_mcts_node = mcts_root;
@@ -72,7 +71,7 @@ void mcts_best_move(struct player *pplayer) {
 		}
 
 	if(current_mcts_node->uninitialised){
-		struct genlist *all_unit_moves = player_available_moves(pplayer, PRUNING_LEVEL);
+		struct genlist *all_unit_moves = player_available_moves(pplayer);
 		current_mcts_node->player_index = player_index(pplayer);
 		current_mcts_node->all_moves = all_unit_moves;
 		current_mcts_node->total_no_moves = calc_number_moves(all_unit_moves);

@@ -1022,7 +1022,7 @@ void dai_auto_settler_init(struct ai_plr *ai)
 void random_settler(struct ai_type *ait, struct player *pplayer,
                           struct unit *punit, struct settlermap *state){
 	struct genlist* actionList = genlist_new();
-	collect_settler_moves(punit, actionList, pplayer, 0);
+	collect_settler_moves(punit, actionList, pplayer);
 	int rand_no = rand() % genlist_size(actionList);
 	// printf("RandNo:%d \n", rand_no);
 	struct potentialMove *chosen_action = genlist_get(actionList, rand_no);
@@ -1219,7 +1219,7 @@ struct potentialImprovement{
   Settler collect all possible moves/actions.
 **************************************************************************/
 void collect_settler_moves(struct unit *punit, struct genlist *moveList,
-		struct player *pplayer, int pruning_level){
+		struct player *pplayer){
 	CHECK_UNIT(punit);
 
 	struct tile *init_tile = unit_tile(punit);

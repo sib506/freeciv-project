@@ -97,8 +97,7 @@ void dai_manage_unit(struct ai_type *ait, struct player *pplayer,
 void dai_manage_military(struct ai_type *ait, struct player *pplayer,
                          struct unit *punit);
 
-void collect_military_moves(struct unit *punit, struct genlist *moveList,
-		int pruning_level);
+void collect_military_moves(struct unit *punit, struct genlist *moveList);
 void make_military_move(struct ai_type *ait, struct player *pplayer,
 		struct unit *punit, struct potentialMove *chosen_action);
 void free_military_moves(struct genlist *moveList);
@@ -173,7 +172,7 @@ struct unit_moves{
 	struct genlist* moves;
 };
 
-struct genlist* player_available_moves(struct player *pplayer, int pruning_level);
+struct genlist* player_available_moves(struct player *pplayer);
 void attach_chosen_move(struct player *pplayer);
 
 #endif  /* FC__AIUNIT_H */

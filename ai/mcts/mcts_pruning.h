@@ -16,7 +16,7 @@
 #include "stdbool.h"
 #include "aiunit.h"
 
-#define MAX_NO_UNIT_MOVES 5
+#define MAX_NO_UNIT_MOVES 3
 struct genlist* random_mcts_pruning(struct genlist *all_moves, bool *need_to_free);
 
 #endif
