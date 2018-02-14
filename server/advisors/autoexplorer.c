@@ -614,8 +614,8 @@ void free_explorer_moves(struct genlist *moveList){
 	for(int i = 0; i < genlist_size(moveList); i++ ){
 		struct potentialMove *toRemove = genlist_back(moveList);
 		free(toRemove->moveInfo);
-		genlist_pop_back(moveList);
 		free(toRemove);
+		genlist_pop_back(moveList);
 	}
 	genlist_destroy(moveList);
 }

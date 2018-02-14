@@ -2518,8 +2518,8 @@ void free_military_moves(struct genlist *moveList){
 		if(toRemove->type == explore){
 			free(toRemove->moveInfo);
 		}
-		genlist_pop_back(moveList);
 		free(toRemove);
+		genlist_pop_back(moveList);
 	}
 	genlist_destroy(moveList);
 	return;
@@ -3329,7 +3329,7 @@ struct genlist* player_available_moves(struct player *pplayer){
 				case random_pruning:
 					// Pick N random moves and remove from the N from move list
 					// Change the move pointer
-					umoves->moves = random_mcts_pruning(moves, &free);
+					umoves->moves = random_mcts_settler_pruning(moves, &free, punit);
 					// free the old list
 					if(free){
 						free_settler_moves(moves);
@@ -3358,7 +3358,7 @@ struct genlist* player_available_moves(struct player *pplayer){
 				case random_pruning:
 					// Pick N random moves and remove from the N from move list
 					// Change the move pointer
-					umoves->moves = random_mcts_pruning(moves, &free);
+					umoves->moves = random_mcts_general_pruning(moves, &free);
 					// free the old list
 					if(free){
 						free_military_moves(moves);
@@ -3387,7 +3387,7 @@ struct genlist* player_available_moves(struct player *pplayer){
 				case random_pruning:
 					// Pick N random moves and remove from the N from move list
 					// Change the move pointer
-					umoves->moves = random_mcts_pruning(moves, &free);
+					umoves->moves = random_mcts_general_pruning(moves, &free);
 					// free the old list
 					if(free){
 						free_explorer_moves(moves);

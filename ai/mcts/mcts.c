@@ -10,7 +10,7 @@
 #include "idex.c"
 
 #define MAXDEPTH 20
-#define MAX_ITER_DEPTH 1000
+#define MAX_ITER_DEPTH 600
 #define UCT_CONST 1.41421356237 //sqrt(2)
 
 static mcts_node* UCT_select_child(mcts_node* root);
@@ -72,7 +72,6 @@ void mcts_best_move(struct player *pplayer) {
 
 	if(current_mcts_node->uninitialised){
 		struct genlist *all_unit_moves = player_available_moves(pplayer);
-		current_mcts_node->player_index = player_index(pplayer);
 		current_mcts_node->all_moves = all_unit_moves;
 		current_mcts_node->total_no_moves = calc_number_moves(all_unit_moves);
 		current_mcts_node->untried_moves = init_untried_moves(current_mcts_node->total_no_moves);
@@ -148,7 +147,7 @@ void mcts_best_move(struct player *pplayer) {
 			printf("\tRandNo: %d\n", random_index);
 
 			// Create a new node for that move + set as current node
-			current_mcts_node = add_child_node(current_mcts_node, move_no);
+			current_mcts_node = add_child_node(current_mcts_node, player_index(pplayer),move_no);
 
 			attach_chosen_move(pplayer);
 		}
@@ -162,16 +161,14 @@ void mcts_best_move(struct player *pplayer) {
 static mcts_node* UCT_select_child(mcts_node* root){
 	int self_visits = root->visits;
 
-	mcts_node *best_node = NULL;
-	mcts_node *tmp = NULL;
-	double best_weight = 0;
-	double tmp_weight = 0;
-
 	int no_children = genlist_size(root->children);
 
-	for(int i = 0; i < no_children; i++){
-		tmp = genlist_get(root->children, i);
-		tmp_weight = UCT(tmp, self_visits);
+	mcts_node *best_node = genlist_get(root->children, 0);
+	double best_weight = UCT(best_node, self_visits);
+
+	for(int i = 1; i < no_children; i++){
+		mcts_node *tmp = genlist_get(root->children, i);
+		double tmp_weight = UCT(tmp, self_visits);
 		if (tmp_weight > best_weight){
 			best_node = tmp;
 			best_weight = tmp_weight;
@@ -319,7 +316,7 @@ void backpropagate(bool interrupt){
 		if (plr_state[node->player_index] == VS_WINNER) {
 			update_node(1, node);
 		} else if (plr_state[node->player_index] == VS_LOSER) {
-			update_node(-1, node);
+			update_node(0, node);
 		} else {
 			update_node(0, node);
 		}
@@ -329,7 +326,7 @@ void backpropagate(bool interrupt){
 			if (plr_state[node->player_index] == VS_WINNER) {
 				update_node(1, node);
 			} else if (plr_state[node->player_index] == VS_LOSER) {
-				update_node(-1, node);
+				update_node(0, node);
 			} else {
 				update_node(0, node);
 			}

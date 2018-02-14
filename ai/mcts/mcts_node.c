@@ -11,7 +11,7 @@ mcts_node* create_node(int p_index, struct genlist *possible_moves, int move,
 	mcts_node* node = (mcts_node*) malloc(sizeof(mcts_node));
 
 	node->uninitialised = TRUE;
-	node->player_index = p_index;
+	node->player_index = p_index; // Index of the player that just moved
 	node->move_no = move;
 
 	node->wins = 0;
@@ -31,9 +31,9 @@ mcts_node* create_root_node(int p_index, struct genlist *all_possible_moves) {
 	return create_node(p_index, all_possible_moves, 0, NULL);
 }
 
-mcts_node* add_child_node(mcts_node* parent, int move_no) {
+mcts_node* add_child_node(mcts_node* parent, int p_index, int move_no) {
 	// How do we know what the next player will be?
-	mcts_node *child_node = create_node(-1, NULL,move_no, parent);
+	mcts_node *child_node = create_node(p_index, NULL,move_no, parent);
 	genlist_append(parent->children, child_node);
 	return child_node;
 }

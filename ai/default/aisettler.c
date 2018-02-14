@@ -1021,6 +1021,10 @@ void dai_auto_settler_init(struct ai_plr *ai)
 
 void random_settler(struct ai_type *ait, struct player *pplayer,
                           struct unit *punit, struct settlermap *state){
+	if ((punit->activity != ACTIVITY_IDLE) && (adv_settler_safe_tile(pplayer, punit, unit_tile(punit)))){
+		return;
+	}
+
 	struct genlist* actionList = genlist_new();
 	collect_settler_moves(punit, actionList, pplayer);
 	int rand_no = rand() % genlist_size(actionList);
