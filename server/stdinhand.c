@@ -4438,6 +4438,10 @@ static bool handle_stdin_input_real(struct connection *caller, char *str,
   return FALSE;
 }
 
+bool mcts_end_command(){
+	return end_command(NULL,"MCTS Reset Game",FALSE);
+}
+
 /**************************************************************************
   End the game immediately in a draw.
 **************************************************************************/

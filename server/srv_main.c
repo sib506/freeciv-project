@@ -135,6 +135,9 @@
 
 #include "srv_main.h"
 
+bool reset = FALSE;
+bool just_reset = FALSE;
+
 static void end_turn(void);
 static void announce_player(struct player *pplayer);
 static void fc_interface_init_server(void);
@@ -2439,6 +2442,11 @@ static void srv_running(void)
 
   timer_start(eot_timer);
 
+  if(just_reset){
+	  is_new_turn = TRUE;
+	  just_reset = FALSE;
+  }
+
   /* 
    * This will freeze the reports and agents at the client.
    * 
@@ -2521,6 +2529,11 @@ static void srv_running(void)
         }
       }
 
+      if(game.info.turn == 6){
+    	  reset = TRUE;
+    	  mcts_end_command();
+      }
+
       log_debug("sniffingpackets");
       check_for_full_turn_done(); /* HACK: don't wait during AI phases */
       while (server_sniff_all_input() == S_E_OTHERWISE) {
@@ -2556,7 +2569,8 @@ static void srv_running(void)
       set_server_state(S_S_OVER);
       if (game.info.turn > game.server.end_turn) {
 	/* endturn was reached - rank users based on team scores */
-	rank_users(TRUE);
+    	  printf("End turn reached\n");
+    	  rank_users(TRUE);
       } else { 
 	/* game ended for victory conditions - rank users based on survival */
 	rank_users(FALSE);
@@ -3016,6 +3030,8 @@ void server_game_free(void)
   game_free();
 }
 
+
+
 /**************************************************************************
   Server main loop.
 **************************************************************************/
@@ -3042,6 +3058,14 @@ void srv_main(void)
 
     log_normal(_("Now accepting new client connections on port %d."),
                srvarg.port);
+
+    if(reset){
+    	load_command(NULL, "temp", FALSE, TRUE);
+    	force_end_of_sniff = TRUE;
+    	reset = FALSE;
+    	just_reset = TRUE;
+    }
+
     /* Remain in S_S_INITIAL until all players are ready. */
     while (S_E_FORCE_END_OF_SNIFF != server_sniff_all_input()) {
       /* When force_end_of_sniff is used in pregame, it means that the server
@@ -3061,7 +3085,7 @@ void srv_main(void)
       server_sniff_all_input();
     }
 
-    if (game.info.timeout == -1 || srvarg.exit_on_end) {
+    if (srvarg.exit_on_end) {
       /* For autogames or if the -e option is specified, exit the server. */
       server_quit();
     }

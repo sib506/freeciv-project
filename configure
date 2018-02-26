@@ -3308,8 +3308,8 @@ IFS=$ac_save_IFS
 case $host_os in *\ *) host_os=`echo "$host_os" | sed 's/ /-/g'`;; esac
 
 
-# expand $ac_aux_dir to an absolute path
-am_aux_dir=`cd $ac_aux_dir && pwd`
+# Expand $ac_aux_dir to an absolute path.
+am_aux_dir=`cd "$ac_aux_dir" && pwd`
 
 ac_ext=c
 ac_cpp='$CPP $CPPFLAGS'
@@ -5037,7 +5037,7 @@ cat >>confdefs.h <<_ACEOF
 _ACEOF
 
 
-am__api_version='1.14'
+am__api_version='1.15'
 
 # Find a good install program.  We prefer a C program (faster),
 # so one script is as good as another.  But avoid the broken or
@@ -5226,7 +5226,7 @@ else
 $as_echo "$as_me: WARNING: 'missing' script is too old or missing" >&2;}
 fi
 
-if test x"${install_sh}" != xset; then
+if test x"${install_sh+set}" != xset; then
   case $am_aux_dir in
   *\ * | *\	*)
     install_sh="\${SHELL} '$am_aux_dir/install-sh'" ;;
@@ -5617,8 +5617,8 @@ MAKEINFO=${MAKEINFO-"${am_missing_run}makeinfo"}
 # <http://lists.gnu.org/archive/html/automake/2012-07/msg00014.html>
 mkdir_p='$(MKDIR_P)'
 
-# We need awk for the "check" target.  The system "awk" is bad on
-# some platforms.
+# We need awk for the "check" target (and possibly the TAP driver).  The
+# system "awk" is bad on some platforms.
 # Always define AMTAR for backward compatibility.  Yes, it's still used
 # in the wild :-(  We should find a proper way to deprecate it ...
 AMTAR='$${TAR-tar}'
@@ -5803,6 +5803,7 @@ END
     as_fn_error $? "Your 'rm' program is bad, sorry." "$LINENO" 5
   fi
 fi
+
 
 # Check whether --enable-silent-rules was given.
 if test "${enable_silent_rules+set}" = set; then :
@@ -28703,7 +28704,7 @@ for i in $libggz_incdirs;
 do
   for j in $libggz_header;
   do
-    echo "configure: 28706: $i/$j" >&5
+    echo "configure: 28707: $i/$j" >&5
     if test -r "$i/$j"; then
       echo "taking that" >&5
       libggz_incdir=$i
@@ -28959,7 +28960,7 @@ for i in $ggzmod_incdirs;
 do
   for j in $ggzmod_header;
   do
-    echo "configure: 28962: $i/$j" >&5
+    echo "configure: 28963: $i/$j" >&5
     if test -r "$i/$j"; then
       echo "taking that" >&5
       ggzmod_incdir=$i
@@ -29089,7 +29090,7 @@ for i in $ggz_config_dirs;
 do
   for j in ggz-config;
   do
-    echo "configure: 29092: $i/$j" >&5
+    echo "configure: 29093: $i/$j" >&5
     if test -r "$i/$j"; then
       echo "taking that" >&5
       ggz_config_dir=$i
@@ -29318,7 +29319,7 @@ for i in $ggz_gtk_incdirs;
 do
   for j in $ggz_gtk_header;
   do
-    echo "configure: 29321: $i/$j" >&5
+    echo "configure: 29322: $i/$j" >&5
     if test -r "$i/$j"; then
       echo "taking that" >&5
       ggz_gtk_incdir=$i
@@ -29510,7 +29511,7 @@ for i in $libggz_incdirs;
 do
   for j in $libggz_header;
   do
-    echo "configure: 29513: $i/$j" >&5
+    echo "configure: 29514: $i/$j" >&5
     if test -r "$i/$j"; then
       echo "taking that" >&5
       libggz_incdir=$i
@@ -29762,7 +29763,7 @@ for i in $ggzdmod_incdirs;
 do
   for j in $ggzdmod_header;
   do
-    echo "configure: 29765: $i/$j" >&5
+    echo "configure: 29766: $i/$j" >&5
     if test -r "$i/$j"; then
       echo "taking that" >&5
       ggzdmod_incdir=$i
@@ -30197,7 +30198,7 @@ for i in $libggz_incdirs;
 do
   for j in $libggz_header;
   do
-    echo "configure: 30200: $i/$j" >&5
+    echo "configure: 30201: $i/$j" >&5
     if test -r "$i/$j"; then
       echo "taking that" >&5
       libggz_incdir=$i
@@ -30453,7 +30454,7 @@ for i in $ggzmod_incdirs;
 do
   for j in $ggzmod_header;
   do
-    echo "configure: 30456: $i/$j" >&5
+    echo "configure: 30457: $i/$j" >&5
     if test -r "$i/$j"; then
       echo "taking that" >&5
       ggzmod_incdir=$i
@@ -30583,7 +30584,7 @@ for i in $ggz_config_dirs;
 do
   for j in ggz-config;
   do
-    echo "configure: 30586: $i/$j" >&5
+    echo "configure: 30587: $i/$j" >&5
     if test -r "$i/$j"; then
       echo "taking that" >&5
       ggz_config_dir=$i
@@ -30812,7 +30813,7 @@ for i in $ggz_gtk_incdirs;
 do
   for j in $ggz_gtk_header;
   do
-    echo "configure: 30815: $i/$j" >&5
+    echo "configure: 30816: $i/$j" >&5
     if test -r "$i/$j"; then
       echo "taking that" >&5
       ggz_gtk_incdir=$i
@@ -31004,7 +31005,7 @@ for i in $libggz_incdirs;
 do
   for j in $libggz_header;
   do
-    echo "configure: 31007: $i/$j" >&5
+    echo "configure: 31008: $i/$j" >&5
     if test -r "$i/$j"; then
       echo "taking that" >&5
       libggz_incdir=$i
@@ -31256,7 +31257,7 @@ for i in $ggzdmod_incdirs;
 do
   for j in $ggzdmod_header;
   do
-    echo "configure: 31259: $i/$j" >&5
+    echo "configure: 31260: $i/$j" >&5
     if test -r "$i/$j"; then
       echo "taking that" >&5
       ggzdmod_incdir=$i

@@ -205,6 +205,7 @@ struct player {
   bool phase_done;
   int nturns_idle;
   bool is_alive;
+  int test_int;
 
   /* Turn in which the player's revolution is over; see update_revolution. */
   int revolution_finishes;

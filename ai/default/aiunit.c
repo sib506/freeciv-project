@@ -2658,6 +2658,7 @@ static void dai_set_defenders(struct ai_type *ait, struct player *pplayer)
   } city_list_iterate_end;
 }
 
+bool saved = FALSE;
 /**************************************************************************
   Master manage unit function.
 
@@ -2685,6 +2686,19 @@ void dai_manage_units(struct ai_type *ait, struct player *pplayer)
   /* Find and set city defenders first - figure out which units are
    * allowed to leave home. */
   dai_set_defenders(ait, pplayer);
+
+  if(!saved && game.info.turn == 2){
+	  save_game("temp", "Root of MCTS tree", FALSE);
+	  saved = TRUE;
+  }
+
+  printf("Creating a new list\n");
+  struct genlist *test = genlist_new();
+  for(int i = 0; i < 20; i++){
+	  genlist_append(test, i);
+  }
+  genlist_destroy(test);
+
 
   unit_list_iterate_safe(pplayer->units, punit) {
     if ((!unit_transported(punit) || unit_owner(unit_transport_get(punit)) != pplayer)

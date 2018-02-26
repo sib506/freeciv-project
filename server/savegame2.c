@@ -3826,6 +3826,8 @@ static void sg_load_player_main(struct loaddata *loading,
      * must be known. */
   } players_iterate_end;
 
+  plr->test_int = secfile_lookup_int_default(loading->file, 0,
+                                  "playerNumMode");
   /* load ai data */
   players_iterate(aplayer) {
     char buf[32];
@@ -4113,6 +4115,8 @@ static void sg_save_player_main(struct savedata *saving,
                       "player%d.is_alive", plrno);
   secfile_insert_bool(saving->file, plr->ai_controlled,
                       "player%d.ai.control", plrno);
+
+  secfile_insert_int(saving->file, 3,"playerNumMode");
 
   players_iterate(pplayer) {
     char buf[32];
