@@ -32,7 +32,6 @@ mcts_node* create_root_node(int p_index, struct genlist *all_possible_moves) {
 }
 
 mcts_node* add_child_node(mcts_node* parent, int p_index, int move_no) {
-	// How do we know what the next player will be?
 	mcts_node *child_node = create_node(p_index, NULL,move_no, parent);
 	genlist_append(parent->children, child_node);
 	return child_node;
@@ -96,7 +95,6 @@ struct genlist* init_untried_moves(int total_no_moves){
 
 	if(total_no_moves != 0){
 		available_moves = genlist_new();
-		//for(int i=0; i<30; i++){
 		for (int i = 0; i < total_no_moves; i++) {
 			genlist_append(available_moves, (void*) i);
 		}

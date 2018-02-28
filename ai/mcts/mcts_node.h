@@ -19,7 +19,7 @@
 typedef struct mcts_node {
 	bool uninitialised;
 	int player_index;
-	int move_no; //The move that caused this node
+	int move_no;
 
 	int wins;
 	int visits;
@@ -36,12 +36,11 @@ typedef struct mcts_node {
 /**
  * Creates a new mcts node.
  *
- * @param newLplayer the last player to have moved
- * @param movesList the list of moves the node has left to perform
- * @param newMove the move that caused the state of the node
- * @param newParent the node that created this node
- * @return a pointer to a new MctsNode_s
- * @pre newLplayer is 0 or 1
+ * @param p_index the id of the last player to have moved
+ * @param all_possible_moves the list of moves the node can perform
+ * @param move the move that caused the state of the node
+ * @param parent the node that created this node
+ * @return a pointer to a new mcts node
  */
 mcts_node* create_node(int p_index, struct genlist *all_possible_moves,
 		int move, mcts_node *parent);
@@ -49,24 +48,20 @@ mcts_node* create_node(int p_index, struct genlist *all_possible_moves,
 /**
  * Creates a new root node. parent and move set to NULL.
  *
- * @param newLplayer the last player to have moved
- * @param movesList the remaining moves the node can perform
- * @return a pointer to a new MctsNode_s root
- * @pre newLplayer is 0 or 1
+ * @param p_index the current player
+ * @param all_possible_moves the list of moves the node can perform
+ * @return a pointer to a new root mcts_node
  */
 mcts_node* create_root_node(int p_index, struct genlist *all_possible_moves);
 
 
 /**
- * Creates a new MCTS node from a remaining move and adds it to the parent.
+ * Creates a new MCTS node from a move and adds it to the parent.
  *
- * @param parent the parent node in which to add a new child
- * @param state used to perform the move on, and generate a new
- *        moves list from
- * @param childMovesGen a callback function pointer to generate and populate
- *        the moves list for the child.
- * @return the child that was created and added to the parent's child list
- * @pre there are remaining moves in the parent node
+ * @param parent the parent node the child is to be added to
+ * @param p_index the id of the last player to have moved
+ * @param move the move that caused the state of the node
+ * @return the child mcts_node that was created
  */
 mcts_node* add_child_node(mcts_node* parent, int p_index, int move_no);
 
@@ -79,16 +74,30 @@ mcts_node* add_child_node(mcts_node* parent, int p_index, int move_no);
 void free_node(mcts_node *node);
 
 /**
- * Recursively backpropagates up the tree adding the win value and always
- * increasing a node's play count by 1.  Halts when a NULL value for parent
+ * Recursively backpropagates up the MCTS tree. Adds the result and
+ * increases a node's play count by 1.  Stops when a NULL value for parent
  * is reached.
  *
- * @param gameResult is the value to be added to the win value of the node.
- * @param node the node that was simulated from and to backpropagate from
+ * @param result the value to be added to the win value of the node.
+ * @param node the node that the backpropagate starts from
  */
 void update_node(int32_t result, mcts_node* node);
 
+/**
+ * Returns the total number of moves a node has based on
+ * the moves for all the different units
+ *
+ * @param all_moves the list of moves that can be performed for each unit
+ * @return total number of moves that can be performed
+ */
 int calc_number_moves(struct genlist* all_moves);
+
+/**
+ * Creates a list of the untried moves
+ *
+ * @param the number of possible moves for that node
+ * @return a list of all possible moves
+ */
 struct genlist* init_untried_moves(int total_no_moves);
 
 #endif

@@ -8,17 +8,13 @@
 #include "featured_text.h"
 #include "notify.h"
 #include "idex.c"
-
-#define MAXDEPTH 20
-#define MAX_ITER_DEPTH 600
-#define UCT_CONST 1.41421356237 //sqrt(2)
+#include "mcts_config.h"
 
 static mcts_node* UCT_select_child(mcts_node* root);
 static double UCT(mcts_node* child_node, int rootPlays);
 static void free_mcts_tree(mcts_node* node);
 static int mcts_choose_final_move();
 void print_mcts_tree_layer1();
-
 
 mcts_node *mcts_root = NULL; //Permanent root of the tree
 mcts_node *current_mcts_node = NULL;
@@ -89,7 +85,7 @@ void mcts_best_move(struct player *pplayer) {
 		printf("Game Turn: %d\n", game.info.turn);
 		print_mcts_tree_layer1();
 		iterations++;
-		//save_game("test-restore", "Testing the restore point", FALSE);
+
 		// If need to return an actual move now i.e. time-out
 		if(iterations >= MAX_ITER_DEPTH){
 			//Choose best move i.e. most visited
@@ -203,34 +199,17 @@ static void free_mcts_tree(mcts_node *node){
 
 int find_index_of_unit(struct unit *punit, struct genlist *player_moves) {
 	int target_id = punit->id;
-	//printf("Target ID: %d\n", tmp_punit->id);
 	for (int i = 0; i < genlist_size(player_moves); i++) {
 		struct unit_moves *tmp = genlist_get(player_moves, i);
 
 		fc_assert(tmp != NULL);
-		//printf("List ID: %d\n", tmp->id);
 		if (tmp->id == target_id) {
 			return i;
 		}
 	}
 
-	printf("No ID found %d :(\n");
+	printf("No ID found\n");
 
-	/*printf("Player has units with ID: ");
-	unit_list_iterate_safe(punit->owner->units, tmp_punit2) {
-		if (unit_has_type_flag(punit, UTYF_SETTLERS) ||
-					unit_has_type_flag(punit, UTYF_CITIES) ||
-					is_military_unit(punit) ||
-					unit_has_type_role(punit, L_EXPLORER)){
-			printf("%d \t", tmp_punit2->id);
-		}
-	} unit_list_iterate_safe_end;
-
-	printf("\nNo ID found %d :(\n", tmp_punit->hp);
-
-	while(1){
-		// Breakpoint here
-	}*/
 	return -1;
 }
 
@@ -252,8 +231,6 @@ struct potentialMove* return_punit_move(struct unit *punit){
 	int unit_list_index;
 	int move_no;
 
-//	printf("------------\n");
-
 	if(move_chosen){ //Should this also check that it is the MCTS player?
 		player_moves = mcts_root->all_moves;
 		unit_list_index = find_index_of_unit(punit, player_moves);
@@ -265,27 +242,12 @@ struct potentialMove* return_punit_move(struct unit *punit){
 	}
 
 	int no_of_moves_higher_in_list = 1;
-	//printf("Higher moves before: %d\n", no_of_moves_higher_in_list);
 
 	for(int i=unit_list_index+1; i<genlist_size(player_moves); i++){
 		struct unit_moves * tmp_unit = genlist_get(player_moves,i);
 		no_of_moves_higher_in_list *= genlist_size(tmp_unit->moves);
 		printf("Unit moves:%d -- %d\n", genlist_size(tmp_unit->moves), no_of_moves_higher_in_list);
-		/*if(genlist_size(tmp_unit->moves) == 0){
-			struct unit * abc = idex_lookup_unit(tmp_unit->id);
-			printf("Name: %s\n", abc->utype->name._private_rulename_);
-			printf("Unit has settler flag ... %d\n", unit_has_type_flag(abc, UTYF_SETTLERS));
-			printf("Unit has city settler flag ... %d\n", unit_has_type_flag(abc, UTYF_CITIES));
-			printf("Unit is millitary ... %d\n", is_military_unit(abc));
-			printf("Unit is explorer ... %d\n", unit_has_type_role(punit, L_EXPLORER));
-			printf("--------");
-			int loop = 1;
-			while(loop){
-				//DO STUFF
-			}
-		}*/
 	}
-	//printf("Higher moves after: %d\n", no_of_moves_higher_in_list);
 
 	struct unit_moves * unit = genlist_get(player_moves, unit_list_index);
 	int no_unit_moves = genlist_size(unit->moves);
@@ -297,7 +259,7 @@ struct potentialMove* return_punit_move(struct unit *punit){
 	printf("\thigher_moves: %d\n", no_of_moves_higher_in_list);
 	printf("\tmove_index: %d\n", move_index);
 	printf("\tmodulo: %d\n", no_unit_moves);
-	printf("\tMove mem: %d\n", genlist_get(unit->moves, move_index));
+	printf("\tMove mem: %d\n", (int) genlist_get(unit->moves, move_index));
 
 	return genlist_get(unit->moves, move_index);
 }
@@ -336,8 +298,6 @@ void backpropagate(bool interrupt){
 		reset = TRUE;
 		printf("Reset\n");
 	}
-//	mcts_end_command();
-	//load_command(NULL, mcts_save_filename, FALSE, TRUE);
 	return;
 }
 

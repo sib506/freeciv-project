@@ -1,6 +1,5 @@
 #include "mcts_pruning.h"
-
-#define MAX_NO_UNIT_MOVES 3
+#include "mcts_config.h"
 
 struct genlist* random_mcts_general_pruning(struct genlist* all_moves, bool * need_to_free){
 	if(genlist_size(all_moves) <= MAX_NO_UNIT_MOVES){
