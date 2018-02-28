@@ -4,6 +4,9 @@
 
 #include <math.h>
 #include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
 
 #include "srv_main.h"
 #include "stdinhand.h"
@@ -21,6 +24,8 @@ static mcts_node* UCT_select_child(mcts_node* root);
 static double UCT(mcts_node* child_node, int rootPlays);
 static void free_mcts_tree(mcts_node* node);
 static int mcts_choose_final_move();
+static double current_free_memory();
+
 void print_mcts_tree_layer1();
 
 mcts_node *mcts_root = NULL; 			// Root of the MCTS tree
@@ -38,6 +43,36 @@ int chosen_move_set = -1;
 enum mcts_stage current_mcts_stage = selection;
 
 char *mcts_save_filename = "mcts-root";
+
+
+/*
+ * Returns the memory currently available to the system
+ */
+static double current_free_memory(){
+    FILE *fptr = fopen( "/proc/meminfo", "r" );
+	int total_memory = 0;
+	int free_memory = 0;
+	int available_memory = 0;
+
+    if (fptr == NULL)
+    {
+        printf("Cannot open file \n");
+        exit(0);
+    }
+
+    int scan_return = fscanf(fptr, "MemTotal:%d kB\nMemFree:%d kB\nMemAvailable:%d kB",
+			&total_memory, &free_memory, &available_memory);
+	fclose(fptr);
+
+	if (scan_return < 1){
+		return 100;
+	} else {
+		return ((float) available_memory/ (float) total_memory)*100;
+	}
+
+}
+
+
 /*
  * Initalise the MCTS tree
  */
@@ -52,7 +87,16 @@ void mcts_init(struct player *pplayer) {
 	iterations = 0;
 	chosen_move_set = -1;
 
-	save_game(mcts_save_filename, "Root of MCTS tree", FALSE);
+	save_game("mcts-root", "Root of MCTS tree", FALSE);
+
+	// Check Freeciv isn't using too much memory
+	if(current_free_memory() <= MEM_FREE_THRESHOLD){
+		// Reset Freeciv if memory usage too large
+		printf("%f\n", current_free_memory());
+		printf("restarting freeciv server due to lack of memory\n");
+		server_clear();
+		execl("./fcser","fcser", "--read", "reload_mcts.serv", NULL);
+	}
 
 	// Free the previous tree
 	if (mcts_root != NULL) {

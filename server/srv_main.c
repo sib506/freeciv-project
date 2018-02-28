@@ -3127,14 +3127,16 @@ void srv_main(void)
 
   srv_prepare();
 
+  bool first_load = TRUE;
   /* Run server loop */
   do {
     set_server_state(S_S_INITIAL);
-
+    printf("First load: %d\n", first_load);
     /* Load a script file. */
-    if (NULL != srvarg.script_filename) {
+    if ((NULL != srvarg.script_filename) && first_load) {
       /* Adding an error message more here will duplicate them. */
       (void) read_init_script(NULL, srvarg.script_filename, TRUE, FALSE);
+      first_load = FALSE;
     }
 
     (void) aifill(game.info.aifill);

@@ -1,4 +1,6 @@
 
+#define MEM_FREE_THRESHOLD 15.0
+
 // MCTS
 #define MAXDEPTH 20				// Maximum rollout depth
 #define MAX_ITER_DEPTH 600		// Number of MCTS iterations before making a move
