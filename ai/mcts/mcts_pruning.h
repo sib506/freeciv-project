@@ -16,7 +16,26 @@
 #include "stdbool.h"
 #include "aiunit.h"
 
+/**
+ * Returns a new list of pruned moves for a unit. Basic pruning by randomly
+ * selecting moves for the unit to keep.
+ *
+ * @param all__moves the list of moves the node can perform
+ * @param need_to_free whether on return the origional move list needs to be freed
+ * @return a pointer to the new list of pruned moves
+ */
 struct genlist* random_mcts_general_pruning(struct genlist *all_moves, bool *need_to_free);
+
+/**
+ * Returns a new list of pruned moves for a unit. Basic pruning by randomly
+ * selecting moves for the unit to keep. Settlers who can build a city
+ * must have this in their pruned moves list
+ *
+ * @param all__moves the list of moves the node can perform
+ * @param need_to_free whether on return the origional move list needs to be freed
+ * @param punit the unit on which we are pruning moves for
+ * @return a pointer to the new list of pruned moves
+ */
 struct genlist* random_mcts_settler_pruning(struct genlist* all_moves, bool * need_to_free,
 		struct unit * punit);
 

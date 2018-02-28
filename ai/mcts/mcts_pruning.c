@@ -51,7 +51,7 @@ struct genlist* random_mcts_settler_pruning(struct genlist* all_moves, bool * ne
 			}
 		}
 
-//		//Fill remaining N-1 moves for unit
+		//Fill remaining N-1 moves for unit
 		for (int i = 0; i < MAX_NO_UNIT_MOVES-can_build_city; i++) {
 			// Get random number
 			int rand_index = rand() % genlist_size(all_moves);

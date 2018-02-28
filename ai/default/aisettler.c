@@ -1054,27 +1054,34 @@ void dai_auto_settler_run(struct ai_type *ait, struct player *pplayer,
 
 	  CHECK_UNIT(punit);
 
-	if((mcts_mode || (pplayer->player_mode == P_MCTS && move_chosen && !pending_game_move)) &&
-			(unit_has_type_flag(punit, UTYF_SETTLERS) || unit_has_type_flag(punit, UTYF_CITIES))
-			&& !at_root_of_tree() &&!reset && (pplayer->ai_common.barbarian_type == NOT_A_BARBARIAN)){
-		if(current_mcts_stage == simulation){
-			random_settler(ait, pplayer, punit, state);
-		} else {
-			// If the move is NULL then must have either not found our move
-			// OR the MCTS player isn't playing first so we need an actual move
-			if(punit->chosen_action != NULL){
-				make_settler_move(ait, pplayer, punit, state, punit->chosen_action);
-			} else {
-				if(pplayer->player_mode == P_RANDOM)
-					random_settler(ait, pplayer, punit, state);
-				else goto BUILD_CITY;
-			}
-		}
-		return;
-	} else if (pplayer->player_mode == P_RANDOM){
-		random_settler(ait, pplayer, punit, state);
-		return;
-	}
+	  /* If either the MCTS player or we are in MCTS mode - must perform
+	   * MCTS actions as required by the MCTS logic.
+	   *
+	   * If the random AI then perform random actions.
+	   *
+	   * Otherwise act as normal using the default AI
+	   **/
+	  if((mcts_mode || (pplayer->player_mode == P_MCTS && move_chosen && !pending_game_move)) &&
+			  (unit_has_type_flag(punit, UTYF_SETTLERS) || unit_has_type_flag(punit, UTYF_CITIES))
+			  && !at_root_of_tree() &&!reset && (pplayer->ai_common.barbarian_type == NOT_A_BARBARIAN)){
+		  if(current_mcts_stage == simulation){
+			  random_settler(ait, pplayer, punit, state);
+		  } else {
+			  // If the move is NULL then must have either not found our move
+			  // OR the MCTS player isn't playing first so we need an actual move
+			  if(punit->chosen_action != NULL){
+				  make_settler_move(ait, pplayer, punit, state, punit->chosen_action);
+			  } else {
+				  if(pplayer->player_mode == P_RANDOM)
+					  random_settler(ait, pplayer, punit, state);
+				  else goto BUILD_CITY;
+			  }
+		  }
+		  return;
+	  } else if (pplayer->player_mode == P_RANDOM){
+		  random_settler(ait, pplayer, punit, state);
+		  return;
+	  }
 
   /*** If we are on a city mission: Go where we should ***/
 

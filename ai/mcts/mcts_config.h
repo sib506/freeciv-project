@@ -6,4 +6,5 @@
 
 
 // Pruning
+#define PRU_LEVEL random_pruning
 #define MAX_NO_UNIT_MOVES 3 	// The maximum number of moves each unit can have

@@ -96,6 +96,8 @@ struct genlist* init_untried_moves(int total_no_moves){
 	if(total_no_moves != 0){
 		available_moves = genlist_new();
 		for (int i = 0; i < total_no_moves; i++) {
+			//TODO: Could improve this - potential issue with overflow
+			// (although should never have large enough moves due to pruning)
 			genlist_append(available_moves, (void*) i);
 		}
 	}

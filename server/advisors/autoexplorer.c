@@ -291,6 +291,13 @@ enum unit_move_result manage_auto_explorer(struct unit *punit)
 {
   struct player *pplayer = unit_owner(punit);
 
+  /* If either the MCTS player or we are in MCTS mode - must perform
+   * MCTS actions as required by the MCTS logic.
+   *
+   * If the random AI then perform random actions.
+   *
+   * Otherwise act as normal using the default AI
+   **/
   if((mcts_mode || (pplayer->player_mode == P_MCTS && move_chosen && !pending_game_move))
 		  && unit_has_type_role(punit, L_EXPLORER) && !reset && (pplayer->ai_common.barbarian_type == NOT_A_BARBARIAN)){
 	  if(current_mcts_stage == simulation){
@@ -515,6 +522,11 @@ enum unit_move_result manage_random_auto_explorer(struct unit *punit)
 #undef DIST_FACTOR
 }
 
+/**************************************************************************
+  Collect all possible moves for a given explorer unit
+  Only considers moves that can make within a single turn radius.
+  Add moves to the provided list.
+**************************************************************************/
 void collect_explorer_moves(struct unit *punit, struct genlist *move_list) {
 	struct player *pplayer = unit_owner(punit);
 	/* Loop prevention */
@@ -571,6 +583,9 @@ void collect_explorer_moves(struct unit *punit, struct genlist *move_list) {
 	TIMING_LOG(AIT_EXPLORER, TIMER_STOP);
 }
 
+/**************************************************************************
+  Given a move, performs the move on the given unit
+**************************************************************************/
 enum unit_move_result make_explorer_move(struct unit *punit,
 		struct move_tile_natcoord *move_coord) {
 	punit->chosen_action = NULL;
@@ -610,6 +625,9 @@ enum unit_move_result make_explorer_move(struct unit *punit,
 #undef DIST_FACTOR
 }
 
+/**************************************************************************
+  Destroy the explorer move list
+**************************************************************************/
 void free_explorer_moves(struct genlist *moveList){
 	for(int i = 0; i < genlist_size(moveList); i++ ){
 		struct potentialMove *toRemove = genlist_back(moveList);

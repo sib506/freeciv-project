@@ -81,6 +81,7 @@
 /* ai/mcts */
 #include "mcts.h"
 #include "mcts_pruning.h"
+#include "mcts_config.h"
 
 #define LOGLEVEL_RECOVERY LOG_DEBUG
 #define LOG_CARAVAN       LOG_DEBUG
@@ -2296,6 +2297,13 @@ void random_military(struct ai_type *ait, struct player *pplayer,
 void dai_manage_military(struct ai_type *ait, struct player *pplayer,
                          struct unit *punit)
 {
+	  /* If either the MCTS player or we are in MCTS mode - must perform
+	   * MCTS actions as required by the MCTS logic.
+	   *
+	   * If the random AI then perform random actions.
+	   *
+	   * Otherwise act as normal using the default AI
+	   **/
 	if((mcts_mode || (pplayer->player_mode == P_MCTS && move_chosen && !pending_game_move))
 			&& is_military_unit(punit) && !reset && (pplayer->ai_common.barbarian_type == NOT_A_BARBARIAN)){
 		if(current_mcts_stage == simulation){
@@ -2437,7 +2445,9 @@ void dai_manage_military(struct ai_type *ait, struct player *pplayer,
 }
 
 /**************************************************************************
-
+  Collect all possible moves for a given military unit
+  Only considers moves that can made as if were playing on the GUI
+  client. Add moves to the provided list.
 **************************************************************************/
 void collect_military_moves(struct unit *punit, struct genlist *moveList){
 	CHECK_UNIT(punit);
@@ -2470,7 +2480,7 @@ void collect_military_moves(struct unit *punit, struct genlist *moveList){
 }
 
 /**************************************************************************
-
+  Given a move, performs the move on the given military unit
 **************************************************************************/
 void make_military_move(struct ai_type *ait, struct player *pplayer,
 		struct unit *punit, struct potentialMove *chosen_action){
@@ -2510,7 +2520,7 @@ void make_military_move(struct ai_type *ait, struct player *pplayer,
 }
 
 /**************************************************************************
-
+  Destroy the military move list
 **************************************************************************/
 void free_military_moves(struct genlist *moveList){
 	for(int i = 0; i < genlist_size(moveList); i++ ){
@@ -3408,7 +3418,7 @@ struct genlist* player_available_moves(struct player *pplayer){
 }
 
 /**************************************************************************
-  Attach chosen move to units for a player
+  Attach chosen move to units for a given player
 **************************************************************************/
 void attach_chosen_move(struct player *pplayer){
 	unit_list_iterate_safe(pplayer->units, punit) {

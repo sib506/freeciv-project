@@ -1,14 +1,21 @@
 #include "mcts.h"
 #include "mcts_node.h"
+#include "mcts_config.h"
+
 #include <math.h>
-#include "srv_main.h"
 #include <stdbool.h>
+
+#include "srv_main.h"
 #include "stdinhand.h"
 #include "rand.h"
 #include "featured_text.h"
 #include "notify.h"
 #include "idex.c"
-#include "mcts_config.h"
+
+void mcts_init(struct player *pplayer);
+void mcts_selection(struct player *pplayer);
+void mcts_expansion(struct player *pplayer);
+void mcts_simulation();
 
 static mcts_node* UCT_select_child(mcts_node* root);
 static double UCT(mcts_node* child_node, int rootPlays);
@@ -16,56 +23,98 @@ static void free_mcts_tree(mcts_node* node);
 static int mcts_choose_final_move();
 void print_mcts_tree_layer1();
 
-mcts_node *mcts_root = NULL; //Permanent root of the tree
-mcts_node *current_mcts_node = NULL;
+mcts_node *mcts_root = NULL; 			// Root of the MCTS tree
+mcts_node *current_mcts_node = NULL;	// Current MCTS node being considered
 
-bool game_over = TRUE;
-bool mcts_mode = FALSE;
-int rollout_depth = 0;
-int iterations = 0;
-bool reset = FALSE;
-bool pending_game_move = FALSE;
+bool game_over = TRUE;	// Is the game over i.e. are we waiting for it to be reset
+bool mcts_mode = FALSE;	// Are we currently running MCTS
+int rollout_depth = 0;	// Current depth of the rollouts
+int iterations = 0;		// Current MCTS iteration
+bool reset = FALSE;		// Is the game being reset?
+bool pending_game_move = FALSE;	//Are we waiting for the actual game move to be performed
 
-bool move_chosen = FALSE;
+bool move_chosen = FALSE;	// Have we chosen the move we are going to perform?
 int chosen_move_set = -1;
 enum mcts_stage current_mcts_stage = selection;
 
 char *mcts_save_filename = "mcts-root";
+/*
+ * Initalise the MCTS tree
+ */
+void mcts_init(struct player *pplayer) {
+	printf("MCTS MODE ON\n");
 
-void mcts_best_move(struct player *pplayer) {
-	// i.e. this is the first time - we need actually create the tree
-	if(!mcts_mode & !pending_game_move){
-		printf("MCTS MODE ON\n");
+	mcts_mode = TRUE;
+	game_over = FALSE;
 
-		mcts_mode = TRUE;
-		game_over = FALSE;
+	//Reset some variables
+	move_chosen = FALSE;
+	iterations = 0;
+	chosen_move_set = -1;
 
-		//Reset some variables
-		move_chosen = FALSE;
-		iterations = 0;
-		chosen_move_set = -1;
+	save_game(mcts_save_filename, "Root of MCTS tree", FALSE);
 
-		save_game(mcts_save_filename, "Root of MCTS tree", FALSE);
-
-		// Free the previous tree
-		if(mcts_root != NULL){
-			free_mcts_tree(mcts_root);
-		}
-
-		// Collect all available moves for player
-		struct genlist *all_unit_moves = player_available_moves(pplayer);
-		mcts_root = create_root_node(player_index(pplayer),all_unit_moves);
-		mcts_root->uninitialised = FALSE;
-		current_mcts_node = mcts_root;
+	// Free the previous tree
+	if (mcts_root != NULL) {
+		free_mcts_tree(mcts_root);
 	}
 
-	if(move_chosen){
-			printf("Final moves are being attached\n");
-			attach_chosen_move(pplayer);
-			pending_game_move = FALSE;
-			return;
-		}
+	// Collect all available moves for player
+	struct genlist *all_unit_moves = player_available_moves(pplayer);
+	mcts_root = create_root_node(player_index(pplayer), all_unit_moves);
+	mcts_root->uninitialised = FALSE;
+	current_mcts_node = mcts_root;
+}
 
+void mcts_selection(struct player *pplayer){
+	current_mcts_stage = selection;
+
+	current_mcts_node = UCT_select_child(current_mcts_node);
+	attach_chosen_move(pplayer);
+}
+
+void mcts_expansion(struct player *pplayer) {
+	current_mcts_stage = expansion;
+
+	// Lookup size of untried moves list
+	int untried_size = genlist_size(current_mcts_node->untried_moves);
+	printf("\tuntried_size: %d", untried_size);
+
+	// Retrieve move number + remove from untried list
+	int random_index = rand() % untried_size;
+	int move_no = (int) genlist_get(current_mcts_node->untried_moves,
+			random_index);
+	genlist_remove(current_mcts_node->untried_moves, (void *) move_no);
+
+	printf("\tRandNo: %d\n", random_index);
+
+	// Create a new node for that move + set as current node
+	current_mcts_node = add_child_node(current_mcts_node, player_index(pplayer),
+			move_no);
+
+	attach_chosen_move(pplayer);
+}
+
+void mcts_simulation(){
+	current_mcts_stage = simulation;
+	rollout_depth = 0;
+}
+
+void mcts_best_move(struct player *pplayer) {
+	// If this is the first time - we need actually create the tree
+	if(!mcts_mode & !pending_game_move){
+		mcts_init(pplayer);
+	}
+
+	// Attach final moves to the player's units
+	if (move_chosen) {
+		printf("Final moves are being attached\n");
+		attach_chosen_move(pplayer);
+		pending_game_move = FALSE;
+		return;
+	}
+
+	// If the current node is uninitalised - need to populate its move information
 	if(current_mcts_node->uninitialised){
 		struct genlist *all_unit_moves = player_available_moves(pplayer);
 		current_mcts_node->all_moves = all_unit_moves;
@@ -74,13 +123,13 @@ void mcts_best_move(struct player *pplayer) {
 		current_mcts_node->uninitialised = FALSE;
 	}
 
-	//Rollout - Now perform rollouts
+	// If we have performed our expansion stage already, move onto random rollouts
 	if(current_mcts_stage == expansion){
 		printf("SIMULATION\n");
-		current_mcts_stage = simulation;
-		rollout_depth = 0;
+		mcts_simulation();
 	}
 
+	// If we have returned to the root, must have completed an iteration
 	if(current_mcts_node == mcts_root){
 		printf("Game Turn: %d\n", game.info.turn);
 		print_mcts_tree_layer1();
@@ -106,7 +155,7 @@ void mcts_best_move(struct player *pplayer) {
 		printf("Current MCTS Iterations: %d\n", iterations);
 	}
 
-
+	// If we are simulating then must continue
 	if((current_mcts_stage == simulation)){
 		printf("CONTINUE SIMULATION\n");
 		if(rollout_depth >= MAXDEPTH)
@@ -115,37 +164,15 @@ void mcts_best_move(struct player *pplayer) {
 		//Selection - no untried moves, need to navigate to children
 		if(((genlist_size(current_mcts_node->untried_moves) == 0) &&
 				(genlist_size(current_mcts_node->children) != 0)) || current_mcts_node->uninitialised){
-			current_mcts_stage = selection;
 			printf("SELECTION\n");
-
-			current_mcts_node = UCT_select_child(current_mcts_node);
-			attach_chosen_move(pplayer);
-			return;
+			return mcts_selection(pplayer);
 		}
 
 		printf("\t\t%d\n", genlist_size(current_mcts_node->untried_moves));
 		//Expansion - If we have untried moves then need to expand
 		if(genlist_size(current_mcts_node->untried_moves) != 0){
 			printf("EXPANSION\n");
-			current_mcts_stage = expansion;
-
-			// Lookup size of untried moves list
-			int untried_size = genlist_size(current_mcts_node->untried_moves);
-			printf("\tuntried_size: %d", untried_size);
-
-			// Retrieve move number + remove from untried list
-			int random_index = rand() % untried_size;
-			int move_no = (int) genlist_get(current_mcts_node->untried_moves,
-					random_index);
-			genlist_remove(current_mcts_node->untried_moves,
-					(void *)move_no);
-
-			printf("\tRandNo: %d\n", random_index);
-
-			// Create a new node for that move + set as current node
-			current_mcts_node = add_child_node(current_mcts_node, player_index(pplayer),move_no);
-
-			attach_chosen_move(pplayer);
+			mcts_expansion(pplayer);
 		}
 
 	}
