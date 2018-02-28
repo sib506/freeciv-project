@@ -92,10 +92,14 @@ int calc_number_moves(struct genlist* all_moves){
 }
 
 struct genlist* init_untried_moves(int total_no_moves){
-	struct genlist* available_moves = genlist_new();
-	//for(int i=0; i<30; i++){
-	for (int i = 0; i < total_no_moves; i++) {
-		genlist_append(available_moves, (void*) i);
+	struct genlist* available_moves = NULL;
+
+	if(total_no_moves != 0){
+		available_moves = genlist_new();
+		//for(int i=0; i<30; i++){
+		for (int i = 0; i < total_no_moves; i++) {
+			genlist_append(available_moves, (void*) i);
+		}
 	}
 
 	return available_moves;
