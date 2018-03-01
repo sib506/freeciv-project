@@ -528,7 +528,6 @@ enum unit_move_result manage_random_auto_explorer(struct unit *punit)
   Add moves to the provided list.
 **************************************************************************/
 void collect_explorer_moves(struct unit *punit, struct genlist *move_list) {
-	struct player *pplayer = unit_owner(punit);
 	/* Loop prevention */
 	struct tile *init_tile = unit_tile(punit);
 
@@ -538,7 +537,12 @@ void collect_explorer_moves(struct unit *punit, struct genlist *move_list) {
 
 	UNIT_LOG(LOG_DEBUG, punit, "auto-exploring.");
 
-	/*if (pplayer->ai_controlled && unit_has_type_flag(punit, UTYF_GAMELOSS)) {
+	/* Not required - UTYF_GAMELOSS means
+	 * losing this unit means losing the game.
+	 * This should be detected by MCTS/ searching AI anyway */
+
+	/* struct player *pplayer = unit_owner(punit);
+	   if (pplayer->ai_controlled && unit_has_type_flag(punit, UTYF_GAMELOSS)) {
 		UNIT_LOG(LOG_DEBUG, punit, "exploration too dangerous!");
 		return; // too dangerous
 	}*/
@@ -562,25 +566,33 @@ void collect_explorer_moves(struct unit *punit, struct genlist *move_list) {
 	pMove->moveInfo = move_tile;
 	genlist_append(move_list, pMove);
 
+	//int move_rate = parameter.move_rate;
+	int move_rate = unit_move_rate(punit);
+	//printf("move rate: %d, %d\n", parameter.move_rate, move_rate);
+
 	pf_map_move_costs_iterate(pfm, ptile, move_cost, FALSE)
-			{
-				//fc_assert_action(map_is_known(ptile, pplayer), continue);
-				turns = (float) move_cost / parameter.move_rate;
+	{
+		//fc_assert_action(map_is_known(ptile, pplayer), continue);
+		turns = (float) move_cost / move_rate;
 
-				if (turns <= (float)1) {
-					struct potentialMove *pMove = malloc(sizeof(struct potentialMove));
-					pMove->type = explore;
+		if ((turns <= (float) 1) && (can_unit_exist_at_tile(punit, ptile))) {
+			struct potentialMove *pMove = malloc(
+					sizeof(struct potentialMove));
+			pMove->type = explore;
 
-					struct move_tile_natcoord *move_tile = malloc(sizeof(struct move_tile_natcoord));
-					index_to_native_pos(&move_tile->x, &move_tile->y, tile_index(ptile));
-					pMove->moveInfo = move_tile;
-					genlist_append(move_list, pMove);
-				}
+			struct move_tile_natcoord *move_tile = malloc(
+					sizeof(struct move_tile_natcoord));
+			index_to_native_pos(&move_tile->x, &move_tile->y,
+					tile_index(ptile));
+			pMove->moveInfo = move_tile;
+			genlist_append(move_list, pMove);
+		}
 
-			}pf_map_move_costs_iterate_end;
+	}pf_map_move_costs_iterate_end;
 	pf_map_destroy(pfm);
 
 	TIMING_LOG(AIT_EXPLORER, TIMER_STOP);
+
 }
 
 /**************************************************************************
