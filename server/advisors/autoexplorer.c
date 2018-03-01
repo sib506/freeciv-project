@@ -538,10 +538,10 @@ void collect_explorer_moves(struct unit *punit, struct genlist *move_list) {
 
 	UNIT_LOG(LOG_DEBUG, punit, "auto-exploring.");
 
-	if (pplayer->ai_controlled && unit_has_type_flag(punit, UTYF_GAMELOSS)) {
+	/*if (pplayer->ai_controlled && unit_has_type_flag(punit, UTYF_GAMELOSS)) {
 		UNIT_LOG(LOG_DEBUG, punit, "exploration too dangerous!");
-		return; /* too dangerous */
-	}
+		return; // too dangerous
+	}*/
 
 	TIMING_LOG(AIT_EXPLORER, TIMER_START);
 
