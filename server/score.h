@@ -25,5 +25,6 @@ int total_player_citizens(const struct player *pplayer);
 
 void rank_users(bool);
 void rank_mcts_users(bool interrupt, enum victory_state plr_state[]);
+void mcts_player_scores(int * score_array);
 
 #endif /* FC__SCORE_H */

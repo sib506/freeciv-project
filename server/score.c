@@ -386,14 +386,15 @@ int total_player_citizens(const struct player *pplayer)
   return count;
 }
 
+
 /**************************************************************************
   At the end of a game, figure the winners and losers of the game and
   output to a suitable place.
 
   The definition of winners and losers: a winner is one who is alive at the
-  end of the game and has not surrendered, or in the case of a team game, 
+  end of the game and has not surrendered, or in the case of a team game,
   is alive or a teammate is alive and has not surrendered. A loser is
-  surrendered or dead. Exception: the winner of the spacerace and his 
+  surrendered or dead. Exception: the winner of the spacerace and his
   teammates will win of course.
 
   In games ended by /endgame, endturn, or any other interruption not caused
@@ -497,7 +498,7 @@ void rank_users(bool interrupt)
 	t_winner_score = t_score;
       }
     } teams_iterate_end;
-  
+
     /* ii) set all the members of the team as winners, the others as losers */
     players_iterate(pplayer) {
       if (pplayer->team == t_winner) {
@@ -648,4 +649,23 @@ void rank_mcts_users(bool interrupt, enum victory_state plr_state[])
 }
 
 
+/**************************************************************************
+  Returns an array of the current scores of the players.
+  Needs to be passed an array of size player_slot_count()
+  I.e. int scores[player_slot_count()];
+**************************************************************************/
+void mcts_player_scores(int * score_array)
+{
+  /* initialize score */
+  for (int i = 0; i < player_slot_count(); i++) {
+    score_array[i] = 0;
+  }
+
+  players_iterate(pplayer) {
+	  score_array[player_index(pplayer)] = get_civ_score(pplayer);
+  } players_iterate_end
+
+  return;
+
+}
 
