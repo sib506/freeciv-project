@@ -18,9 +18,10 @@ struct genlist* random_mcts_general_pruning(struct genlist* all_moves, bool * ne
 		struct genlist_link * action_link = genlist_link(all_moves, rand_index);
 		genlist_append(pruned_moves, action_link->dataptr);
 		genlist_erase(all_moves, action_link);
-		// Remove all moves from list
-		*need_to_free = TRUE;
 	}
+
+	// Need to remove all moves from list
+	*need_to_free = TRUE;
 
 	//Return new list
 	return pruned_moves;

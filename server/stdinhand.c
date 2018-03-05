@@ -3719,7 +3719,6 @@ static bool detach_command(struct connection *caller, char *str, bool check)
   return res;
 }
 
-int firstLoad = 1;
 /**************************************************************************
   Loads a file, complete with access checks and error messages sent back
   to the caller on failure.
@@ -3754,35 +3753,7 @@ bool load_command(struct connection *caller, const char *filename, bool check,
               command_synopsis(command_by_number(CMD_LOAD)));
     return FALSE;
   }
-
-  /*if (S_S_INITIAL != server_state()){
-	//SB Code
-	server_clear();
-	srv_reload_setup();
-
-	(void) aifill(game.info.aifill);
-	if (!game_was_started()) {
-		event_cache_clear();
-	}
-
-	if (S_S_RUNNING > server_state()) {
-		srv_reload_run();
-	}
-
-	while (conn_list_size(game.est_connections) > 0) {
-		server_sniff_all_input();
-	}
-
-	server_game_free();
-	server_game_init();
-	mapimg_reset();
-	load_rulesets(NULL, TRUE);
-	game.info.is_new_game = TRUE;
-	firstLoad= 0;
-
-	set_server_state(S_S_INITIAL);}
-*/
-  if (S_S_INITIAL != server_state()){
+  if (S_S_INITIAL != server_state()) {
     cmd_reply(CMD_LOAD, caller, C_FAIL,
               _("Cannot load a game while another is running."));
     dlsend_packet_game_load(game.est_connections, TRUE, filename);
@@ -3874,7 +3845,6 @@ bool load_command(struct connection *caller, const char *filename, bool check,
   server_game_free();
   server_game_init();
 
-  //TODO: At least one of these timers isn't getting reset.
   loadtimer = timer_new(TIMER_CPU, TIMER_ACTIVE);
   timer_start(loadtimer);
   uloadtimer = timer_new(TIMER_USER, TIMER_ACTIVE);
@@ -3884,7 +3854,6 @@ bool load_command(struct connection *caller, const char *filename, bool check,
 
   savegame2_load(file);
   secfile_check_unused(file);
-  //TODO: May need comment the destroy out
   secfile_destroy(file);
 
   log_verbose("Load time: %g seconds (%g apparent)",
@@ -3930,14 +3899,7 @@ bool load_command(struct connection *caller, const char *filename, bool check,
   conn_list_destroy(global_observers);
 
   (void) aifill(game.info.aifill);
-
   printf("Finished loading now\n");
-
-  if (firstLoad == 0) {
-	  srv_reload_run();
-  }
-
-
   return TRUE;
 }
 
