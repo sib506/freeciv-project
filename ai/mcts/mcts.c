@@ -44,6 +44,7 @@ enum mcts_stage current_mcts_stage = selection;
 
 char *mcts_save_filename = "mcts-root";
 
+int memory_reset = 0;
 
 /*
  * Returns the memory currently available to the system
@@ -95,6 +96,19 @@ void mcts_init(struct player *pplayer) {
 		printf("%f\n", current_free_memory());
 		printf("restarting freeciv server due to lack of memory\n");
 		server_clear();
+
+		// Must rename score log file otherwise stops logging on restart
+		memory_reset++;
+		char new_filename[80];
+		sprintf(new_filename, "freeciv-score%d.log", memory_reset);
+		int ret = rename(GAME_DEFAULT_SCOREFILE, new_filename);
+
+		if (ret == 0) {
+			printf("File renamed successfully");
+		} else {
+			printf("Error: unable to rename the file");
+		}
+
 		execl("./fcser","fcser", "--read", "reload_mcts.serv", NULL);
 	}
 
