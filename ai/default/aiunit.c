@@ -3249,6 +3249,12 @@ void dai_unit_save(struct ai_type *ait, const char *aitstr,
                      unitstr, aitstr);
   secfile_insert_int(file, unit_data->bodyguard, "%s.%sbodyguard",
                      unitstr, aitstr);
+                                   
+  /* SB: Added to ensure we return to the task we were performing
+   * when restoring the game (especially important for settlers)
+   */
+  secfile_insert_int(file, unit_data->task, "%s.%stask",
+                     unitstr, aitstr);
 }
 
 /**************************************************************************
@@ -3272,6 +3278,13 @@ void dai_unit_load(struct ai_type *ait, const char *aitstr,
   unit_data->bodyguard
     = secfile_lookup_int_default(file, 0, "%s.%sbodyguard",
                                  unitstr, aitstr);
+
+  /* SB: Added to ensure we return to the task we were performing
+   * when restoring the game (especially important for settlers)
+   */
+  unit_data->task
+    = secfile_lookup_int_default(file, 0, "%s.%stask",
+                                unitstr, aitstr);
 }
 
 struct role_unit_cb_data
