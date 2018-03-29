@@ -14,6 +14,7 @@
 #include "featured_text.h"
 #include "notify.h"
 #include "idex.c"
+#include "time.h"
 
 void mcts_init(struct player *pplayer);
 void mcts_selection(struct player *pplayer);
@@ -45,6 +46,10 @@ enum mcts_stage current_mcts_stage = selection;
 char *mcts_save_filename = "mcts-root";
 
 int memory_reset = 0;
+
+FILE *time_fp;
+
+unsigned long long millisecondsSinceEpoch = 0;
 
 /*
  * Returns the memory currently available to the system
@@ -78,6 +83,8 @@ static double current_free_memory(){
  * Initalise the MCTS tree
  */
 void mcts_init(struct player *pplayer) {
+
+
 	printf("MCTS MODE ON\n");
 
 	mcts_mode = TRUE;
@@ -87,8 +94,9 @@ void mcts_init(struct player *pplayer) {
 	move_chosen = FALSE;
 	iterations = 0;
 	chosen_move_set = -1;
-
+	log_time_to_file("Start MCTS_Save");
 	save_game("mcts-root", "Root of MCTS tree", FALSE);
+	log_time_to_file("End MCTS_Save");
 
 	// Check Freeciv isn't using too much memory
 	if(current_free_memory() <= MEM_FREE_THRESHOLD){
@@ -111,7 +119,7 @@ void mcts_init(struct player *pplayer) {
 
 		execl("./fcser","fcser", "--read", "reload_mcts.serv", NULL);
 	}
-
+	log_time_to_file("Start MCTS_Iteration");
 	// Free the previous tree
 	if (mcts_root != NULL) {
 		free_mcts_tree(mcts_root);
@@ -125,13 +133,16 @@ void mcts_init(struct player *pplayer) {
 }
 
 void mcts_selection(struct player *pplayer){
+	log_time_to_file("Start selection");
 	current_mcts_stage = selection;
 
 	current_mcts_node = UCT_select_child(current_mcts_node);
 	attach_chosen_move(pplayer);
+	log_time_to_file("End selection");
 }
 
 void mcts_expansion(struct player *pplayer) {
+	log_time_to_file("Start expansion");
 	current_mcts_stage = expansion;
 
 	// Lookup size of untried moves list
@@ -151,9 +162,11 @@ void mcts_expansion(struct player *pplayer) {
 			move_no);
 
 	attach_chosen_move(pplayer);
+	log_time_to_file("End expansion");
 }
 
 void mcts_simulation(){
+	log_time_to_file("Start simulation");
 	current_mcts_stage = simulation;
 	rollout_depth = 0;
 }
@@ -169,16 +182,23 @@ void mcts_best_move(struct player *pplayer) {
 		printf("Final moves are being attached\n");
 		attach_chosen_move(pplayer);
 		pending_game_move = FALSE;
+		log_time_to_file("End MCTS_Iteration");
 		return;
 	}
 
 	// If the current node is uninitalised - need to populate its move information
 	if(current_mcts_node->uninitialised){
+		log_time_to_file("Start init node");
+		log_time_to_file("Start get player moves");
 		struct genlist *all_unit_moves = player_available_moves(pplayer);
+		log_time_to_file("End get player moves");
 		current_mcts_node->all_moves = all_unit_moves;
+		log_time_to_file("Start calc move combinatons");
 		current_mcts_node->total_no_moves = calc_number_moves(all_unit_moves);
 		current_mcts_node->untried_moves = init_untried_moves(current_mcts_node->total_no_moves);
+		log_time_to_file("End calc move combinatons");
 		current_mcts_node->uninitialised = FALSE;
+		log_time_to_file("End init node");
 	}
 
 	// If we have performed our expansion stage already, move onto random rollouts
@@ -216,8 +236,10 @@ void mcts_best_move(struct player *pplayer) {
 	// If we are simulating then must continue
 	if((current_mcts_stage == simulation)){
 		printf("CONTINUE SIMULATION\n");
-		if(rollout_depth >= MAXDEPTH)
+		if(rollout_depth >= MAXDEPTH){
+			log_time_to_file("End simulation");
 			backpropagate(TRUE);
+		}
 	} else {
 		//Selection - no untried moves, need to navigate to children
 		if(((genlist_size(current_mcts_node->untried_moves) == 0) &&
@@ -312,6 +334,7 @@ struct potentialMove* return_unit_index_move(int move_no, int unit_list_index,
 }
 
 struct potentialMove* return_punit_move(struct unit *punit){
+	log_time_to_file("Start return_move");
 	struct genlist *player_moves;
 	int unit_list_index;
 	int move_no;
@@ -345,14 +368,14 @@ struct potentialMove* return_punit_move(struct unit *punit){
 	printf("\tmove_index: %d\n", move_index);
 	printf("\tmodulo: %d\n", no_unit_moves);
 	printf("\tMove mem: %d\n", (int) genlist_get(unit->moves, move_index));
-
+	log_time_to_file("End return_move");
 	return genlist_get(unit->moves, move_index);
 }
 
 void backpropagate(bool interrupt){
 	if ((current_mcts_stage == simulation)
 			|| (game.info.turn >= game.server.end_turn)) {
-
+		log_time_to_file("Start backprop");
 		current_mcts_stage = backpropagation;
 		printf("BACKPROP\n");
 
@@ -382,6 +405,7 @@ void backpropagate(bool interrupt){
 		current_mcts_node = mcts_root;
 		reset = TRUE;
 		printf("Reset\n");
+		log_time_to_file("End backprop");
 	}
 	return;
 }
@@ -415,4 +439,17 @@ void print_mcts_tree_layer1(){
 	printf("-------------------------\n");
 }
 
+void log_time_to_file(char* text){
+    struct timeval tv;
+    gettimeofday(&tv, NULL);
+	time_fp = fopen("./time_log.txt", "a");
+
+    unsigned long long time =
+        ((unsigned long long)(tv.tv_sec) * 1000 +
+        (unsigned long long)(tv.tv_usec) / 1000);
+
+	fprintf(time_fp, "%s:%llu\n", text, time);
+
+	fclose(time_fp);
+}
 

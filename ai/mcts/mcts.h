@@ -75,4 +75,6 @@ void backpropagate(bool interrupt);
  */
 bool at_root_of_tree();
 
+void log_time_to_file(char* text);
+
 #endif

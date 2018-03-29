@@ -3766,6 +3766,8 @@ bool load_command(struct connection *caller, const char *filename, bool check,
     return FALSE;
   }
 
+  log_time_to_file("Start MCTS_Load");
+
   {
     /* it is a normal savegame or maybe a scenario */
     char testfile[MAX_LEN_PATH];
@@ -3806,6 +3808,7 @@ bool load_command(struct connection *caller, const char *filename, bool check,
     if (is_restricted(caller) && !found) {
       cmd_reply(CMD_LOAD, caller, C_FAIL, _("Cannot find savegame or "
                 "scenario with the name \"%s\"."), filename);
+      log_time_to_file("End MCTS_Load");
       return FALSE;
     }
 
@@ -3821,10 +3824,12 @@ bool load_command(struct connection *caller, const char *filename, bool check,
     cmd_reply(CMD_LOAD, caller, C_FAIL, _("Could not load savefile: %s"),
               arg);
     dlsend_packet_game_load(game.est_connections, TRUE, arg);
+    log_time_to_file("End MCTS_Load");
     return FALSE;
   }
 
   if (check) {
+	  log_time_to_file("End MCTS_Load");
     return TRUE;
   }
 
@@ -3900,6 +3905,7 @@ bool load_command(struct connection *caller, const char *filename, bool check,
 
   (void) aifill(game.info.aifill);
   printf("Finished loading now\n");
+  log_time_to_file("End MCTS_Load");
   return TRUE;
 }
 
