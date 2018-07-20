@@ -3,7 +3,6 @@ noinst_LTLIBRARIES = libadvisors.la
 
 AM_CPPFLAGS = \
 	-I$(top_srcdir)/ai/random \
-	-I$(top_srcdir)/ai/mcts \
 	-I$(top_srcdir)/server \
 	-I$(top_srcdir)/utility \
 	-I$(top_srcdir)/common \

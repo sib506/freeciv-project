@@ -225,8 +225,6 @@ struct unit {
       bool dying;
     } server;
   };
-
-  struct potentialMove *chosen_action;
 };
 
 #ifdef DEBUG

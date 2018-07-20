@@ -343,7 +343,7 @@ static void game_defaults(void)
     game.server.aqueductloss      = GAME_DEFAULT_AQUEDUCTLOSS;
     game.server.auto_ai_toggle    = GAME_DEFAULT_AUTO_AI_TOGGLE;
     game.server.autoattack        = GAME_DEFAULT_AUTOATTACK;
-    game.server.barbarianrate     = BARBS_DISABLED; //GAME_DEFAULT_BARBARIANRATE;
+    game.server.barbarianrate     = GAME_DEFAULT_BARBARIANRATE;
     game.server.civilwarsize      = GAME_DEFAULT_CIVILWARSIZE;
     game.server.connectmsg[0]     = '\0';
     game.server.conquercost       = GAME_DEFAULT_CONQUERCOST;
@@ -383,7 +383,7 @@ static void game_defaults(void)
     game.server.plrcolormode      = GAME_DEFAULT_PLRCOLORMODE;
     game.server.netwait           = GAME_DEFAULT_NETWAIT;
     game.server.occupychance      = GAME_DEFAULT_OCCUPYCHANCE;
-    game.server.onsetbarbarian    = GAME_MAX_ONSETBARBARIAN; //GAME_DEFAULT_ONSETBARBARIAN;
+    game.server.onsetbarbarian    = GAME_DEFAULT_ONSETBARBARIAN;
     game.server.phase_mode_stored = GAME_DEFAULT_PHASE_MODE;
     game.server.pingtime          = GAME_DEFAULT_PINGTIME;
     game.server.pingtimeout       = GAME_DEFAULT_PINGTIMEOUT;

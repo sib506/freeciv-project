@@ -1530,10 +1530,7 @@ AC_CONFIG_FILES([Makefile
 	  ai/Makefile
           ai/default/Makefile
           ai/classic/Makefile
-<<<<<<< HEAD
           ai/random/Makefile
-=======
->>>>>>> experimental-loading
           ai/mcts/Makefile
           ai/stub/Makefile
           ai/threaded/Makefile

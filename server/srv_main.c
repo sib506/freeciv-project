@@ -133,8 +133,6 @@
 #include "advspace.h"
 #include "infracache.h"
 
-#include "mcts.h"
-
 #include "srv_main.h"
 
 static void end_turn(void);
@@ -201,7 +199,6 @@ void init_game_seed(void)
  
   if (!fc_rand_is_init()) {
     fc_srand(game.server.seed);
-    srand(time(NULL));
   }
 }
 
@@ -888,8 +885,6 @@ static void kill_dying_players(void)
 static void ai_start_phase(void)
 {
   phase_players_iterate(pplayer) {
-	//TODO: Remove this printf
-	//printf("%s\n", pplayer->name);
     if (pplayer->ai_controlled) {
       CALL_PLR_AI_FUNC(first_activities, pplayer, pplayer);
     }
@@ -1045,7 +1040,6 @@ static void begin_phase(bool is_new_phase)
   } alive_phase_players_iterate_end;
 
   if (is_new_phase) {
-	rollout_depth += 1;
     /* Try to avoid hiding events under a diplomacy dialog */
     phase_players_iterate(pplayer) {
       if (pplayer->ai_controlled) {
@@ -2507,11 +2501,6 @@ static void srv_running(void)
    */
   lsend_packet_freeze_client(game.est_connections);
 
-  if(reset){
-	  is_new_turn = TRUE;
-	  reset = FALSE;
-  }
-
   fc_assert(S_S_RUNNING == server_state());
   while (S_S_RUNNING == server_state()) {
     /* The beginning of a turn.
@@ -2586,10 +2575,6 @@ static void srv_running(void)
         }
       }
 
-      if(reset){
-    	  mcts_end_command();
-      }
-
       log_debug("sniffingpackets");
       check_for_full_turn_done(); /* HACK: don't wait during AI phases */
       while (server_sniff_all_input() == S_E_OTHERWISE) {
@@ -2622,40 +2607,18 @@ static void srv_running(void)
     (void) send_server_info_to_metaserver(META_REFRESH);
 
     if (S_S_OVER != server_state() && check_for_game_over()) {
-    	set_server_state(S_S_OVER);
-    	if (game.info.turn > game.server.end_turn) {
-    		//SB: Need to inform MCTS if simulating
-    		if(mcts_mode){
-    			printf("Backprop due to endturn reached\n");
-    		    backpropagate(TRUE);
-    		} else {
-    			printf("GAME IS NOW ENDING FOR REAL\n");
-    			//Want stats on who won + scores
-    			/* endturn was reached - rank users based on team scores */
-    			rank_users(TRUE);
-    			game_over = TRUE;
-    		}
-    	} else {
-    		//SB: Need to inform MCTS if simulating
-    		if(mcts_mode){
-    			printf("Backprop due to victory conditions\n");
-    			backpropagate(FALSE);
-    		} else {
-    			printf("GAME IS NOW ENDING\n");
-    			//Want stats on who won + scores
-        		/* game ended for victory conditions - rank users based on survival */
-        		rank_users(FALSE);
-        		game_over = TRUE;
-    		}
-    	}
+      set_server_state(S_S_OVER);
+      if (game.info.turn > game.server.end_turn) {
+	/* endturn was reached - rank users based on team scores */
+	rank_users(TRUE);
+      } else { 
+	/* game ended for victory conditions - rank users based on survival */
+	rank_users(FALSE);
+      }
     } else if ((check_for_game_over() && game.info.turn > game.server.end_turn)
-    		|| S_S_OVER == server_state()) {
-    	/* game terminated by /endgame command - calculate team scores */
-    	printf("endgame command\n");
-    	if(!reset){
-    		rank_users(TRUE);
-    		game_over = TRUE;
-    	}
+	       || S_S_OVER == server_state()) {
+      /* game terminated by /endgame command - calculate team scores */
+      rank_users(TRUE);
     }
   }
 
@@ -3127,16 +3090,14 @@ void srv_main(void)
 
   srv_prepare();
 
-  bool first_load = TRUE;
   /* Run server loop */
   do {
     set_server_state(S_S_INITIAL);
-    printf("First load: %d\n", first_load);
+
     /* Load a script file. */
-    if ((NULL != srvarg.script_filename) && first_load) {
+    if (NULL != srvarg.script_filename) {
       /* Adding an error message more here will duplicate them. */
       (void) read_init_script(NULL, srvarg.script_filename, TRUE, FALSE);
-      first_load = FALSE;
     }
 
     (void) aifill(game.info.aifill);
@@ -3146,12 +3107,6 @@ void srv_main(void)
 
     log_normal(_("Now accepting new client connections on port %d."),
                srvarg.port);
-
-    if(reset){
-        	load_command(NULL, "mcts-root", FALSE, TRUE);
-        	force_end_of_sniff = TRUE;
-    }
-
     /* Remain in S_S_INITIAL until all players are ready. */
     while (S_E_FORCE_END_OF_SNIFF != server_sniff_all_input()) {
       /* When force_end_of_sniff is used in pregame, it means that the server
@@ -3171,7 +3126,7 @@ void srv_main(void)
       server_sniff_all_input();
     }
 
-    if ((game.info.timeout == -1 && !reset) || srvarg.exit_on_end) {
+    if (game.info.timeout == -1 || srvarg.exit_on_end) {
       /* For autogames or if the -e option is specified, exit the server. */
       server_quit();
     }
@@ -3182,7 +3137,6 @@ void srv_main(void)
     mapimg_reset();
     load_rulesets(NULL, TRUE);
     game.info.is_new_game = TRUE;
-
   } while (TRUE);
 
   /* Technically, we won't ever get here. We exit via server_quit. */

@@ -1,10 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 
-<<<<<<< HEAD
 module_dirs = random mcts
-=======
-module_dirs = mcts
->>>>>>> experimental-loading
 
 if AI_MOD_DEFAULT_NEEDED
 module_dirs += default
@@ -41,5 +37,4 @@ noinst_LTLIBRARIES = libaicommon.la
 libaicommon_la_SOURCES = \
 	aitraits.c	\
 	aitraits.h
-	
 

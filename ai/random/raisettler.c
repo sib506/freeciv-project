@@ -213,6 +213,7 @@ void rai_settler_run(struct ai_type *ait, struct player *pplayer,
 
 	struct tile *init_tile = unit_tile(punit);
 	struct potentialImprovement *action;
+	struct worker_task *chosenTask;
 
 	struct genlist* actionList = genlist_new();
 
@@ -225,7 +226,7 @@ void rai_settler_run(struct ai_type *ait, struct player *pplayer,
 		}
 	}
 
-	collect_explorer_moves(punit, actionList);
+	collect_random_explorer_moves(punit, actionList);
 
 	bool consider = TRUE;
 	// Improving the tile currently standing on
@@ -354,12 +355,7 @@ void rai_settler_run(struct ai_type *ait, struct player *pplayer,
 							ptask->ptile)) {
 				struct potentialMove *pMove = malloc(sizeof(struct potentialMove));
 				pMove->type = request;
-
-				struct worker_task_load_compatible *ptask_save = malloc(sizeof(struct worker_task_load_compatible));
-				ptask_save->act = ptask->act;
-				ptask_save->tgt = ptask->tgt;
-				index_to_native_pos(&ptask_save->ptile_x,&ptask_save->ptile_y, tile_index(ptask->ptile));
-				pMove->moveInfo = ptask_save;
+				pMove->moveInfo = ptask;
 				genlist_append(actionList, pMove);
 			}
 		}
@@ -368,10 +364,9 @@ void rai_settler_run(struct ai_type *ait, struct player *pplayer,
 
 
 	struct potentialMove *chosen_action = genlist_get(actionList, fc_rand(genlist_size(actionList)));
-	struct worker_task_load_compatible *chosen_req_task;
 	switch(chosen_action->type){
 	case explore:
-		make_explorer_move(punit, chosen_action->moveInfo);
+		move_random_auto_explorer(punit, chosen_action->moveInfo);
 		break;
 	case build_city:
 		adv_unit_new_task(punit, AUT_BUILD_CITY, init_tile);
@@ -401,13 +396,13 @@ void rai_settler_run(struct ai_type *ait, struct player *pplayer,
 		}
 		break;
 	case request:
-		chosen_req_task = chosen_action->moveInfo;
-		if (chosen_req_task != NULL) {
+		chosenTask = chosen_action->moveInfo;
+		if (chosenTask != NULL) {
 			struct pf_path *path = NULL;
 			int completion_time = 0;
 
 			auto_settler_setup_work(pplayer, punit, state, 0, path,
-					native_pos_to_tile(chosen_req_task->ptile_x, chosen_req_task->ptile_y), chosen_req_task->act, &chosen_req_task->tgt,
+					chosenTask->ptile, chosenTask->act, &chosenTask->tgt,
 					completion_time);
 		}
 		break;
@@ -417,13 +412,7 @@ void rai_settler_run(struct ai_type *ait, struct player *pplayer,
 
 	for(int i = 0; i < genlist_size(actionList); i++ ){
 		struct potentialMove *toRemove = genlist_back(actionList);
-		if(toRemove->type == explore){
-			free(toRemove->moveInfo);
-		}
 		if(toRemove->type == improvement){
-			free(toRemove->moveInfo);
-		}
-		if(toRemove->type == request){
 			free(toRemove->moveInfo);
 		}
 		genlist_pop_back(actionList);

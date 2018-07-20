@@ -803,50 +803,6 @@ void toggle_ai_player_direct(struct connection *caller, struct player *pplayer)
 }
 
 /**************************************************************************
-  Handle ai player mcts toggling.
-**************************************************************************/
-void toggle_mcts_player_direct(struct connection *caller, struct player *pplayer)
-{
-  fc_assert_ret(pplayer != NULL);
-
-  if (!(pplayer->player_mode == P_MCTS)) {
-    cmd_reply(CMD_MCTSTOGGLE, caller, C_OK,
-	      _("%s is now an MCTS player."),
-	      player_name(pplayer));
-    player_set_to_mcts_mode(pplayer);
-    fc_assert(pplayer->player_mode == P_MCTS);
-  } else {
-    cmd_reply(CMD_MCTSTOGGLE, caller, C_OK,
-	      _("%s is now a normal player."),
-	      player_name(pplayer));
-    player_set_to_normal_mode(pplayer);
-    fc_assert(pplayer->player_mode == P_NORMAL);
-  }
-}
-
-/**************************************************************************
-  Handle ai player random mode toggling.
-**************************************************************************/
-void toggle_random_player_direct(struct connection *caller, struct player *pplayer)
-{
-  fc_assert_ret(pplayer != NULL);
-
-  if (!(pplayer->player_mode == P_RANDOM)) {
-    cmd_reply(CMD_RANDOMTOGGLE, caller, C_OK,
-	      _("%s is now a random player."),
-	      player_name(pplayer));
-    player_set_to_random_mode(pplayer);
-    fc_assert(pplayer->player_mode == P_RANDOM);
-  } else {
-    cmd_reply(CMD_RANDOMTOGGLE, caller, C_OK,
-	      _("%s is now a normal player."),
-	      player_name(pplayer));
-    player_set_to_normal_mode(pplayer);
-    fc_assert(pplayer->player_mode == P_NORMAL);
-  }
-}
-
-/**************************************************************************
   Handle aitoggle command.
 **************************************************************************/
 static bool toggle_ai_command(struct connection *caller, char *arg, bool check)
@@ -861,46 +817,6 @@ static bool toggle_ai_command(struct connection *caller, char *arg, bool check)
     return FALSE;
   } else if (!check) {
     toggle_ai_player_direct(caller, pplayer);
-    send_player_info_c(pplayer, game.est_connections);
-  }
-  return TRUE;
-}
-
-/**************************************************************************
-  Handle MCTS toggle command.
-**************************************************************************/
-static bool toggle_mcts_command(struct connection *caller, char *arg, bool check)
-{
-  enum m_pre_result match_result;
-  struct player *pplayer;
-
-  pplayer = player_by_name_prefix(arg, &match_result);
-
-  if (!pplayer) {
-    cmd_reply_no_such_player(CMD_MCTSTOGGLE, caller, arg, match_result);
-    return FALSE;
-  } else if (!check) {
-    toggle_mcts_player_direct(caller, pplayer);
-    send_player_info_c(pplayer, game.est_connections);
-  }
-  return TRUE;
-}
-
-/**************************************************************************
-  Handle Random toggle command.
-**************************************************************************/
-static bool toggle_random_command(struct connection *caller, char *arg, bool check)
-{
-  enum m_pre_result match_result;
-  struct player *pplayer;
-
-  pplayer = player_by_name_prefix(arg, &match_result);
-
-  if (!pplayer) {
-    cmd_reply_no_such_player(CMD_RANDOMTOGGLE, caller, arg, match_result);
-    return FALSE;
-  } else if (!check) {
-    toggle_random_player_direct(caller, pplayer);
     send_player_info_c(pplayer, game.est_connections);
   }
   return TRUE;
@@ -3719,6 +3635,7 @@ static bool detach_command(struct connection *caller, char *str, bool check)
   return res;
 }
 
+int firstLoad = 1;
 /**************************************************************************
   Loads a file, complete with access checks and error messages sent back
   to the caller on failure.
@@ -3752,8 +3669,34 @@ bool load_command(struct connection *caller, const char *filename, bool check,
     cmd_reply(CMD_LOAD, caller, C_FAIL, _("Usage:\n%s"),
               command_synopsis(command_by_number(CMD_LOAD)));
     return FALSE;
-  }
-  if (S_S_INITIAL != server_state()) {
+  } if (S_S_INITIAL != server_state()){
+	//SB Code
+	server_clear();
+	srv_reload_setup();
+
+	(void) aifill(game.info.aifill);
+	if (!game_was_started()) {
+		event_cache_clear();
+	}
+
+	if (S_S_RUNNING > server_state()) {
+		srv_reload_run();
+	}
+
+	while (conn_list_size(game.est_connections) > 0) {
+		server_sniff_all_input();
+	}
+
+	server_game_free();
+	server_game_init();
+	mapimg_reset();
+	load_rulesets(NULL, TRUE);
+	game.info.is_new_game = TRUE;
+	firstLoad= 0;
+
+	set_server_state(S_S_INITIAL);
+
+  } if (S_S_INITIAL != server_state()){
     cmd_reply(CMD_LOAD, caller, C_FAIL,
               _("Cannot load a game while another is running."));
     dlsend_packet_game_load(game.est_connections, TRUE, filename);
@@ -3845,6 +3788,7 @@ bool load_command(struct connection *caller, const char *filename, bool check,
   server_game_free();
   server_game_init();
 
+  //TODO: At least one of these timers isn't getting reset.
   loadtimer = timer_new(TIMER_CPU, TIMER_ACTIVE);
   timer_start(loadtimer);
   uloadtimer = timer_new(TIMER_USER, TIMER_ACTIVE);
@@ -3854,6 +3798,7 @@ bool load_command(struct connection *caller, const char *filename, bool check,
 
   savegame2_load(file);
   secfile_check_unused(file);
+  //TODO: May need comment the destroy out
   secfile_destroy(file);
 
   log_verbose("Load time: %g seconds (%g apparent)",
@@ -3899,7 +3844,14 @@ bool load_command(struct connection *caller, const char *filename, bool check,
   conn_list_destroy(global_observers);
 
   (void) aifill(game.info.aifill);
+
   printf("Finished loading now\n");
+
+  if (firstLoad == 0) {
+	  srv_reload_run();
+  }
+
+
   return TRUE;
 }
 
@@ -4433,10 +4385,6 @@ static bool handle_stdin_input_real(struct connection *caller, char *str,
     return show_list(caller, arg);
   case CMD_AITOGGLE:
     return toggle_ai_command(caller, arg, check);
-  case CMD_MCTSTOGGLE:
-	  return toggle_mcts_command(caller, arg, check);
-  case CMD_RANDOMTOGGLE:
-  	  return toggle_random_command(caller, arg, check);
   case CMD_TAKE:
     return take_command(caller, arg, check);
   case CMD_OBSERVE:
@@ -4525,13 +4473,6 @@ static bool handle_stdin_input_real(struct connection *caller, char *str,
   /* should NEVER happen! */
   log_error("Unknown command variant: %d.", cmd);
   return FALSE;
-}
-
-/**************************************************************************
-  End the game immediately in a draw. (Global)
-**************************************************************************/
-bool mcts_end_command(){
-	return end_command(NULL,"MCTS Reset Game",FALSE);
 }
 
 /**************************************************************************
@@ -7057,8 +6998,6 @@ Commands that may be followed by a player name
 **************************************************************************/
 static const int player_cmd[] = {
   CMD_AITOGGLE,
-  CMD_MCTSTOGGLE,
-  CMD_RANDOMTOGGLE,
   CMD_NOVICE,
   CMD_EASY,
   CMD_NORMAL,

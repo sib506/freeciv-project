@@ -386,15 +386,14 @@ int total_player_citizens(const struct player *pplayer)
   return count;
 }
 
-
 /**************************************************************************
   At the end of a game, figure the winners and losers of the game and
   output to a suitable place.
 
   The definition of winners and losers: a winner is one who is alive at the
-  end of the game and has not surrendered, or in the case of a team game,
+  end of the game and has not surrendered, or in the case of a team game, 
   is alive or a teammate is alive and has not surrendered. A loser is
-  surrendered or dead. Exception: the winner of the spacerace and his
+  surrendered or dead. Exception: the winner of the spacerace and his 
   teammates will win of course.
 
   In games ended by /endgame, endturn, or any other interruption not caused
@@ -498,7 +497,7 @@ void rank_users(bool interrupt)
 	t_winner_score = t_score;
       }
     } teams_iterate_end;
-
+  
     /* ii) set all the members of the team as winners, the others as losers */
     players_iterate(pplayer) {
       if (pplayer->team == t_winner) {
@@ -515,20 +514,18 @@ void rank_users(bool interrupt)
   fprintf(fp, "winners: ");
   players_iterate(pplayer) {
     if (plr_state[player_index(pplayer)] == VS_WINNER) {
-      fprintf(fp, "%s,%s,%s,%d,%i,, ", pplayer->ranked_username,
+      fprintf(fp, "%s,%s,%s,%i,, ", pplayer->ranked_username,
                                     player_name(pplayer),
 	                            pplayer->username,
-								pplayer->player_mode,
 	                            get_civ_score(pplayer));
     }
   } players_iterate_end;
   fprintf(fp, "\nlosers: ");
   players_iterate(pplayer) {
     if (plr_state[player_index(pplayer)] == VS_LOSER) {
-      fprintf(fp, "%s,%s,%s,%d,%i,, ", pplayer->ranked_username,
+      fprintf(fp, "%s,%s,%s,%i,, ", pplayer->ranked_username,
                                     player_name(pplayer),
 	                            pplayer->username,
-								pplayer->player_mode,
 	                            get_civ_score(pplayer));
     }
   } players_iterate_end;
@@ -536,136 +533,3 @@ void rank_users(bool interrupt)
 
   fclose(fp);
 }
-
-
-/**************************************************************************
-  At the end of a game, figure the winners and losers of the game and
-  returns a struct array of player win/loss states.
-
-  The definition of winners and losers: a winner is one who is alive at the
-  end of the game and has not surrendered, or in the case of a team game,
-  is alive or a teammate is alive and has not surrendered. A loser is
-  surrendered or dead. Exception: the winner of the spacerace and his
-  teammates will win of course.
-
-  In games ended by /endgame, endturn, or any other interruption not caused
-  by satisfaction of victory conditions, for each team is calculated the sum
-  of the scores of any belonging member which is alive and has not
-  surrendered; all the players in the team with the higest sum of scores win.
-  This condition is signaled to the function by the boolean "interrupt".
-
-  Barbarians do not count as winners or losers.
-
-  If interrupt is true, rank players by team score rather than by alive/dead
-  status.
-**************************************************************************/
-void rank_mcts_users(bool interrupt, enum victory_state plr_state[])
-{
-  int i, t_winner_score = 0;
-  struct player *spacerace_winner = NULL;
-  struct team *t_winner = NULL;
-
-  /* initialize plr_state */
-  for (i = 0; i < player_slot_count(); i++) {
-    plr_state[i] = VS_NONE;
-  }
-
-  /* do we have a spacerace winner? */
-  players_iterate(pplayer) {
-    if (pplayer->spaceship.state == SSHIP_ARRIVED) {
-      spacerace_winner = pplayer;
-      break;
-    }
-  } players_iterate_end;
-
-  /* make this easy: if we have a spacerace winner, then treat all others
-   * who are still alive as surrendered */
-  if (spacerace_winner) {
-    players_iterate(pplayer) {
-      if (pplayer != spacerace_winner) {
-        player_status_add(pplayer, PSTATUS_SURRENDER);
-      }
-    } players_iterate_end;
-  }
-
-  if (interrupt == FALSE) {
-    /* game ended for a victory condition */
-
-    /* first pass: locate those alive who haven't surrendered, set them to
-     * win; barbarians won't count, and everybody else is a loser for now. */
-    players_iterate(pplayer) {
-      if (is_barbarian(pplayer)) {
-	plr_state[player_index(pplayer)] = VS_NONE;
-      } else if (pplayer->is_alive
-		 && !player_status_check(pplayer, PSTATUS_SURRENDER)) {
-	plr_state[player_index(pplayer)] = VS_WINNER;
-      } else {
-	plr_state[player_index(pplayer)] = VS_LOSER;
-      }
-    } players_iterate_end;
-
-    /* second pass: find the teammates of those winners, they win too. */
-    players_iterate(pplayer) {
-      if (plr_state[player_index(pplayer)] == VS_WINNER) {
-	players_iterate(aplayer) {
-	  if (aplayer->team == pplayer->team) {
-	    plr_state[player_index(aplayer)] = VS_WINNER;
-	  }
-	} players_iterate_end;
-      }
-    } players_iterate_end;
-  } else {
-
-    /* game ended via endturn */
-    /* i) determine the winner team */
-    teams_iterate(pteam) {
-      int t_score = 0;
-      const struct player_list *members = team_members(pteam);
-      player_list_iterate(members, pplayer) {
-	if (pplayer->is_alive
-	    && !player_status_check(pplayer, PSTATUS_SURRENDER)) {
-	  t_score += get_civ_score(pplayer);
-        }
-      } player_list_iterate_end;
-      if (t_score > t_winner_score) {
-	t_winner = pteam;
-	t_winner_score = t_score;
-      }
-    } teams_iterate_end;
-
-    /* ii) set all the members of the team as winners, the others as losers */
-    players_iterate(pplayer) {
-      if (pplayer->team == t_winner) {
-	plr_state[player_index(pplayer)] = VS_WINNER;
-      } else {
-        /* if no winner team is found (each one as same score) all them lose */
-	plr_state[player_index(pplayer)] = VS_LOSER;
-      }
-    } players_iterate_end;
-  }
-
-  return;
-
-}
-
-
-/**************************************************************************
-  Returns an array of the current scores of the players.
-  Needs to be passed an array of size player_slot_count()
-  I.e. int scores[player_slot_count()];
-**************************************************************************/
-void mcts_player_scores(int * score_array)
-{
-  /* initialize score */
-  for (int i = 0; i < player_slot_count(); i++) {
-    score_array[i] = 0;
-  }
-
-  players_iterate(pplayer) {
-	  score_array[player_index(pplayer)] = get_civ_score(pplayer);
-  } players_iterate_end
-
-  return;
-
-}
-
