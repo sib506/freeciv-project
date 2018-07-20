@@ -1,0 +1,3 @@
+load mcts-root
+set scorelog enabled
+start                   # start game

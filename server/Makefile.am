@@ -9,6 +9,7 @@ lib_LTLIBRARIES = libfreeciv-srv.la
 AM_CPPFLAGS = \
 	-I$(top_srcdir)/ai \
 	-I$(top_srcdir)/ai/classic \
+	-I$(top_srcdir)/ai/mcts \
 	-I$(top_srcdir)/common \
 	-I$(top_srcdir)/common/aicore \
 	-I$(top_srcdir)/common/scriptcore \
@@ -111,7 +112,7 @@ libfreeciv_srv_la_SOURCES = \
 # outside this directory (when building common) there's no point in
 # setting them to BUILT_SOURCES.
 
-da_libs = 
+da_libs = $(top_builddir)/ai/mcts/libmctsai.la
 
 if AI_MOD_DEFAULT_NEEDED
 da_libs += $(top_builddir)/ai/default/libdefaultai.la

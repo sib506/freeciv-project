@@ -216,7 +216,11 @@ am__define_uniq_tagged_files = \
   done | $(am__uniquify_input)`
 ETAGS = etags
 CTAGS = ctags
+<<<<<<< HEAD
 DIST_SUBDIRS = random mcts default classic threaded stub
+=======
+DIST_SUBDIRS = mcts default classic threaded stub
+>>>>>>> experimental-loading
 am__DIST_COMMON = $(srcdir)/Makefile.in \
 	$(top_srcdir)/bootstrap/depcomp
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -602,9 +606,14 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
+<<<<<<< HEAD
 module_dirs = random mcts $(am__append_1) $(am__append_2) \
 	$(am__append_3) $(am__append_4) $(am__append_5) \
 	$(am__append_6)
+=======
+module_dirs = mcts $(am__append_1) $(am__append_2) $(am__append_3) \
+	$(am__append_4) $(am__append_5) $(am__append_6)
+>>>>>>> experimental-loading
 AM_CPPFLAGS = -I$(top_srcdir)/utility -I$(top_srcdir)/common -I$(srcdir)/mcts
 # AI module loading supported, but experimental modules not built
 SUBDIRS = $(module_dirs)

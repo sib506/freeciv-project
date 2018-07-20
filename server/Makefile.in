@@ -665,6 +665,7 @@ lib_LTLIBRARIES = libfreeciv-srv.la
 AM_CPPFLAGS = \
 	-I$(top_srcdir)/ai \
 	-I$(top_srcdir)/ai/classic \
+	-I$(top_srcdir)/ai/mcts \
 	-I$(top_srcdir)/common \
 	-I$(top_srcdir)/common/aicore \
 	-I$(top_srcdir)/common/scriptcore \
@@ -764,7 +765,8 @@ libfreeciv_srv_la_SOURCES = \
 # hand_gen.c & hand_gen.h are generated files, but as they are generated
 # outside this directory (when building common) there's no point in
 # setting them to BUILT_SOURCES.
-da_libs = $(am__append_1) $(am__append_2) $(am__append_3)
+da_libs = $(top_builddir)/ai/mcts/libmctsai.la $(am__append_1) \
+	$(am__append_2) $(am__append_3)
 
 # These files are not generated to builddir, but to srcdir */
 MAINTAINERCLEANFILES = \

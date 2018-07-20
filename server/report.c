@@ -47,6 +47,8 @@
 
 #include "report.h"
 
+#include "mcts.h"
+
 
 /* data needed for logging civ score */
 struct plrdata_slot {
@@ -1318,6 +1320,20 @@ void log_civ_score_now(void)
   if (!score_log) {
     return;
   }
+
+
+  /*
+	 * SB: We only want to save the game in the situation that we have performed
+	 * our actual move i.e. the game has finished resetting, we have our chosen
+	 * move and we have the chosen move pending to make. We also want to save
+	 * if the game has ended/ if we aren’t actually performing MCTS
+	 * (hence the game_over flag defaults to TRUE)
+	 */
+  if (!(reset == FALSE && move_chosen == TRUE && pending_game_move == TRUE) && !game_over){
+	  return;
+  }
+
+  printf("Logging CIV_SCORE - Turn %d\n", game.info.turn);
 
   if (!score_log->fp) {
     if (game.info.year == GAME_START_YEAR) {

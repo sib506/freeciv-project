@@ -127,9 +127,10 @@ CONFIG_HEADER = $(top_builddir)/fc_config.h
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 LTLIBRARIES = $(noinst_LTLIBRARIES)
-libmcts_la_LIBADD =
-am_libmcts_la_OBJECTS = mcts_node.lo mcts.lo
-libmcts_la_OBJECTS = $(am_libmcts_la_OBJECTS)
+libmctsai_la_LIBADD =
+am__objects_1 = mcts.lo mcts_node.lo mcts_pruning.lo
+am_libmctsai_la_OBJECTS = $(am__objects_1)
+libmctsai_la_OBJECTS = $(am_libmctsai_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
@@ -168,8 +169,8 @@ AM_V_CCLD = $(am__v_CCLD_@AM_V@)
 am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
-SOURCES = $(libmcts_la_SOURCES)
-DIST_SOURCES = $(libmcts_la_SOURCES)
+SOURCES = $(libmctsai_la_SOURCES)
+DIST_SOURCES = $(libmctsai_la_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -554,15 +555,39 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-noinst_LTLIBRARIES = libmcts.la
-AM_CPPFLAGS = -I$(top_srcdir)/utility -I$(top_srcdir)/common
-libmcts_la_SOURCES = \
-		mcts_node.c 	\
-		mcts_node.h  	\
-		mcts_state.h 	\
-		mcts.c			\
-		mcts.h
+<<<<<<< HEAD:ai/random/Makefile.in
+aimodule_LTLIBRARIES = fc_ai_random.la
+AM_CPPFLAGS = -I$(top_srcdir)/utility -I$(top_srcdir)/common -I$(top_srcdir)/common/aicore -I$(top_srcdir)/server -I$(top_srcdir)/server/advisors -I$(top_srcdir)/ai/default -I$(top_srcdir)/ai/mcts
+fc_ai_random_la_SOURCES = \
+	raisettler.c	\
+	raisettler.h	\
+	raiunit.c	\
+	raiunit.h	\
+	randomai.c	\
+	randomai.h	
 
+fc_ai_random_la_LDFLAGS = -module
+fc_ai_random_la_LIBADD = -lm
+=======
+noinst_LTLIBRARIES = libmctsai.la
+AM_CPPFLAGS = \
+	-I$(top_srcdir)/utility \
+	-I$(top_srcdir)/common \
+	-I$(top_srcdir)/ai/default \
+	-I$(top_srcdir)/server \
+	-I$(top_srcdir)/server/advisors
+
+da_sources = \
+	mcts.c \
+	mcts.h \
+	mcts_node.c \
+	mcts_node.h	\
+	mcts_pruning.c \
+	mcts_pruning.h \
+	mcts_config.h
+
+libmctsai_la_SOURCES = $(da_sources)
+>>>>>>> experimental-loading:ai/mcts/Makefile.in
 all: all-am
 
 .SUFFIXES:
@@ -608,8 +633,8 @@ clean-noinstLTLIBRARIES:
 	  rm -f $${locs}; \
 	}
 
-libmcts.la: $(libmcts_la_OBJECTS) $(libmcts_la_DEPENDENCIES) $(EXTRA_libmcts_la_DEPENDENCIES) 
-	$(AM_V_CCLD)$(LINK)  $(libmcts_la_OBJECTS) $(libmcts_la_LIBADD) $(LIBS)
+libmctsai.la: $(libmctsai_la_OBJECTS) $(libmctsai_la_DEPENDENCIES) $(EXTRA_libmctsai_la_DEPENDENCIES) 
+	$(AM_V_CCLD)$(LINK)  $(libmctsai_la_OBJECTS) $(libmctsai_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -619,6 +644,7 @@ distclean-compile:
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mcts.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mcts_node.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mcts_pruning.Plo@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<

@@ -1478,7 +1478,7 @@ void rai_manage_military(struct ai_type *ait, struct player *pplayer,
 
 	//unit_activity_handling(punit, ACTIVITY_IDLE);
 
-	collect_random_explorer_moves(punit, actionList);
+	collect_explorer_moves(punit, actionList);
 
 	if(punit->activity!=ACTIVITY_FORTIFYING &&
 			can_unit_do_activity(punit, ACTIVITY_FORTIFYING)){
@@ -1517,7 +1517,7 @@ void rai_manage_military(struct ai_type *ait, struct player *pplayer,
 
 	switch(chosen_action->type){
 	case explore:
-		switch (move_random_auto_explorer(punit, chosen_action->moveInfo)) {
+		switch (make_explorer_move(punit, chosen_action->moveInfo)) {
 		case MR_DEATH:
 			//don't use punit!
 			break;
@@ -1547,7 +1547,10 @@ void rai_manage_military(struct ai_type *ait, struct player *pplayer,
 
 	// Destroy the list and elements within
 	for(int i = 0; i < genlist_size(actionList); i++ ){
-		void *toRemove = genlist_back(actionList);
+		struct potentialMove *toRemove = genlist_back(actionList);
+		if(toRemove->type == explore){
+			free(toRemove->moveInfo);
+		}
 		genlist_pop_back(actionList);
 		free(toRemove);
 	}

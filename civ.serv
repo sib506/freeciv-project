@@ -1,11 +1,13 @@
 # set gameseed 42       # repeat a particular game (random) sequence
 # set mapseed 42        # repeat a particular map generation sequence
 # set timeout 3         # run a client/server autogame
-set timeout 5          # run a server only autogame
+set timeout 2          # run a server only autogame
 set minplayers 0        # no human player needed
-set ec_turns 0          # avoid timestamps in savegames
-set aifill 4            # fill to 4 players
-hard                    # make the AI do complex things
-create Caesar           # first player (with known name) created and 
+# set ec_turns 0          # avoid timestamps in savegames
+set aifill 2            # fill to 4 players
+# hard                    # make the AI do complex things
+# create Caesar           # first player (with known name) created and 
                         # toggled to AI mode
+                        
+mctstoggle AI*1			# toggle the first AI player to MCTS mode
 # start                   # start game

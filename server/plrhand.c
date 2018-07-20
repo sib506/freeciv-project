@@ -1959,7 +1959,7 @@ void shuffle_players(void)
   }
 
   /* randomize it */
-  array_shuffle(shuffled_order, n);
+  //array_shuffle(shuffled_order, n);
 
 #ifdef DEBUG
   for (i = 0; i < n; i++) {
@@ -2943,6 +2943,31 @@ void player_set_to_ai_mode(struct player *pplayer, enum ai_level skill_level)
 
   fc_assert(pplayer->ai_common.skill_level == skill_level);
 }
+
+/****************************************************************************
+  Toggle player to random mode.
+****************************************************************************/
+void player_set_to_random_mode(struct player *pplayer)
+{
+  pplayer->player_mode = P_RANDOM;
+}
+
+/****************************************************************************
+  Toggle player to MCTS mode.
+****************************************************************************/
+void player_set_to_mcts_mode(struct player *pplayer)
+{
+  pplayer->player_mode = P_MCTS;
+}
+
+/****************************************************************************
+  Toggle player to Normal mode (From MCTS).
+****************************************************************************/
+void player_set_to_normal_mode(struct player *pplayer)
+{
+  pplayer->player_mode = P_NORMAL;
+}
+
 
 /****************************************************************************
   Toggle player under human control.

@@ -38,9 +38,12 @@
 #include "advgoto.h"
 
 #include "rand.h"
+#include "mcts.h"
 
 #include "autoexplorer.h"
 
+
+enum unit_move_result random_auto_explorer(struct unit *punit);
 
 /**************************************************************************
   Determine if a tile is likely to be water, given information that
@@ -262,6 +265,19 @@ static int explorer_desirable(struct tile *ptile, struct player *pplayer,
   return desirable;
 }
 
+enum unit_move_result random_auto_explorer(struct unit *punit) {
+	struct genlist* actionList = genlist_new();
+	collect_explorer_moves(punit, actionList);
+
+	int rand_no = rand() % genlist_size(actionList);
+	struct potentialMove *chosen_action = genlist_get(actionList, rand_no);
+	enum unit_move_result result = make_explorer_move(punit,
+			chosen_action->moveInfo);
+	// Clear the genlist
+	free_explorer_moves(actionList);
+	return result;
+}
+
 /**************************************************************************
   Handle eXplore mode of a unit (explorers are always in eXplore mode 
   for AI) - explores unknown territory, finds huts.
@@ -274,6 +290,25 @@ static int explorer_desirable(struct tile *ptile, struct player *pplayer,
 enum unit_move_result manage_auto_explorer(struct unit *punit)
 {
   struct player *pplayer = unit_owner(punit);
+
+  /* If either the MCTS player or we are in MCTS mode - must perform
+   * MCTS actions as required by the MCTS logic.
+   *
+   * If the random AI then perform random actions.
+   *
+   * Otherwise act as normal using the default AI
+   **/
+  if((mcts_mode || (pplayer->player_mode == P_MCTS && move_chosen && !pending_game_move))
+		  && unit_has_type_role(punit, L_EXPLORER) && !reset && (pplayer->ai_common.barbarian_type == NOT_A_BARBARIAN)){
+	  if(current_mcts_stage == simulation){
+		  return random_auto_explorer(punit);
+	  } else {
+		  return make_explorer_move(punit, punit->chosen_action->moveInfo);
+	  }
+  } else if (pplayer->player_mode == P_RANDOM){
+	  return random_auto_explorer(punit);
+  }
+
   /* Loop prevention */
   const struct tile *init_tile = unit_tile(punit);
 
@@ -487,8 +522,12 @@ enum unit_move_result manage_random_auto_explorer(struct unit *punit)
 #undef DIST_FACTOR
 }
 
-void collect_random_explorer_moves(struct unit *punit, struct genlist *moveList) {
-	struct player *pplayer = unit_owner(punit);
+/**************************************************************************
+  Collect all possible moves for a given explorer unit
+  Only considers moves that can make within a single turn radius.
+  Add moves to the provided list.
+**************************************************************************/
+void collect_explorer_moves(struct unit *punit, struct genlist *move_list) {
 	/* Loop prevention */
 	struct tile *init_tile = unit_tile(punit);
 
@@ -498,48 +537,72 @@ void collect_random_explorer_moves(struct unit *punit, struct genlist *moveList)
 
 	UNIT_LOG(LOG_DEBUG, punit, "auto-exploring.");
 
-	if (pplayer->ai_controlled && unit_has_type_flag(punit, UTYF_GAMELOSS)) {
+	/* Not required - UTYF_GAMELOSS means
+	 * losing this unit means losing the game.
+	 * This should be detected by MCTS/ searching AI anyway */
+
+	/* struct player *pplayer = unit_owner(punit);
+	   if (pplayer->ai_controlled && unit_has_type_flag(punit, UTYF_GAMELOSS)) {
 		UNIT_LOG(LOG_DEBUG, punit, "exploration too dangerous!");
-		return; /* too dangerous */
-	}
+		return; // too dangerous
+	}*/
 
 	TIMING_LOG(AIT_EXPLORER, TIMER_START);
 
 	pft_fill_unit_parameter(&parameter, punit);
-	parameter.get_TB = no_fights_or_unknown;
+	parameter.get_TB = NULL; //no_fights_or_unknown;
 	parameter.omniscience = FALSE;
 
 	pfm = pf_map_new(&parameter);
 
-	int turns = 0;
+	float turns = 0;
 
 	struct potentialMove *pMove = malloc(sizeof(struct potentialMove));
 	pMove->type = explore;
-	pMove->moveInfo = init_tile;
-	genlist_append(moveList, pMove);
+
+	struct move_tile_natcoord *move_tile = malloc(sizeof(struct move_tile_natcoord));
+	index_to_native_pos(&move_tile->x, &move_tile->y, tile_index(init_tile));
+
+	pMove->moveInfo = move_tile;
+	genlist_append(move_list, pMove);
+
+	//int move_rate = parameter.move_rate;
+	int move_rate = unit_move_rate(punit);
+	//printf("move rate: %d, %d\n", parameter.move_rate, move_rate);
 
 	pf_map_move_costs_iterate(pfm, ptile, move_cost, FALSE)
-			{
-				fc_assert_action(map_is_known(ptile, pplayer), continue);
-				turns = move_cost / parameter.move_rate;
+	{
+		//fc_assert_action(map_is_known(ptile, pplayer), continue);
+		turns = (float) move_cost / move_rate;
 
-				if (turns <= 1) {
-					struct potentialMove *pMove = malloc(sizeof(struct potentialMove));
-					pMove->type = explore;
-					pMove->moveInfo = ptile;
-					genlist_append(moveList, pMove);
-				}
+		if ((turns <= (float) 1) && (can_unit_exist_at_tile(punit, ptile))) {
+			struct potentialMove *pMove = malloc(
+					sizeof(struct potentialMove));
+			pMove->type = explore;
 
-			}pf_map_move_costs_iterate_end;
+			struct move_tile_natcoord *move_tile = malloc(
+					sizeof(struct move_tile_natcoord));
+			index_to_native_pos(&move_tile->x, &move_tile->y,
+					tile_index(ptile));
+			pMove->moveInfo = move_tile;
+			genlist_append(move_list, pMove);
+		}
+
+	}pf_map_move_costs_iterate_end;
 	pf_map_destroy(pfm);
 
 	TIMING_LOG(AIT_EXPLORER, TIMER_STOP);
+
 }
 
-enum unit_move_result move_random_auto_explorer(struct unit *punit,
-		struct tile *move_tile) {
-
-	if (move_tile != NULL) {
+/**************************************************************************
+  Given a move, performs the move on the given unit
+**************************************************************************/
+enum unit_move_result make_explorer_move(struct unit *punit,
+		struct move_tile_natcoord *move_coord) {
+	punit->chosen_action = NULL;
+	if (move_coord != NULL) {
+		struct tile *move_tile= native_pos_to_tile(move_coord->x, move_coord->y);
 		/* TODO: read the path off the map we made.  Then we can make a path
 		 * which goes beside the unknown, with a good EC callback... */
 		if (!explorer_goto(punit, move_tile)) {
@@ -551,7 +614,6 @@ enum unit_move_result move_random_auto_explorer(struct unit *punit,
 			/* We can still move on... */
 			UNIT_LOG(LOG_DEBUG, punit, "done exploring (all finished)...");
 			return MR_PAUSE;
-
 /*			if (!same_pos(move_tile, unit_tile(punit))) {
 				 At least we moved (and maybe even got to where we wanted).
 				 * Let's do more exploring.
@@ -573,6 +635,19 @@ enum unit_move_result move_random_auto_explorer(struct unit *punit,
 		return MR_BAD_MAP_POSITION;
 	}
 #undef DIST_FACTOR
+}
+
+/**************************************************************************
+  Destroy the explorer move list
+**************************************************************************/
+void free_explorer_moves(struct genlist *moveList){
+	for(int i = 0; i < genlist_size(moveList); i++ ){
+		struct potentialMove *toRemove = genlist_back(moveList);
+		free(toRemove->moveInfo);
+		free(toRemove);
+		genlist_pop_back(moveList);
+	}
+	genlist_destroy(moveList);
 }
 
 enum unit_move_result manage_random_auto_explorer2(struct unit *punit)

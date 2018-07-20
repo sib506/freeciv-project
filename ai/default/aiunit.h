@@ -17,6 +17,10 @@
 #include "combat.h"
 #include "fc_types.h"
 #include "unittype.h"
+
+#include "genlist.h"
+
+/* server */
 #include "autoexplorer.h"
 
 struct pf_map;
@@ -92,8 +96,12 @@ void dai_manage_unit(struct ai_type *ait, struct player *pplayer,
                      struct unit *punit);
 void dai_manage_military(struct ai_type *ait, struct player *pplayer,
                          struct unit *punit);
-void dai_manage_military_random(struct ai_type *ait, struct player *pplayer,
-        struct unit *punit);
+
+void collect_military_moves(struct unit *punit, struct genlist *moveList);
+void make_military_move(struct ai_type *ait, struct player *pplayer,
+		struct unit *punit, struct potentialMove *chosen_action);
+void free_military_moves(struct genlist *moveList);
+
 struct city *find_nearest_safe_city(struct unit *punit);
 int look_for_charge(struct ai_type *ait, struct player *pplayer,
                     struct unit *punit,
@@ -153,5 +161,18 @@ void dai_unit_load(struct ai_type *ait, const char *aitstr,
 
 struct unit_type *dai_role_utype_for_move_type(struct city *pcity, int role,
                                                enum unit_move_type mt);
+
+enum mcts_unit_type {
+	explorer, settler, military
+};
+
+struct unit_moves{
+	int id;
+	enum mcts_unit_type type;
+	struct genlist* moves;
+};
+
+struct genlist* player_available_moves(struct player *pplayer);
+void attach_chosen_move(struct player *pplayer);
 
 #endif  /* FC__AIUNIT_H */

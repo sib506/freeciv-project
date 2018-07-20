@@ -393,7 +393,11 @@ on `(hostname || uname -n) 2>/dev/null | sed 1q`
 "
 
 # Files that config.status was made for.
+<<<<<<< HEAD
 config_files=" Makefile data/Makefile data/civclient.dsc data/civserver.dsc data/civserver.room data/hex2t/Makefile data/amplio2/Makefile data/buildings/Makefile data/flags/Makefile data/misc/Makefile data/cimpletoon/Makefile data/trident/Makefile data/isophex/Makefile data/isotrident/Makefile data/stdsounds/Makefile data/default/Makefile data/classic/Makefile data/multiplayer/Makefile data/experimental/Makefile data/civ2civ3/Makefile data/civ1/Makefile data/civ2/Makefile data/scenarios/Makefile data/nation/Makefile data/themes/Makefile data/themes/gui-gtk-2.0/Makefile data/themes/gui-gtk-2.0/Freeciv/Makefile data/themes/gui-gtk-2.0/Freeciv/gtk-2.0/Makefile data/themes/gui-gtk-2.0/Freeciv/gtk-2.0/Arrows/Makefile data/themes/gui-gtk-2.0/Freeciv/gtk-2.0/Buttons/Makefile data/themes/gui-gtk-2.0/Freeciv/gtk-2.0/Check-Radio/Makefile data/themes/gui-gtk-2.0/Freeciv/gtk-2.0/Combo/Makefile data/themes/gui-gtk-2.0/Freeciv/gtk-2.0/Frame-Gap/Makefile data/themes/gui-gtk-2.0/Freeciv/gtk-2.0/Handles/Makefile data/themes/gui-gtk-2.0/Freeciv/gtk-2.0/Lines/Makefile data/themes/gui-gtk-2.0/Freeciv/gtk-2.0/ListHeaders/Makefile data/themes/gui-gtk-2.0/Freeciv/gtk-2.0/Menu-Menubar/Makefile data/themes/gui-gtk-2.0/Freeciv/gtk-2.0/Others/Makefile data/themes/gui-gtk-2.0/Freeciv/gtk-2.0/Panel/Makefile data/themes/gui-gtk-2.0/Freeciv/gtk-2.0/ProgressBar/Makefile data/themes/gui-gtk-2.0/Freeciv/gtk-2.0/Range/Makefile data/themes/gui-gtk-2.0/Freeciv/gtk-2.0/Scrollbars/Makefile data/themes/gui-gtk-2.0/Freeciv/gtk-2.0/Shadows/Makefile data/themes/gui-gtk-2.0/Freeciv/gtk-2.0/Spin/Makefile data/themes/gui-gtk-2.0/Freeciv/gtk-2.0/Tabs/Makefile data/themes/gui-gtk-2.0/Freeciv/gtk-2.0/Toolbar/Makefile data/themes/gui-gtk-3.0/Makefile data/themes/gui-gtk-3.0/Freeciv/Makefile data/themes/gui-gtk-3.0/Freeciv/gtk-3.0/Makefile data/themes/gui-gtk-3.0/Freeciv/gtk-3.0/Arrows/Makefile data/themes/gui-gtk-3.0/Freeciv/gtk-3.0/Buttons/Makefile data/themes/gui-gtk-3.0/Freeciv/gtk-3.0/Check-Radio/Makefile data/themes/gui-gtk-3.0/Freeciv/gtk-3.0/Combo/Makefile data/themes/gui-gtk-3.0/Freeciv/gtk-3.0/Frame-Gap/Makefile data/themes/gui-gtk-3.0/Freeciv/gtk-3.0/Handles/Makefile data/themes/gui-gtk-3.0/Freeciv/gtk-3.0/Lines/Makefile data/themes/gui-gtk-3.0/Freeciv/gtk-3.0/ListHeaders/Makefile data/themes/gui-gtk-3.0/Freeciv/gtk-3.0/Menu-Menubar/Makefile data/themes/gui-gtk-3.0/Freeciv/gtk-3.0/Others/Makefile data/themes/gui-gtk-3.0/Freeciv/gtk-3.0/Panel/Makefile data/themes/gui-gtk-3.0/Freeciv/gtk-3.0/ProgressBar/Makefile data/themes/gui-gtk-3.0/Freeciv/gtk-3.0/Range/Makefile data/themes/gui-gtk-3.0/Freeciv/gtk-3.0/Scrollbars/Makefile data/themes/gui-gtk-3.0/Freeciv/gtk-3.0/Shadows/Makefile data/themes/gui-gtk-3.0/Freeciv/gtk-3.0/Spin/Makefile data/themes/gui-gtk-3.0/Freeciv/gtk-3.0/Tabs/Makefile data/themes/gui-gtk-3.0/Freeciv/gtk-3.0/Toolbar/Makefile data/themes/gui-qt/Makefile data/themes/gui-qt/icons/Makefile data/themes/gui-sdl/Makefile data/themes/gui-sdl/human/Makefile data/wonders/Makefile data/icons/Makefile utility/Makefile dependencies/Makefile dependencies/lua-5.2/Makefile dependencies/lua-5.2/src/Makefile dependencies/tolua-5.2/Makefile dependencies/tolua-5.2/src/Makefile dependencies/tolua-5.2/src/lib/Makefile dependencies/tolua-5.2/src/bin/Makefile dependencies/luasql/Makefile dependencies/luasql/src/Makefile dependencies/cvercmp/Makefile common/Makefile common/aicore/Makefile common/scriptcore/Makefile ai/Makefile ai/default/Makefile ai/classic/Makefile ai/random/Makefile ai/mcts/Makefile ai/stub/Makefile ai/threaded/Makefile tests/Makefile win32/Makefile client/Makefile client/agents/Makefile client/include/Makefile client/gui-sdl/Makefile client/gui-gtk-2.0/Makefile client/gui-gtk-3.0/Makefile client/gui-xaw/Makefile client/gui-qt/Makefile client/gui-stub/Makefile client/luascript/Makefile server/Makefile server/advisors/Makefile server/generator/Makefile server/scripting/Makefile tools/Makefile translations/Makefile translations/freeciv/Makefile.in translations/nations/Makefile.in doc/Makefile doc/man/Makefile doc/man/freeciv-client.6 doc/man/freeciv-server.6 doc/man/freeciv-manual.6 doc/man/freeciv-modpack.6 doc/ca/Makefile doc/de/Makefile doc/fr/Makefile doc/it/Makefile doc/ja/Makefile doc/nl/Makefile doc/sv/Makefile freeciv.spec:bootstrap/freeciv.spec.in data/Freeciv lua/Makefile client/freeciv.desktop:bootstrap/freeciv.desktop.in client/freeciv-gtk2.desktop:bootstrap/freeciv-gtk2.desktop.in client/freeciv-sdl.desktop:bootstrap/freeciv-sdl.desktop.in client/freeciv-qt.desktop:bootstrap/freeciv-qt.desktop.in server/freeciv-server.desktop:bootstrap/freeciv-server.desktop.in tools/freeciv-mp-gtk2.desktop:bootstrap/freeciv-mp-gtk2.desktop.in tools/freeciv-mp-gtk3.desktop:bootstrap/freeciv-mp-gtk3.desktop.in tools/freeciv-mp-qt.desktop:bootstrap/freeciv-mp-qt.desktop.in client/freeciv-gtk2.appdata.xml:bootstrap/freeciv-gtk2.appdata.xml.in client/freeciv-gtk3.appdata.xml:bootstrap/freeciv-gtk3.appdata.xml.in client/freeciv-sdl.appdata.xml:bootstrap/freeciv-sdl.appdata.xml.in client/freeciv-qt.appdata.xml:bootstrap/freeciv-qt.appdata.xml.in server/freeciv-server.appdata.xml:bootstrap/freeciv-server.appdata.xml.in tools/freeciv-mp-gtk2.appdata.xml:bootstrap/freeciv-mp-gtk2.appdata.xml.in tools/freeciv-mp-gtk3.appdata.xml:bootstrap/freeciv-mp-gtk3.appdata.xml.in tools/freeciv-mp-qt.appdata.xml:bootstrap/freeciv-mp-qt.appdata.xml.in fcgui:bootstrap/fcgui.in fcser:bootstrap/fcser.in"
+=======
+config_files=" Makefile data/Makefile data/civclient.dsc data/civserver.dsc data/civserver.room data/hex2t/Makefile data/amplio2/Makefile data/buildings/Makefile data/flags/Makefile data/misc/Makefile data/cimpletoon/Makefile data/trident/Makefile data/isophex/Makefile data/isotrident/Makefile data/stdsounds/Makefile data/default/Makefile data/classic/Makefile data/multiplayer/Makefile data/experimental/Makefile data/civ2civ3/Makefile data/civ1/Makefile data/civ2/Makefile data/scenarios/Makefile data/nation/Makefile data/themes/Makefile data/themes/gui-gtk-2.0/Makefile data/themes/gui-gtk-2.0/Freeciv/Makefile data/themes/gui-gtk-2.0/Freeciv/gtk-2.0/Makefile data/themes/gui-gtk-2.0/Freeciv/gtk-2.0/Arrows/Makefile data/themes/gui-gtk-2.0/Freeciv/gtk-2.0/Buttons/Makefile data/themes/gui-gtk-2.0/Freeciv/gtk-2.0/Check-Radio/Makefile data/themes/gui-gtk-2.0/Freeciv/gtk-2.0/Combo/Makefile data/themes/gui-gtk-2.0/Freeciv/gtk-2.0/Frame-Gap/Makefile data/themes/gui-gtk-2.0/Freeciv/gtk-2.0/Handles/Makefile data/themes/gui-gtk-2.0/Freeciv/gtk-2.0/Lines/Makefile data/themes/gui-gtk-2.0/Freeciv/gtk-2.0/ListHeaders/Makefile data/themes/gui-gtk-2.0/Freeciv/gtk-2.0/Menu-Menubar/Makefile data/themes/gui-gtk-2.0/Freeciv/gtk-2.0/Others/Makefile data/themes/gui-gtk-2.0/Freeciv/gtk-2.0/Panel/Makefile data/themes/gui-gtk-2.0/Freeciv/gtk-2.0/ProgressBar/Makefile data/themes/gui-gtk-2.0/Freeciv/gtk-2.0/Range/Makefile data/themes/gui-gtk-2.0/Freeciv/gtk-2.0/Scrollbars/Makefile data/themes/gui-gtk-2.0/Freeciv/gtk-2.0/Shadows/Makefile data/themes/gui-gtk-2.0/Freeciv/gtk-2.0/Spin/Makefile data/themes/gui-gtk-2.0/Freeciv/gtk-2.0/Tabs/Makefile data/themes/gui-gtk-2.0/Freeciv/gtk-2.0/Toolbar/Makefile data/themes/gui-gtk-3.0/Makefile data/themes/gui-gtk-3.0/Freeciv/Makefile data/themes/gui-gtk-3.0/Freeciv/gtk-3.0/Makefile data/themes/gui-gtk-3.0/Freeciv/gtk-3.0/Arrows/Makefile data/themes/gui-gtk-3.0/Freeciv/gtk-3.0/Buttons/Makefile data/themes/gui-gtk-3.0/Freeciv/gtk-3.0/Check-Radio/Makefile data/themes/gui-gtk-3.0/Freeciv/gtk-3.0/Combo/Makefile data/themes/gui-gtk-3.0/Freeciv/gtk-3.0/Frame-Gap/Makefile data/themes/gui-gtk-3.0/Freeciv/gtk-3.0/Handles/Makefile data/themes/gui-gtk-3.0/Freeciv/gtk-3.0/Lines/Makefile data/themes/gui-gtk-3.0/Freeciv/gtk-3.0/ListHeaders/Makefile data/themes/gui-gtk-3.0/Freeciv/gtk-3.0/Menu-Menubar/Makefile data/themes/gui-gtk-3.0/Freeciv/gtk-3.0/Others/Makefile data/themes/gui-gtk-3.0/Freeciv/gtk-3.0/Panel/Makefile data/themes/gui-gtk-3.0/Freeciv/gtk-3.0/ProgressBar/Makefile data/themes/gui-gtk-3.0/Freeciv/gtk-3.0/Range/Makefile data/themes/gui-gtk-3.0/Freeciv/gtk-3.0/Scrollbars/Makefile data/themes/gui-gtk-3.0/Freeciv/gtk-3.0/Shadows/Makefile data/themes/gui-gtk-3.0/Freeciv/gtk-3.0/Spin/Makefile data/themes/gui-gtk-3.0/Freeciv/gtk-3.0/Tabs/Makefile data/themes/gui-gtk-3.0/Freeciv/gtk-3.0/Toolbar/Makefile data/themes/gui-qt/Makefile data/themes/gui-qt/icons/Makefile data/themes/gui-sdl/Makefile data/themes/gui-sdl/human/Makefile data/wonders/Makefile data/icons/Makefile utility/Makefile dependencies/Makefile dependencies/lua-5.2/Makefile dependencies/lua-5.2/src/Makefile dependencies/tolua-5.2/Makefile dependencies/tolua-5.2/src/Makefile dependencies/tolua-5.2/src/lib/Makefile dependencies/tolua-5.2/src/bin/Makefile dependencies/luasql/Makefile dependencies/luasql/src/Makefile dependencies/cvercmp/Makefile common/Makefile common/aicore/Makefile common/scriptcore/Makefile ai/Makefile ai/default/Makefile ai/classic/Makefile ai/mcts/Makefile ai/stub/Makefile ai/threaded/Makefile tests/Makefile win32/Makefile client/Makefile client/agents/Makefile client/include/Makefile client/gui-sdl/Makefile client/gui-gtk-2.0/Makefile client/gui-gtk-3.0/Makefile client/gui-xaw/Makefile client/gui-qt/Makefile client/gui-stub/Makefile client/luascript/Makefile server/Makefile server/advisors/Makefile server/generator/Makefile server/scripting/Makefile tools/Makefile translations/Makefile translations/freeciv/Makefile.in translations/nations/Makefile.in doc/Makefile doc/man/Makefile doc/man/freeciv-client.6 doc/man/freeciv-server.6 doc/man/freeciv-manual.6 doc/man/freeciv-modpack.6 doc/ca/Makefile doc/de/Makefile doc/fr/Makefile doc/it/Makefile doc/ja/Makefile doc/nl/Makefile doc/sv/Makefile freeciv.spec:bootstrap/freeciv.spec.in data/Freeciv lua/Makefile client/freeciv.desktop:bootstrap/freeciv.desktop.in client/freeciv-gtk2.desktop:bootstrap/freeciv-gtk2.desktop.in client/freeciv-sdl.desktop:bootstrap/freeciv-sdl.desktop.in client/freeciv-qt.desktop:bootstrap/freeciv-qt.desktop.in server/freeciv-server.desktop:bootstrap/freeciv-server.desktop.in tools/freeciv-mp-gtk2.desktop:bootstrap/freeciv-mp-gtk2.desktop.in tools/freeciv-mp-gtk3.desktop:bootstrap/freeciv-mp-gtk3.desktop.in tools/freeciv-mp-qt.desktop:bootstrap/freeciv-mp-qt.desktop.in client/freeciv-gtk2.appdata.xml:bootstrap/freeciv-gtk2.appdata.xml.in client/freeciv-gtk3.appdata.xml:bootstrap/freeciv-gtk3.appdata.xml.in client/freeciv-sdl.appdata.xml:bootstrap/freeciv-sdl.appdata.xml.in client/freeciv-qt.appdata.xml:bootstrap/freeciv-qt.appdata.xml.in server/freeciv-server.appdata.xml:bootstrap/freeciv-server.appdata.xml.in tools/freeciv-mp-gtk2.appdata.xml:bootstrap/freeciv-mp-gtk2.appdata.xml.in tools/freeciv-mp-gtk3.appdata.xml:bootstrap/freeciv-mp-gtk3.appdata.xml.in tools/freeciv-mp-qt.appdata.xml:bootstrap/freeciv-mp-qt.appdata.xml.in fcgui:bootstrap/fcgui.in fcser:bootstrap/fcser.in"
+>>>>>>> experimental-loading
 config_headers=" fc_config.h"
 config_commands=" depfiles libtool default-1 fc_default-1 fc_default-2 fc_default-4 fc_default-5"
 
@@ -430,14 +434,14 @@ Report bugs to <https://www.hostedredmine.com/projects/freeciv>."
 ac_cs_config=""
 ac_cs_version="\
 Freeciv config.status 2.5.9
-configured by /home/scott/Documents/freeciv-2.5.9/configure, generated by GNU Autoconf 2.69,
+configured by /home/parallels/Documents/freeciv-2.5.9/configure, generated by GNU Autoconf 2.69,
   with options \"$ac_cs_config\"
 
 Copyright (C) 2012 Free Software Foundation, Inc.
 This config.status script is free software; the Free Software Foundation
 gives unlimited permission to copy, distribute and modify it."
 
-ac_pwd='/home/scott/Documents/freeciv-2.5.9'
+ac_pwd='/home/parallels/Documents/freeciv-2.5.9'
 srcdir='.'
 INSTALL='/usr/bin/install -c'
 MKDIR_P='/bin/mkdir -p'
@@ -519,7 +523,7 @@ if $ac_cs_silent; then
 fi
 
 if $ac_cs_recheck; then
-  set X /bin/bash '/home/scott/Documents/freeciv-2.5.9/configure'  $ac_configure_extra_args --no-create --no-recursion
+  set X /bin/bash '/home/parallels/Documents/freeciv-2.5.9/configure'  $ac_configure_extra_args --no-create --no-recursion
   shift
   $as_echo "running CONFIG_SHELL=/bin/bash $*" >&6
   CONFIG_SHELL='/bin/bash'
@@ -907,7 +911,10 @@ do
     "ai/Makefile") CONFIG_FILES="$CONFIG_FILES ai/Makefile" ;;
     "ai/default/Makefile") CONFIG_FILES="$CONFIG_FILES ai/default/Makefile" ;;
     "ai/classic/Makefile") CONFIG_FILES="$CONFIG_FILES ai/classic/Makefile" ;;
+<<<<<<< HEAD
     "ai/random/Makefile") CONFIG_FILES="$CONFIG_FILES ai/random/Makefile" ;;
+=======
+>>>>>>> experimental-loading
     "ai/mcts/Makefile") CONFIG_FILES="$CONFIG_FILES ai/mcts/Makefile" ;;
     "ai/stub/Makefile") CONFIG_FILES="$CONFIG_FILES ai/stub/Makefile" ;;
     "ai/threaded/Makefile") CONFIG_FILES="$CONFIG_FILES ai/threaded/Makefile" ;;
@@ -1127,10 +1134,10 @@ S["CLIENT_GUI_QT_FALSE"]=""
 S["CLIENT_GUI_QT_TRUE"]="#"
 S["CLIENT_GUI_XAW_FALSE"]=""
 S["CLIENT_GUI_XAW_TRUE"]="#"
-S["CLIENT_GUI_GTK_3_0_FALSE"]=""
-S["CLIENT_GUI_GTK_3_0_TRUE"]="#"
-S["CLIENT_GUI_GTK_2_0_FALSE"]="#"
-S["CLIENT_GUI_GTK_2_0_TRUE"]=""
+S["CLIENT_GUI_GTK_3_0_FALSE"]="#"
+S["CLIENT_GUI_GTK_3_0_TRUE"]=""
+S["CLIENT_GUI_GTK_2_0_FALSE"]=""
+S["CLIENT_GUI_GTK_2_0_TRUE"]="#"
 S["CLIENT_GUI_SDL_FALSE"]=""
 S["CLIENT_GUI_SDL_TRUE"]="#"
 S["AUDIO_SDL_FALSE"]=""
@@ -1144,16 +1151,16 @@ S["mp_qt_libs"]=""
 S["mp_qt_cxxflags"]=""
 S["mp_qt_cppflags"]=""
 S["mp_gtk3_ldflags"]=""
-S["mp_gtk3_libs"]=""
-S["mp_gtk3_cflags"]=" -DMPICON_PATH=\"\\\"${datarootdir}/freeciv/misc/mpicon.png\\\"\""
+S["mp_gtk3_libs"]="-lgtk-3 -lgdk-3 -lpangocairo-1.0 -lpango-1.0 -latk-1.0 -lcairo-gobject -lcairo -lgdk_pixbuf-2.0 -lgio-2.0 -lgobject-2.0 -lglib-2.0 -lgthread-2.0 -pt"\
+"hread -lglib-2.0"
+S["mp_gtk3_cflags"]="-pthread -I/usr/include/gtk-3.0 -I/usr/include/at-spi2-atk/2.0 -I/usr/include/at-spi-2.0 -I/usr/include/dbus-1.0 -I/usr/lib/x86_64-linux-gnu/dbus-1."\
+"0/include -I/usr/include/gtk-3.0 -I/usr/include/gio-unix-2.0/ -I/usr/include/mirclient -I/usr/include/mircore -I/usr/include/mircookie -I/usr/includ"\
+"e/cairo -I/usr/include/pango-1.0 -I/usr/include/harfbuzz -I/usr/include/pango-1.0 -I/usr/include/atk-1.0 -I/usr/include/cairo -I/usr/include/pixman-"\
+"1 -I/usr/include/freetype2 -I/usr/include/libpng12 -I/usr/include/gdk-pixbuf-2.0 -I/usr/include/libpng12 -I/usr/include/glib-2.0 -I/usr/lib/x86_64-l"\
+"inux-gnu/glib-2.0/include  -DMPICON_PATH=\"\\\"${datarootdir}/freeciv/misc/mpicon.png\\\"\""
 S["mp_gtk2_ldflags"]=""
-S["mp_gtk2_libs"]="-lgtk-x11-2.0 -lgdk-x11-2.0 -lpangocairo-1.0 -latk-1.0 -lcairo -lgdk_pixbuf-2.0 -lgio-2.0 -lpangoft2-1.0 -lpango-1.0 -lgobject-2.0 -lglib-2.0 -lfont"\
-"config -lfreetype -lgthread-2.0 -pthread -lglib-2.0"
-S["mp_gtk2_cflags"]="-pthread -I/usr/include/gtk-2.0 -I/usr/lib/x86_64-linux-gnu/gtk-2.0/include -I/usr/include/gio-unix-2.0/ -I/usr/include/cairo -I/usr/include/pango-1"\
-".0 -I/usr/include/atk-1.0 -I/usr/include/cairo -I/usr/include/pixman-1 -I/usr/include/libpng12 -I/usr/include/gdk-pixbuf-2.0 -I/usr/include/libpng12"\
-" -I/usr/include/pango-1.0 -I/usr/include/harfbuzz -I/usr/include/pango-1.0 -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include -I/u"\
-"sr/include/freetype2 -pthread -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include -DMPICON_PATH=\"\\\"${datarootdir}/freeciv/misc/mpic"\
-"on.png\\\"\""
+S["mp_gtk2_libs"]=""
+S["mp_gtk2_cflags"]=" -DMPICON_PATH=\"\\\"${datarootdir}/freeciv/misc/mpicon.png\\\"\""
 S["mp_cli_ldflags"]=""
 S["mp_cli_libs"]=""
 S["mp_cli_cflags"]=""
@@ -1172,23 +1179,23 @@ S["gui_sdl_ldflags"]=""
 S["gui_sdl_libs"]=""
 S["gui_sdl_cflags"]=""
 S["gui_gtk3_ldflags"]=""
-S["gui_gtk3_libs"]=""
-S["gui_gtk3_cflags"]=""
+S["gui_gtk3_libs"]="-lgtk-3 -lgdk-3 -lpangocairo-1.0 -lpango-1.0 -latk-1.0 -lcairo-gobject -lcairo -lgdk_pixbuf-2.0 -lgio-2.0 -lgobject-2.0 -lglib-2.0 "
+S["gui_gtk3_cflags"]="-pthread -I/usr/include/gtk-3.0 -I/usr/include/at-spi2-atk/2.0 -I/usr/include/at-spi-2.0 -I/usr/include/dbus-1.0 -I/usr/lib/x86_64-linux-gnu/dbus-1."\
+"0/include -I/usr/include/gtk-3.0 -I/usr/include/gio-unix-2.0/ -I/usr/include/mirclient -I/usr/include/mircore -I/usr/include/mircookie -I/usr/includ"\
+"e/cairo -I/usr/include/pango-1.0 -I/usr/include/harfbuzz -I/usr/include/pango-1.0 -I/usr/include/atk-1.0 -I/usr/include/cairo -I/usr/include/pixman-"\
+"1 -I/usr/include/freetype2 -I/usr/include/libpng12 -I/usr/include/gdk-pixbuf-2.0 -I/usr/include/libpng12 -I/usr/include/glib-2.0 -I/usr/lib/x86_64-l"\
+"inux-gnu/glib-2.0/include"
 S["gui_gtk2_ldflags"]=""
-S["gui_gtk2_libs"]="-lgtk-x11-2.0 -lgdk-x11-2.0 -lpangocairo-1.0 -latk-1.0 -lcairo -lgdk_pixbuf-2.0 -lgio-2.0 -lpangoft2-1.0 -lpango-1.0 -lgobject-2.0 -lglib-2.0 -lfont"\
-"config -lfreetype"
-S["gui_gtk2_cflags"]="-pthread -I/usr/include/gtk-2.0 -I/usr/lib/x86_64-linux-gnu/gtk-2.0/include -I/usr/include/gio-unix-2.0/ -I/usr/include/cairo -I/usr/include/pango-1"\
-".0 -I/usr/include/atk-1.0 -I/usr/include/cairo -I/usr/include/pixman-1 -I/usr/include/libpng12 -I/usr/include/gdk-pixbuf-2.0 -I/usr/include/libpng12"\
-" -I/usr/include/pango-1.0 -I/usr/include/harfbuzz -I/usr/include/pango-1.0 -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include -I/u"\
-"sr/include/freetype2"
+S["gui_gtk2_libs"]=""
+S["gui_gtk2_cflags"]=""
 S["MODINST_CLI_FALSE"]=""
 S["MODINST_CLI_TRUE"]="#"
 S["MODINST_QT_FALSE"]=""
 S["MODINST_QT_TRUE"]="#"
-S["MODINST_GTK2_FALSE"]="#"
-S["MODINST_GTK2_TRUE"]=""
-S["MODINST_GTK3_FALSE"]=""
-S["MODINST_GTK3_TRUE"]="#"
+S["MODINST_GTK2_FALSE"]=""
+S["MODINST_GTK2_TRUE"]="#"
+S["MODINST_GTK3_FALSE"]="#"
+S["MODINST_GTK3_TRUE"]=""
 S["MODINST_FALSE"]="#"
 S["MODINST_TRUE"]=""
 S["GTHREAD_LIBS"]="-lgthread-2.0 -pthread -lglib-2.0"
@@ -1244,14 +1251,14 @@ S["FT2_LIBS"]=""
 S["FT2_CFLAGS"]=""
 S["FT2_CONFIG"]=""
 S["QTPATHS"]=""
-S["GTK3_LIBS"]=""
-S["GTK3_CFLAGS"]=""
-S["GTK2_LIBS"]="-lgtk-x11-2.0 -lgdk-x11-2.0 -lpangocairo-1.0 -latk-1.0 -lcairo -lgdk_pixbuf-2.0 -lgio-2.0 -lpangoft2-1.0 -lpango-1.0 -lgobject-2.0 -lglib-2.0 -lfont"\
-"config -lfreetype"
-S["GTK2_CFLAGS"]="-pthread -I/usr/include/gtk-2.0 -I/usr/lib/x86_64-linux-gnu/gtk-2.0/include -I/usr/include/gio-unix-2.0/ -I/usr/include/cairo -I/usr/include/pango-1"\
-".0 -I/usr/include/atk-1.0 -I/usr/include/cairo -I/usr/include/pixman-1 -I/usr/include/libpng12 -I/usr/include/gdk-pixbuf-2.0 -I/usr/include/libpng12"\
-" -I/usr/include/pango-1.0 -I/usr/include/harfbuzz -I/usr/include/pango-1.0 -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include -I/u"\
-"sr/include/freetype2"
+S["GTK3_LIBS"]="-lgtk-3 -lgdk-3 -lpangocairo-1.0 -lpango-1.0 -latk-1.0 -lcairo-gobject -lcairo -lgdk_pixbuf-2.0 -lgio-2.0 -lgobject-2.0 -lglib-2.0"
+S["GTK3_CFLAGS"]="-pthread -I/usr/include/gtk-3.0 -I/usr/include/at-spi2-atk/2.0 -I/usr/include/at-spi-2.0 -I/usr/include/dbus-1.0 -I/usr/lib/x86_64-linux-gnu/dbus-1."\
+"0/include -I/usr/include/gtk-3.0 -I/usr/include/gio-unix-2.0/ -I/usr/include/mirclient -I/usr/include/mircore -I/usr/include/mircookie -I/usr/includ"\
+"e/cairo -I/usr/include/pango-1.0 -I/usr/include/harfbuzz -I/usr/include/pango-1.0 -I/usr/include/atk-1.0 -I/usr/include/cairo -I/usr/include/pixman-"\
+"1 -I/usr/include/freetype2 -I/usr/include/libpng12 -I/usr/include/gdk-pixbuf-2.0 -I/usr/include/libpng12 -I/usr/include/glib-2.0 -I/usr/lib/x86_64-l"\
+"inux-gnu/glib-2.0/include"
+S["GTK2_LIBS"]=""
+S["GTK2_CFLAGS"]=""
 S["SDL2MIXER_LIBS"]=""
 S["SDL2MIXER_CFLAGS"]=""
 S["SDL2_CONFIG"]=""
@@ -1259,9 +1266,9 @@ S["SDL2_LIBS"]=""
 S["SDL2_CFLAGS"]=""
 S["SDLMIXER_LIBS"]=""
 S["SDLMIXER_CFLAGS"]=""
-S["SDL_LIBS"]="-L/usr/lib/x86_64-linux-gnu -lSDL"
-S["SDL_CFLAGS"]="-I/usr/include/SDL -D_GNU_SOURCE=1 -D_REENTRANT"
-S["SDL_CONFIG"]="/usr/bin/sdl-config"
+S["SDL_LIBS"]=""
+S["SDL_CFLAGS"]=""
+S["SDL_CONFIG"]="no"
 S["COMMON_LIBS"]="-lm -lz"
 S["UTILITY_LIBS"]=" -lcurl -lz"
 S["UTILITY_CFLAGS"]=" "
@@ -1392,12 +1399,12 @@ S["mkdir_p"]="$(MKDIR_P)"
 S["MKDIR_P"]="/bin/mkdir -p"
 S["INSTALL_STRIP_PROGRAM"]="$(install_sh) -c -s"
 S["STRIP"]="strip"
-S["install_sh"]="${SHELL} /home/scott/Documents/freeciv-2.5.9/bootstrap/install-sh"
-S["MAKEINFO"]="${SHELL} /home/scott/Documents/freeciv-2.5.9/bootstrap/missing makeinfo"
-S["AUTOHEADER"]="${SHELL} /home/scott/Documents/freeciv-2.5.9/bootstrap/missing autoheader"
-S["AUTOMAKE"]="${SHELL} /home/scott/Documents/freeciv-2.5.9/bootstrap/missing automake-1.15"
-S["AUTOCONF"]="${SHELL} /home/scott/Documents/freeciv-2.5.9/bootstrap/missing autoconf"
-S["ACLOCAL"]="${SHELL} /home/scott/Documents/freeciv-2.5.9/bootstrap/missing aclocal-1.15"
+S["install_sh"]="${SHELL} /home/parallels/Documents/freeciv-2.5.9/bootstrap/install-sh"
+S["MAKEINFO"]="${SHELL} /home/parallels/Documents/freeciv-2.5.9/bootstrap/missing makeinfo"
+S["AUTOHEADER"]="${SHELL} /home/parallels/Documents/freeciv-2.5.9/bootstrap/missing autoheader"
+S["AUTOMAKE"]="${SHELL} /home/parallels/Documents/freeciv-2.5.9/bootstrap/missing automake-1.15"
+S["AUTOCONF"]="${SHELL} /home/parallels/Documents/freeciv-2.5.9/bootstrap/missing autoconf"
+S["ACLOCAL"]="${SHELL} /home/parallels/Documents/freeciv-2.5.9/bootstrap/missing aclocal-1.15"
 S["VERSION"]="2.5.9"
 S["PACKAGE"]="freeciv"
 S["CYGPATH_W"]="echo"
